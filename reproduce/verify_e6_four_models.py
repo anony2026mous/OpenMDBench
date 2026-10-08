@@ -51,6 +51,12 @@ def main() -> int:
         d = caches.setdefault(batch, load(batch))
         by: dict[tuple[str, str], dict] = {}
         for r in d.get("records", []):
+            # The batch carries TWO arms: `llm-rl` (the layering condition, 13 or 10
+            # seeds) and `rl` (the pure-RL reference, 3 seeds, strong only). Filtering on
+            # (model, condition) alone lets the 3 `rl` records overwrite the `llm-rl`
+            # values at those seeds and inflates every strong-arm mean.
+            if r.get("arm") != "llm-rl":
+                continue
             if isinstance(r.get("V"), (int, float)):
                 by.setdefault((r["model"], r["condition"]), {})[r["seed"]] = float(r["V"])
         s = by.get((key, "strong"), {})

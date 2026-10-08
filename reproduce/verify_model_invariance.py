@@ -55,6 +55,11 @@ def main() -> int:
 
     by: dict[tuple[str, str], dict] = defaultdict(dict)
     for r in d.get("records", []):
+        # Filter to the `llm-rl` arm. The batch also holds `rl` reference records
+        # (3 seeds, strong only); keying on (model, condition) alone lets those three
+        # overwrite the `llm-rl` values and inflates the strong-arm mean.
+        if r.get("arm") != "llm-rl":
+            continue
         v = r.get("V")
         if isinstance(v, (int, float)):
             by[(r["model"], r["condition"])][r["seed"]] = float(v)
@@ -92,22 +97,20 @@ def main() -> int:
     print(f"\n  --- models with NO data in this batch ---")
     for nm in ("MM-M3", "MM-M2.7-hs"):
         print(f"     {nm:<12} no run directory; endpoints.json probes only 27b and 8b")
+    print(f"     Both are covered instead by the separate E6b batch; run")
+    print(f"     verify_e6b_minimax.py, or verify_e6_four_models.py for all four at once.")
 
-    # Two separate problems, and they need distinguishing.
-    print(f"\n  --- diagnosis ---")
-    hold_ok = all(
-        abs(st.mean(by[(mk, 'hold')].values()) - PAPER[mk]["hold"]) <= 0.002
-        for mk in ("27b", "8b") if by.get((mk, "hold")))
-    print(f"  1. hold arm agrees with the paper: {hold_ok}")
-    print(f"     (hold = 0.203 for both models, i.e. the degraded floor is right)")
-    print(f"  2. strong arm does NOT: ours 0.733 / 0.713 vs paper 0.633 / 0.667")
-    print(f"     Exhaustive search over every seed subset of size 8..13 found NO subset")
-    print(f"     yielding 0.633 for Qwen3.8-27B, so this is not a seed-selection effect.")
-    print(f"     Note E6_summary.md itself prints strong = 0.633 while its own 13")
-    print(f"     per-seed values average 0.733 -- the summary and the records disagree.")
-    print(f"  3. two of the four table columns have no data at all (above).")
-    print(f"\n  per-condition means agree with the paper: {'yes' if ok else 'no'}"
-          f"   (hold yes, strong no)")
+    print(f"\n  --- why the arm filter matters ---")
+    print(f"     The batch holds two arms: `llm-rl` (the layering condition, 13 seeds)"
+          f" and `rl`")
+    print(f"     (the pure-RL reference, 3 seeds, strong only). Selecting records by")
+    print(f"     (model, condition) alone lets those 3 `rl` values overwrite the `llm-rl`")
+    print(f"     ones at their seeds, which reports the strong arm as 0.733 / 0.713"
+          f" instead of")
+    print(f"     the paper's 0.633 / 0.667. `e6_analyze.py` keys on"
+          f" (model, condition, seed, arm).")
+
+    print(f"\n  per-condition means agree with the paper: {'yes' if ok else 'no'}")
     return 0
 
 
