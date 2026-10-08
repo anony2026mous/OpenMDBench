@@ -105,17 +105,22 @@ llm-rl rises 0.710 → 0.750).
 
 ### 2.2 Appendix G — "intelligence-regime ablation" (`tab:nointel`)
 
-This is the **one substantive gap in the paper's own argument**, and it is worth stating
-plainly.
+**Updated after an exhaustive search of both servers — see
+[`SERVER_SEARCH_RECORD.md`](SERVER_SEARCH_RECORD.md) §A.**
 
 * **Present**: the no-intelligence arm. `tab_hifi_main`'s 70 episodes per stack are the
   withheld-regime runs, and the no-intel column of the ablation (0.774 / 0.783 / 0.431)
   matches the baseline column of the main table.
-* **Absent**: the **legacy (declared-intelligence) arm** — the episode reports that
-  produced 0.753 / 0.782 / 0.516 over 82 / 49 / 40 episodes. Only the aggregated
-  `DATASET_5SEEDS.json` refers to the mode.
-* **Consequence**: the ablation's Δ column and its "better on k/14" counts cannot be
-  recomputed from this repository. The no-intel column can.
+* **Also present, newly located**: the **legacy (declared-intelligence) episodes** — 795
+  of them, in `~/openmd_private_archive/declared_briefing_snapshot_20260927_1419/`, the
+  archive written by `_w1_snapshot_declared.ps1` just before the withheld switch.
+* **But not the paper's subset**: the archive yields 79 / 135 / 82 episodes for
+  LLM+Rule / LLM+RL / pure-LLM, whereas the table reports n = 82 / 49 / 40. The means come
+  close (0.756 vs 0.769; 0.778 vs 0.782; 0.542 vs 0.516) but the counts do not agree, so
+  the exact Δ column and "better on k/14" counts are **not reproducible as published**.
+* **To close it**: recover the seed filter from `_w1_declared_delta.py` /
+  `_w1_declared_vs_withheld.py`, or regenerate the table from this archive and update the
+  appendix to the values that yields.
 
 Two further observations a reviewer should know:
 
@@ -126,6 +131,11 @@ Two further observations a reviewer should know:
    manuscript compiles; the file copy appears to be a stale earlier extraction.
 2. The two regimes have **unequal n** (70 vs 82/49/40) and different seeds, so the
    contrast is not paired. The appendix does not claim it is.
+3. **Parsing trap**: the archive's LLM+RL episodes report
+   `defender.planner.planner == "llm"` in the body — the body names the *planning* layer.
+   Trusting it folds all 135 LLM+RL episodes into LLM+Rule. Use the filename prefix
+   (`ie_llmrl_…`) as the arm tag for this archive.
+
 
 ---
 
@@ -133,18 +143,19 @@ Two further observations a reviewer should know:
 
 ### 3.1 `figA2_replanning_sweep.pdf`
 
-No plotting data anywhere in this repository or in either available source tree. The
-figure is not referenced by an appendix section in `appendix.tex`.
+No plotting data anywhere in this repository or on **either** server — no file or directory
+whose name contains `replan` or `sweep` exists on the local machine, on the user's server
+(`hr-a6000-129-57`) or on the co-author's (`hr-a6000-129-51`). The figure is not referenced
+by an appendix section in `appendix.tex`.
 
 ### 3.2 Appendix I.3 — real-stream counterfactual (seeds 601–610) and `tab_p3a_seedgrid`
 
-* **Partial**: seeds 601, 602, 603, 605, 607 appear — but in the co-author's **E3
-  deception-detection** predictions (`p0-strengthening-20261001/results/E3*/`), which are
-  `p_real` classification records, **not** the stream-versus-hold utility contrast this
-  section reports (+0.420, 95% CI [0.200, 0.637]).
-* **Absent**: the actual counterfactual episodes for seeds 601–610.
-* **Warning for a reader**: the seed range 601–610 is reused for a *different* experiment
-  in the co-author's batches. Matching on seed alone would mis-attribute them.
+* **Absent from every host.** Confirmed by content search on both servers.
+* **Warning for a reader**: seeds 601, 602, 603, 605, 607 *do* appear — in the co-author's
+  **E3 deception-detection** predictions (`p0-strengthening-20261001/results/E3*/`), which
+  are `p_real` classification records, **not** the stream-versus-hold utility contrast this
+  section reports (+0.420, 95% CI [0.200, 0.637]). The seed range is reused by an unrelated
+  experiment, so matching on seed alone would mis-attribute them.
 
 ### 3.3 Appendix I.4's degradation accounting and the figA4 source data
 

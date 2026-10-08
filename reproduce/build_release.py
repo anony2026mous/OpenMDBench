@@ -407,7 +407,7 @@ def main() -> int:
         rep.mkdir(parents=True, exist_ok=True)
         # Root-level metadata: dotfiles must be copied explicitly by name.
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
-                     "PAPER_COVERAGE.md", ".gitignore"):
+                     "PAPER_COVERAGE.md", "SERVER_SEARCH_RECORD.md", ".gitignore"):
             s = assets / name
             if s.is_file():
                 shutil.copy2(s, dest / name)
