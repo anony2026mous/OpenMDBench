@@ -322,6 +322,13 @@ def main() -> int:
               dest / "data" / "collaborator_runs",
               label="data/collaborator_runs")
 
+    # The co-author's code snapshot that PRODUCED those runs, so the data stays
+    # attributable. Frozen historical copy; the shipped analysis is the newer one.
+    print("      collaborator code snapshot")
+    copy_tree(SRC_ROOT / "release_assets" / "collaborator_code",
+              dest / "code" / "collaborator_snapshot",
+              label="code/collaborator_snapshot")
+
     # the withheld grid dataset: OUR analysis outputs, scripts and result documents.
     # These live in EVAL itself (not in _w1_runs), which is why an earlier version of
     # this script shipped the per-episode reports but silently omitted every table,
