@@ -1,4 +1,4 @@
-﻿"""Build the submission release folder.
+"""Build the submission release folder.
 
 Design rules, learned from what is actually on disk:
 
@@ -66,6 +66,15 @@ JUNK_DIR_NAMES = {
 # by sanitize_data_paths().
 JUNK_FILE_SUFFIXES = (".console.txt", ".log.lock")
 
+# Suffixes that are never release material wherever they appear. These are editor and
+# build leftovers with no directory to filter on: the engine scenario tree shipped four
+# `scenario.yaml.bak` files, and a stray `__pycache__` reappears whenever a shipped
+# script is compiled during verification.
+JUNK_FILE_EXTENSIONS = {
+    ".bak", ".orig", ".rej", ".swp", ".swo", ".tmp", ".pyc", ".pyo", ".pyd",
+    ".pem", ".key", ".ppk", ".p12", ".pfx",
+}
+
 # Directories whose .jsonl/.log contents are logs rather than data.
 LOG_DIR_NAMES = {"logs", "log", "_w1_runs"}
 
@@ -117,8 +126,10 @@ def is_junk(p: Path) -> str | None:
             return f"run log ({p.suffix} under a log directory)"
         if re.search(r"\.console\.(jsonl|log)$", p.name, re.I):
             return f"run log (.console{p.suffix})"
-    if p.suffix in (".pyc", ".pyo", ".pyd", ".so", ".log.lock"):
-        return f"build/bytecode artifact ({p.suffix})"
+    if p.suffix.lower() in JUNK_FILE_EXTENSIONS:
+        return f"editor/build leftover ({p.suffix})"
+    if p.suffix in (".so", ".log.lock"):
+        return f"build artifact ({p.suffix})"
     return None
 
 
@@ -462,7 +473,7 @@ def main() -> int:
                      "PAPER_COVERAGE.md", "PAPER_PROVENANCE.md", "GAP_OWNERS.md",
                      "E6_G1_SOURCES.md",
                      "SERVER_SEARCH_RECORD.md",
-                     "CODE_COMPARISON.md", ".gitignore"):
+                     "CODE_COMPARISON.md", ".gitignore", ".gitattributes"):
             s = assets / name
             if s.is_file():
                 shutil.copy2(s, dest / name)
@@ -492,21 +503,15 @@ def main() -> int:
                 n += 1
                 size += s.stat().st_size
         # Recorded verification output ships beside the scripts that produced it.
-        for name in ("PAPER_TABLE_VERIFICATION.txt", "P1_GRID_VERIFICATION.txt",
-                     "P2_DOSE_VERIFICATION.txt", "SIXARM_VERIFICATION.txt",
-                     "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
-                     "P3A_VERIFICATION.txt",
-                     "COMPLEX_TIER_VERIFICATION.txt", "MODEL_INVARIANCE_VERIFICATION.txt",
-                     "E5PILOT_VERIFICATION.txt", "E2_2X2_VERIFICATION.txt", "E6B_MINIMAX_VERIFICATION.txt", "MODALITY_VERIFICATION.txt", "INTERVENTION_VERIFICATION.txt",
-                     "LEGACY_ARM_VERIFICATION.txt",
-                     "LEGACY_ARM_VERIFICATION.txt",
-                     "CODE_COMPARISON.txt",
-                     "SECRET_SCAN.txt"):
-            s = assets / name
-            if s.is_file():
-                shutil.copy2(s, rep / name)
-                n += 1
-                size += s.stat().st_size
+        #
+        # This sweeps the whole staging directory rather than a hand-maintained list: an
+        # explicit list drifted twice (verify_e6_four_models and verify_g1_deltas shipped
+        # without their records, and a duplicate entry appeared), and a verifier that runs
+        # but whose output is never copied silently loses its evidence.
+        for s in sorted(assets.glob("*VERIFICATION.txt")) + sorted(assets.glob("SECRET_SCAN.txt")):
+            shutil.copy2(s, rep / s.name)
+            n += 1
+            size += s.stat().st_size
         copied_log.append(("asset reproduce/", n, size))
 
     # ---- 9. strip authoring-machine paths out of shipped scripts and prose

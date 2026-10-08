@@ -1,0 +1,44 @@
+# Normalise line endings so a clone on any platform gets the same bytes.
+* text=auto eol=lf
+
+# Binary evidence: never touch these, never diff them as text.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.npz binary
+*.pt binary
+*.npy binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.tgz binary
+*.xlsx binary
+*.docx binary
+*.pptx binary
+
+# JSONL traces are large and line-oriented; keep them as-is.
+*.jsonl -text
+
+# LaTeX sources and the built PDFs
+*.tex text eol=lf
+*.bib text eol=lf
+*.cls text eol=lf
+*.bst text eol=lf
+
+# Windows-authored scripts keep CRLF so they run from a Windows checkout.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Shell and Python stay LF everywhere.
+*.sh text eol=lf
+*.py text eol=lf
+
+# Keep diffs readable for the data tables and reports.
+*.csv text
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
