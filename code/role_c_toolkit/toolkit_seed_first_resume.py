@@ -101,7 +101,7 @@ def main():
     schedule.mkdir(exist_ok=False)
     env = dict(os.environ, ROLEC_LLM_BASE_URL=config['base_url'],
                ROLEC_LLM_MODEL=config['model'], PYTHONIOENCODING='utf-8')
-    hosts = '172.18.116.170,172.18.113.30,localhost,127.0.0.1'
+    hosts = '172.18.116.170,<server-ip>,localhost,127.0.0.1'
     env['NO_PROXY'] = env['no_proxy'] = hosts
     status = {'pid': os.getpid(), 'started_utc': now(), 'phase': 'running',
               'current': None, 'child_pid': None, 'stop_reason': None,

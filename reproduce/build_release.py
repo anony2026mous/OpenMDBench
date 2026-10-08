@@ -85,6 +85,16 @@ LOG_DIR_NAMES = {"logs", "log", "_w1_runs"}
 # directory (`e5_easy/`) is therefore excluded wholesale rather than filtered.
 NEVER_PUBLISH_NAMES = {"key_do_not_share.json"}
 
+# Session and packaging documents. These are internal write-ups about how the work was
+# organised, not paper deliverables, and they describe the authoring environment:
+# `打包前安全检查报告.md` is a security audit of the local machine (it names a real
+# credential file and an internal endpoint), and `E5_handoff_notes.md` records a session
+# UUID and a to-do state. Neither belongs in an anonymous review copy.
+NEVER_PUBLISH_PATHS = {
+    "data/e5/打包前安全检查报告.md",
+    "data/e5/E5_handoff_notes.md",
+}
+
 # Scripts that read inputs from OUTSIDE this repository (a co-author's figure export,
 # a planning note). Their absolute paths are useless to a reader, so they are rewritten
 # to read from an environment variable and fall back to a documented relative path.
@@ -95,6 +105,19 @@ SANITIZE_TARGETS = {
 }
 _HOME_LEAK_RE = re.compile(r'r?"[A-Za-z]:\\Users\\[^"\r\n]{1,200}"')
 
+# Infrastructure coordinates. An anonymous review copy should not hand out SSH access
+# details for the machines the experiments ran on. The LLM endpoint the clients actually
+# talked to (172.18.116.170:8000) is deliberately NOT redacted: it is recorded per
+# request in the released `requests.jsonl` provenance, and rewriting thousands of
+# evidence records to hide a private-range address would damage the data for no gain.
+INFRA_REDACTIONS = (
+    (re.compile(r"172\.18\.129\.57:32422"), "<server-a>:<port>"),
+    (re.compile(r"172\.18\.129\.51:22376"), "<server-b>:<port>"),
+    (re.compile(r"hr-a6000-129-5[17]"), "<server-host>"),
+    (re.compile(r"172\.18\.129\.5[17]"), "<server-ip>"),
+    (re.compile(r"172\.18\.113\.30"), "<server-ip>"),
+)
+
 # ---------------------------------------------------------------- helpers
 copied_log: list[tuple[str, int, int]] = []      # (relpath, files, bytes)
 excluded_log: list[tuple[str, str]] = []         # (relpath, reason)
@@ -104,6 +127,11 @@ def is_secret(p: Path) -> str | None:
     low = p.name.lower()
     if low in NEVER_PUBLISH_NAMES:
         return f"withheld by policy ({p.name}): blind-annotation answer key"
+    # Path-based withhold. Match on the basename so it fires regardless of how deep the
+    # source tree nests the file.
+    withheld_names = {w.rsplit("/", 1)[-1] for w in NEVER_PUBLISH_PATHS}
+    if p.name in withheld_names:
+        return f"withheld by policy ({p.name}): internal session/packaging document"
     for pat in SECRET_NAME_PATTERNS:
         if pat in low:
             return f"credential-like name ({pat})"
@@ -247,6 +275,34 @@ def sanitize_external_paths(dest: Path) -> None:
                                   "import os\nfrom pathlib import Path", 1)
             p.write_text(new, encoding="utf-8")
             excluded_log.append((rel, f"sanitized {n} external absolute path(s)"))
+
+
+def sanitize_infrastructure(dest: Path) -> None:
+    """Replace server coordinates in shipped text files with neutral placeholders.
+
+    A handful of planning documents record the SSH endpoint and hostname of the machines
+    the experiments ran on (`<server-a>:<port>`, `<server-host>`). Those are access
+    details, not evidence: redacting them changes nothing a reader would recompute from,
+    while leaving them in an anonymous review copy would publish the lab's infrastructure.
+    """
+    exts = {".md", ".txt", ".json", ".csv", ".py", ".yaml", ".yml", ".sh", ".ps1"}
+    touched = 0
+    for p in dest.rglob("*"):
+        if not p.is_file() or ".git" in p.parts or p.suffix.lower() not in exts:
+            continue
+        try:
+            src = p.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        new, n = src, 0
+        for rx, repl in INFRA_REDACTIONS:
+            new, k = rx.subn(repl, new)
+            n += k
+        if n:
+            p.write_text(new, encoding="utf-8")
+            touched += 1
+            excluded_log.append((str(p.relative_to(dest)),
+                                 f"redacted {n} infrastructure coordinate(s)"))
 
 
 def main() -> int:
@@ -513,6 +569,8 @@ def main() -> int:
     print("[9/9] sanitizing external absolute paths")
     sanitize_external_paths(dest)
     sanitize_data_paths(dest)
+    print("      redacting infrastructure coordinates")
+    sanitize_infrastructure(dest)
 
     # ---- provenance: hashes of the things the paper pins
     print("\n  recording provenance hashes ...")

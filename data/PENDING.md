@@ -12,7 +12,7 @@ trees.
 The co-author's run data has arrived and is included as
 [`collaborator_runs/`](collaborator_runs/README.md) (22 batch directories + a curated
 `e2-delivery-20261003/`, 3,673 files, 45.6 MB). It was verified against their live
-container (`hr-a6000-129-51`) by comparing a `(relpath, size)` manifest of all 77,411
+container (`<server-host>`) by comparing a `(relpath, size)` manifest of all 77,411
 server files: **0 size differences**, and the snapshot is a strict subset — nothing in it
 contradicts the server.
 

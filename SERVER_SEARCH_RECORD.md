@@ -11,9 +11,9 @@ was searched, because a negative is only useful with its scope attached.
 | Local machine | `C:\Code\source-code` | working tree |
 | Local machine | `~/openmd_private_archive/declared_briefing_snapshot_20260927_1419/` | 864 archived pre-fix episode reports |
 | Local machine | `~/Downloads/openmd-paper/` | manuscript sources |
-| **Server A** (user's, `hr-a6000-129-57`) | `/mnt/QTJC/chenyi-codex/` | 133 GB source-code + 23 GB experiments; 61 sync snapshots |
+| **Server A** (user's, `<server-host>`) | `/mnt/QTJC/chenyi-codex/` | 133 GB source-code + 23 GB experiments; 61 sync snapshots |
 | **Server A** | every snapshot's `openmd/code/eval/_w1_runs` | 56 snapshots carry the directory |
-| **Server B** (co-author's, `hr-a6000-129-51`) | `/root/openmd/{runs,exports,cache,releases,services,tools}` | 32 runs, 11 GB; 5 export packages |
+| **Server B** (co-author's, `<server-host>`) | `/root/openmd/{runs,exports,cache,releases,services,tools}` | 32 runs, 11 GB; 5 export packages |
 | Server B | `runs/*.tar.gz` (6 delivery archives) | 338 MB of packaged deliveries |
 | Server B | all `exports/*.zip` | e2, e10, e11, e14, E1/Exp2 runner materials, P0 complete |
 

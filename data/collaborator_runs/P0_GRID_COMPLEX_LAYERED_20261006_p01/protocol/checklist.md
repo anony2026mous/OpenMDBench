@@ -26,7 +26,7 @@
 **关键要求**：
 - **必须跑同 seed 纯基线**（Rule + Pure MAPPO），不能只跑 layered
 - medium 检查点 SHA256：`223dbf740163b652f221a6ef0885d69b8c975c53378a7e63c05388e1df8cd0a8`
-- 1 号服务器：`172.18.129.51:22376`，`/root/openmd/releases/gitlab-ccabad00154e/repo`
+- 1 号服务器：`<server-b>:<port>`，`/root/openmd/releases/gitlab-ccabad00154e/repo`
 - 5 个环境 seed，20 局（10 局调 LLM）
 - 预算：4–8 小时
 
@@ -68,7 +68,7 @@
 **要求**：
 - 每场景 4 栈 × 3 seed = 12 局（6 局调 LLM）
 - 3 场景共 36 局（18 局调 LLM）
-- 2 号服务器：`172.18.129.57:32422`，`/root/huairou-project`
+- 2 号服务器：`<server-a>:<port>`，`/root/huairou-project`
 - 纯基线需同新 seed 重跑，不用原 Table 3 的冻结均值替代配对基线
 - 预算：6–12 小时
 

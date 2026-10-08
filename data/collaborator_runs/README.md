@@ -1,7 +1,7 @@
 # Collaborator run data
 
 Experiment result data produced by a co-author on their container
-(`hr-a6000-129-51`). It is the second half of the project's evidence: the grid and
+(`<server-host>`). It is the second half of the project's evidence: the grid and
 LLM-channel experiments that back the appendix tables, as distinct from the
 high-fidelity suite reproduced under `../grid_withheld_5seeds/`.
 

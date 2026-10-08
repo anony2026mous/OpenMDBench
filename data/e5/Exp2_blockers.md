@@ -171,7 +171,7 @@ openmd/code/eval/_w1_runs/rl/theta_arm5_llm_reward_v9.npz
 
 | 看起来像障碍，其实没问题 | 实测 |
 |---|---|
-| 服务器地址/端口 | `172.18.129.57:32422` ✅ 本次会话的 `huairou` 别名即此机（`hr-a6000-129-57`） |
+| 服务器地址/端口 | `<server-a>:<port>` ✅ 本次会话的 `huairou` 别名即此机（`<server-host>`） |
 | `/root/huairou-project` | ✅ 存在（**符号链接** → `snapshots/20261003T180603Z-32b1d3de`，即本项目树） |
 | 三个目标场景包是否可运行 | ✅ 三个 `scenario.yaml` 都在 |
 | LLM 服务是否在线 | ✅ `127.0.0.1:8001` 与 `127.0.0.1:8002` 均可连接 |
