@@ -26,7 +26,7 @@ If you use this release, please cite the paper rather than the repository alone.
   title        = {{OpenMDBench} release: code, data and reproduction material for the
                   high-fidelity layering study},
   year         = {2026},
-  howpublished = {\url{https://github.com/anony2026mous/anonymous}},
+  howpublished = {\url{https://github.com/anony2026mous/OpenMDBench}},
   note         = {Anonymous review copy}
 }
 ```

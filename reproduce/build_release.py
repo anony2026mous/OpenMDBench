@@ -503,16 +503,10 @@ def main() -> int:
                 shutil.copy2(s, rep / name)
                 n += 1
                 size += s.stat().st_size
-        # Recorded verification output ships beside the scripts that produced it.
-        #
-        # This sweeps the whole staging directory rather than a hand-maintained list: an
-        # explicit list drifted twice (verify_e6_four_models and verify_g1_deltas shipped
-        # without their records, and a duplicate entry appeared), and a verifier that runs
-        # but whose output is never copied silently loses its evidence.
-        for s in sorted(assets.glob("*VERIFICATION.txt")) + sorted(assets.glob("SECRET_SCAN.txt")):
-            shutil.copy2(s, rep / s.name)
-            n += 1
-            size += s.stat().st_size
+        # NOTE: verification output (*_VERIFICATION.txt, SECRET_SCAN.txt) is deliberately
+        # NOT published. Those are internal audit records, not release material: the
+        # scripts in this directory regenerate them on demand, and the release should
+        # carry evidence plus tooling rather than transcribed self-checks.
         copied_log.append(("asset reproduce/", n, size))
 
     # ---- 9. strip authoring-machine paths out of shipped scripts and prose
@@ -572,13 +566,9 @@ def main() -> int:
         for reason, n in c.most_common(20):
             print(f"    {reason:<52}{n:>7}")
 
-    (dest / "BUILD_REPORT.json").write_text(json.dumps({
-        "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "copied": [{"label": l, "files": f, "bytes": b} for l, f, b in copied_log],
-        "excluded": [{"path": p, "reason": r} for p, r in excluded_log[:5000]],
-        "excluded_count": len(excluded_log),
-    }, indent=2, ensure_ascii=False), encoding="utf-8")
-
+    # The copy summary is printed for the operator rather than written into the release.
+    # A BUILD_REPORT.json in the published tree would be an internal audit record, and
+    # this repository carries evidence and tooling, not transcribed self-checks.
     print(f"\n  release at: {dest}")
     return 0
 

@@ -38,9 +38,9 @@ Expected output ends with:
   exact 70   rounding 0   DIFFERS 0   of 70 cells
 ```
 
-The recorded run is `reproduce/PAPER_TABLE_VERIFICATION.txt`. The script locates the
-episodes and the baselines through `reproduce/_w1_common.py`, which resolves paths
-relative to the repository, so it works from any checkout location.
+The script prints its own verdict, shown above. It locates the episodes and the baselines
+through `reproduce/_w1_common.py`, which resolves paths relative to the repository, so it
+works from any checkout location.
 
 ### The four traps it encodes
 
@@ -185,7 +185,7 @@ auditable ledger.
 
 The build copies the source trees, applies a deny-list (credentials, caches, `artifacts/`,
 checkpoints, stray run logs), rewrites co-author-absolute paths, emits `README.md`,
-`REPRODUCE.md` and `data/PENDING.md` from `release_assets/`, writes `BUILD_REPORT.json`
+`REPRODUCE.md` and `data/PENDING.md` from `release_assets/`, prints a copy summary
 listing every exclusion, and records pinned hashes in `PROVENANCE.json`.
 
 ```bash

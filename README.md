@@ -2,60 +2,51 @@
 
 Code, data and reproduction material for the paper's high-fidelity experimental suite.
 
-> **Status: partial.** This bundle contains everything held locally. Some material is
-> still with a collaborator and is listed in [`data/PENDING.md`](data/PENDING.md).
-> Nothing here is a placeholder for missing numbers: where the paper reports the
-> high-fidelity suite, **all 70 table cells reproduce exactly** — see
-> [`reproduce/PAPER_TABLE_VERIFICATION.txt`](reproduce/PAPER_TABLE_VERIFICATION.txt).
+> **Status: partial.** This bundle contains everything held locally. Material still with
+> a collaborator is listed in [`data/PENDING.md`](data/PENDING.md); that file also records
+> the few blocks whose published numbers could not be recomputed from the data, so the
+> boundary of what is reproducible is stated rather than implied.
 
 ---
 
 ## What this bundle establishes
 
-The paper's central table (`tab_hifi_main`) is the 14-scenario high-fidelity suite under
-a **unified no-intelligence regime**, five seeds per LLM stack. That table is fully
-recomputable from the per-episode reports committed here:
+The paper's central table (`tab_hifi_main`) is the 14-scenario high-fidelity suite under a
+**unified no-intelligence regime**, five seeds per LLM stack. It is fully recomputable
+from the per-episode reports committed here.
 
-| Check | Result |
-|---|---|
-| Main-table cells compared | 70 |
-| Reproduced exactly | **70** |
-| Materially different | 0 |
-
-One command, run from inside this bundle:
+`reproduce/` holds one script per paper table. Each recomputes the table from the raw
+episode data and diffs it against the printed values, printing its own verdict:
 
 ```bash
-python reproduce/verify_paper_table.py
+python reproduce/verify_paper_table.py     # tab_hifi_main
 ```
 
-Seventeen further checks run the same way, each shipping its recorded output beside it:
+The scripts are independent, so any single table can be checked on its own:
 
-| Check | Command | Result |
-|---|---|---|
-| `tab_p1_seedgrid` (six-arm, seeds 501–510) | `verify_p1_grid.py` | **0/60 cells differ** |
-| `tab:sixarm` + deployment identity | `verify_sixarm.py` | **0/6 means; identity exact** |
-| Appendix I.2 dose-gain (seeds 512–521) | `verify_p2_dose.py` | **0/8 mismatch** |
-| `tab:complexlayered` (seeds 63101–63105) | `verify_complex_tier.py` | **0/3 mismatch** |
-| Appendix G Experiment 2 (2×2 headroom) | `verify_e2_2x2.py` | **effect +0.619…+0.734 for paper +0.62…+0.73** |
-| Appendix I.3 real-stream (seeds 601–610) | `verify_p3a.py` | **0/10 cells differ** |
-| `tab:interface` (NL vs JSON) | `verify_modality.py` | **0/3 tiers differ** |
-| `tab:intervention` (four systems) | `verify_intervention.py` | **0/7 mismatch** |
-| `tab:frequency` + `figA2` | `verify_replanning.py` | **0/3 mismatch** |
-| `tab:e5pilot` (12 cases) | `verify_e5pilot.py` | **9/12 exact** (3 grid cases lack records) |
-| E6 four-model scan | `verify_e6_four_models.py` | see its recorded output |
-| E6b third-party MiniMax | `verify_e6b_minimax.py` | see its recorded output |
-| Appendix I.4 fault costs | `verify_i4_fault.py`, `verify_g1_deltas.py` | documented, see below |
-| Appendix G legacy arm | `verify_legacy_arm.py` | documented, see below |
-| `tab:modelinvariance` | `verify_model_invariance.py` | documented, see below |
+| Paper artefact | Script |
+|---|---|
+| `tab_hifi_main` (main results table) | `verify_paper_table.py` |
+| `tab_p1_seedgrid` (six-arm seed grid) | `verify_p1_grid.py` |
+| `tab:sixarm` + deployment identity | `verify_sixarm.py` |
+| Appendix I.2, goal-dose | `verify_p2_dose.py` |
+| Appendix I.3, real-stream counterfactual | `verify_p3a.py` |
+| `tab:complexlayered` | `verify_complex_tier.py` |
+| Appendix G, Experiment 2 (2×2 headroom) | `verify_e2_2x2.py` |
+| `tab:interface` (NL vs JSON) | `verify_modality.py` |
+| `tab:intervention` (four systems) | `verify_intervention.py` |
+| `tab:frequency` and `figA2` | `verify_replanning.py` |
+| `tab:e5pilot` | `verify_e5pilot.py` |
+| `tab:modelinvariance`, E6 scan | `verify_model_invariance.py`, `verify_e6_four_models.py` |
+| E6b third-party MiniMax | `verify_e6b_minimax.py` |
+| Appendix I.4, fault costs | `verify_i4_fault.py`, `verify_g1_deltas.py` |
+| Appendix G, legacy arm | `verify_legacy_arm.py` |
 
-Three blocks do **not** reproduce and say so in their own output rather than being
-smoothed over: appendix I.4's fault costs, appendix G's legacy-arm subset, and
-`tab:e5pilot`'s three grid cases (no `attribution.json` exists for those).
+Each script exits non-zero if a cell disagrees, so a batch run doubles as a regression
+check. Results are not transcribed here — run the scripts.
 
 **For the artefact-by-artefact provenance — where each table's data lives and how the
-paper itself identifies it — read [`PAPER_PROVENANCE.md`](PAPER_PROVENANCE.md).** Each of
-the 17 verification scripts under `reproduce/` ships with its recorded output, so any
-claim here can be re-checked rather than believed.
+paper itself identifies it — read [`PAPER_PROVENANCE.md`](PAPER_PROVENANCE.md).**
 
 ---
 
@@ -66,7 +57,6 @@ OpenMDBench-Release/
 ├── README.md                     this file
 ├── REPRODUCE.md                  how to rebuild every table and figure
 ├── PROVENANCE.json               hashes of the pinned weights and datasets
-├── BUILD_REPORT.json             what was copied, what was excluded and why
 │
 ├── paper/                        the manuscript itself
 │   ├── main.tex  appendix.tex  refs.bib  main.pdf  appendix.pdf
@@ -97,12 +87,10 @@ OpenMDBench-Release/
 │   └── PENDING.md                coverage: what is received, awaited, or withheld
 │
 └── reproduce/
-    ├── verify_paper_table.py     recomputes the main table and diffs it
-    ├── PAPER_TABLE_VERIFICATION.txt   recorded result of that run
+    ├── verify_*.py               one script per paper table, each with its own verdict
     ├── build_dataset.py          rebuilds DATASET_5SEEDS.*
     ├── _w1_common.py             single definition of口径, metric and baseline policy
     ├── scan_for_secrets.py       pre-publication credential scan
-    ├── SECRET_SCAN.txt           its recorded output
     └── build_release.py          rebuilds this whole bundle from source
 ```
 
@@ -115,7 +103,7 @@ give identical scenario means (rule-rule 0.723, RL 0.632).
 ## Quick start
 
 ```bash
-git clone https://github.com/anony2026mous/anonymous.git
+git clone https://github.com/anony2026mous/OpenMDBench.git
 cd anonymous
 
 # 1. verify the paper's main table against the released episodes
@@ -219,8 +207,8 @@ The co-author snapshot was verified against their live container by diffing a
 in this repository, from either of its two source locations. The appendix reports
 human–machine agreement (Cohen's κ) on blind IDs E5-01…E5-12 with the key withheld;
 publishing it would let anyone recover the labels and would invalidate the statistic it
-supports. The exclusion is enforced by an explicit guard in `reproduce/build_release.py`
-and recorded in `BUILD_REPORT.json`. See `data/PENDING.md` §1b.
+supports. The exclusion is enforced by an explicit guard in `reproduce/build_release.py`.
+See `data/PENDING.md`.
 
 ---
 
