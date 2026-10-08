@@ -352,7 +352,8 @@ def sanitize_infrastructure(dest: Path) -> None:
     still reads as a recorded absolute path, while dropping the identity.
     """
     exts = {".md", ".txt", ".json", ".csv", ".py", ".yaml", ".yml", ".sh", ".ps1",
-            ".tex", ".jsonl", ".cfg", ".ini", ".toml", ".bib"}
+            ".tex", ".jsonl", ".log", ".cfg", ".ini", ".toml", ".bib", ".xml",
+            ".html", ".ipynb"}
     files_touched = 0
     total_subs = 0
     for p in dest.rglob("*"):
@@ -654,7 +655,7 @@ def main() -> int:
             shutil.copy2(s, dest / "data" / "PENDING.md")
             copied_log.append(("asset data/PENDING.md", 1, s.stat().st_size))
         n = size = 0
-        for name in ("verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
+        for name in ("verify_paper_claims.py", "verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
                      "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
                      "verify_p3a.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
