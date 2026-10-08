@@ -11,9 +11,12 @@ import json
 import statistics as st
 from pathlib import Path
 
-BASE = Path(r"C:\Code\source-code\release_assets\collaborator_runs"
-            r"\p0-strengthening-20261001\inputs"
-            r"\P3a__llm_goal_causal__s601-610__confirm__v1")
+# Resolve relative to the repository so this runs from any checkout. The P3a batch arrives
+# inside the co-author's p0-strengthening delivery.
+_HERE = Path(__file__).resolve().parent
+_ROOT = _HERE.parent if (_HERE.parent / "data").is_dir() else _HERE
+BASE = (_ROOT / "data" / "collaborator_runs" / "p0-strengthening-20261001"
+        / "inputs" / "P3a__llm_goal_causal__s601-610__confirm__v1")
 
 PAPER = {  # seed: (LLM, hold, rule, llm_calls)
     601: (1.000, 0.200, 1.000, 15), 602: (0.233, 0.200, 1.000, 11),
