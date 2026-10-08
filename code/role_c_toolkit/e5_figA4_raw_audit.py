@@ -20,11 +20,10 @@ from __future__ import annotations
 
 import csv
 import json
-import os
 from pathlib import Path
 
 LOCAL_SUMMARY = Path("role_c_toolkit/artifacts/paper-E5-natural-failures/kappa_summary.json")
-FIGURE_CSV = Path(os.environ.get("OPENMD_FIGA4_DATA_DIR", "")
+FIGURE_CSV = Path(r"C:\Users\沉倚\Downloads\openmd_figs_xiaozhao\data"
                   r"\figA4_natural_failure_pilot_12.csv")
 
 # Raw values as read from the server-side logs during this audit:
