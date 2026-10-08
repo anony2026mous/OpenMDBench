@@ -16,9 +16,9 @@ import json
 import os
 from pathlib import Path
 
-NF = Path(os.environ.get("OPENMD_NF_DIR",
-                         r"C:\Users\沉倚\AppData\Local\Temp\openmd-collab\e5nf\attribution"))
-REL = Path(r"C:\Code\source-code\release\OpenMDBench-Release")
+# Repository root: this script ships in `reproduce/`, one level below it.
+_HERE = Path(__file__).resolve().parent
+REL = _HERE.parent if (_HERE.parent / "data").is_dir() else _HERE
 
 # appendix tab:e5pilot, verbatim
 PAPER = {
@@ -78,10 +78,11 @@ ROOTS = [
     # batches they come from are ~9 GB of replay evidence, which is why only these
     # records travel: they are the part that carries the table's numbers.
     REL / "data" / "e5-attribution",
-    # Fallbacks for an authoring machine that still has the full trees.
-    NF,
-    Path(os.environ.get("OPENMD_R3B_DIR",
-                        r"C:\Users\沉倚\AppData\Local\Temp\openmd-collab\e5nf\r3b\attribution")),
+    # Optional overrides for an authoring machine that still holds the full trees. Set
+    # OPENMD_E5NF_DIR / OPENMD_R3B_DIR to the `attribution` directories of the
+    # natural-failures and attribution-r3b batches.
+    *[Path(v) for v in filter(None, (
+        os.environ.get("OPENMD_E5NF_DIR"), os.environ.get("OPENMD_R3B_DIR")))],
     REL / "data" / "campaigns" / "e5-hifi-attribution-r3b" / "attribution",
     REL / "data" / "campaigns" / "e5-grid-natural-failures",
 ]
