@@ -1,4 +1,4 @@
-﻿"""Build the submission release folder.
+"""Build the submission release folder.
 
 Design rules, learned from what is actually on disk:
 
@@ -435,7 +435,8 @@ def main() -> int:
         rep.mkdir(parents=True, exist_ok=True)
         # Root-level metadata: dotfiles must be copied explicitly by name.
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
-                     "PAPER_COVERAGE.md", "SERVER_SEARCH_RECORD.md",
+                     "PAPER_COVERAGE.md", "PAPER_PROVENANCE.md",
+                     "SERVER_SEARCH_RECORD.md",
                      "CODE_COMPARISON.md", ".gitignore"):
             s = assets / name
             if s.is_file():
@@ -550,5 +551,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
