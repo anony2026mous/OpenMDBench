@@ -12,12 +12,13 @@ Verified on 2026-10-08 against `main.tex` (408 lines) and `appendix.tex` (489 li
 
 | Status | Count | Meaning |
 |---|---|---|
-| **Reproducible from this repository** | 11 | the data is here and was matched against the paper's numbers |
-| **Partially covered** | 2 | some of the data is here; the rest is listed below |
+| **Reproducible from this repository** | 12 | the data is here and was matched against the paper's numbers |
+| **Diverges** | 3 | data is here, the printed numbers do not follow from it |
+| **Partial** | 2 | some data is here; the rest is listed below |
 | **Absent** | 1 | no source data in any available tree |
 
 The paper's **primary claim** — the high-fidelity suite table — is in the first category
-and reproduces exactly. Six independent checks now run from this bundle:
+and reproduces exactly. Nine checks now run from this bundle:
 
 | Script | Target | Result |
 |---|---|---|
@@ -25,8 +26,11 @@ and reproduces exactly. Six independent checks now run from this bundle:
 | `reproduce/verify_p1_grid.py` | `tab_p1_seedgrid` | **0/60 cells differ** |
 | `reproduce/verify_p2_dose.py` | appendix I.2 dose-gain | **0/8 mismatch** |
 | `reproduce/verify_sixarm.py` | `tab:sixarm` + P/E/I identity | **0/6 means; identity exact** |
-| `reproduce/verify_replanning.py` | appendix H frequency sweep / `figA2` | **0/3 mismatch** |
+| `reproduce/verify_complex_tier.py` | `tab:complexlayered` | **0/3 mismatch** |
+| `reproduce/verify_replanning.py` | appendix H sweep / `figA2` | **0/3 mismatch** |
+| `reproduce/verify_legacy_arm.py` | appendix G legacy arm | runs; values **differ** (§2.2) |
 | `reproduce/verify_i4_fault.py` | appendix I.4 fault costs | **not reproduced** (§2.1) |
+| `reproduce/verify_model_invariance.py` | `tab:modelinvariance` | 2 of 4 models; **differ** (§2.3) |
 
 ### Where each item sits in the paper
 
@@ -36,13 +40,17 @@ and reproduces exactly. Six independent checks now run from this bundle:
 | `tab:sixarm` | main text §6, "Three paired batches" (main.tex 294–325) | reproducible |
 | `tab_p1_seedgrid` | appendix I.1 (appendix.tex 318–321) | reproducible |
 | `tab_p2_seedgrid` + `tab:dosegain` + `figA3` | appendix I.2 (appendix.tex 323–356) | reproducible |
-| `tab:frequency` + `figA2_replanning_sweep` | **appendix H**, "Replanning-frequency and interface-cost sweep" (appendix.tex 260–288; figure 281–286) | reproducible, baseline row partial |
+| `tab:complexlayered` | appendix (appendix.tex 140–150), seeds 63101–63105 | reproducible |
+| `tab:frequency` + `figA2_replanning_sweep` | **appendix H** (appendix.tex 260–288) | reproducible; baseline row present |
 | `tab:e5pilot` + `figA4` | appendix I.5 (appendix.tex 366–402) | machine labels present; Δ table partial |
-| `tab:nointel` | **appendix G**, "Intelligence-regime ablation" (appendix.tex 217–234, inline) | **partial** |
-| Anchored critical-fault validation | appendix I.4 (appendix.tex 363–364) | batch found, **numbers do not reproduce** |
-| `tab_p3aseed` + real-stream counterfactual | appendix I.3 (appendix.tex 358–361) | **absent** |
-| `figA1_model_invariance` | appendix (figure only, not cited by a section) | reproducible |
+| `tab_scenario_params` | appendix A (`\input`) | shipped; content not re-derived |
 | E1 headroom calibration | appendix K (appendix.tex 404–475) | reproducible |
+| `tab:modelinvariance` + `figA1` | appendix (appendix.tex 178–205) | **2 of 4 models; contrast differs** |
+| `tab:nointel` | **appendix G** (appendix.tex 217–234, inline) | **partial**; legacy arm differs |
+| Anchored critical-fault validation | appendix I.4 (appendix.tex 363–364) | batch present, **numbers do not reproduce** |
+| `tab_p3aseed` + real-stream counterfactual | appendix I.3 (appendix.tex 358–361) | **absent** |
+| `tab:interface`, `tab:intervention`, `tab:comparison` | appendix (appendix.tex 246, 296) | **no source data located** |
+
 
 ---
 

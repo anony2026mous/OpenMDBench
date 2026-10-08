@@ -1,4 +1,4 @@
-"""Build the submission release folder.
+﻿"""Build the submission release folder.
 
 Design rules, learned from what is actually on disk:
 
@@ -445,6 +445,7 @@ def main() -> int:
         n = size = 0
         for name in ("verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
                      "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
+                     "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
                      "verify_legacy_arm.py",
                      "compare_code.py",
                      "scan_for_secrets.py",
@@ -459,6 +460,8 @@ def main() -> int:
         for name in ("PAPER_TABLE_VERIFICATION.txt", "P1_GRID_VERIFICATION.txt",
                      "P2_DOSE_VERIFICATION.txt", "SIXARM_VERIFICATION.txt",
                      "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
+                     "COMPLEX_TIER_VERIFICATION.txt", "MODEL_INVARIANCE_VERIFICATION.txt",
+                     "LEGACY_ARM_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "CODE_COMPARISON.txt",
                      "SECRET_SCAN.txt"):
@@ -539,3 +542,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
