@@ -5,11 +5,12 @@ file and the concrete result, so the document is evidence rather than assertion.
 """
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 OUT = (Path("role_c_toolkit/artifacts/e4-scenario-family")
        / "实验2_不可执行原因.md")
-BRIEF = Path(r"C:\Users\沉倚\Downloads\OpenMDBench_补实验清单_P0硬伤_20261006 (1).md")
+BRIEF = Path(os.environ.get("OPENMD_EXP2_BRIEF_MD", ""))
 
 TEXT = """# 实验 2（gates 外场景 layered 表现）为什么按现有定义无法执行
 

@@ -1,0 +1,127 @@
+{
+  "schema": "g1-run-manifest@1",
+  "generated_utc": "2026-10-07T10:16:33Z",
+  "root": "/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose/replaygate",
+  "base_snapshot": "snapshots/20261002T194101Z-e5219dce/openmd",
+  "design": {
+    "planner": "rule",
+    "executor": "heuristic",
+    "difficulty": "medium",
+    "task_mode": "continuous",
+    "interval": 5,
+    "doses": [
+      0.05,
+      0.1,
+      0.2,
+      0.4,
+      0.6
+    ],
+    "score_field": "episode.json:V (== metrics.blue_score)"
+  },
+  "counts": {
+    "clean": 4
+  },
+  "episode_count": 4,
+  "episodes": [
+    {
+      "case": "clean",
+      "seed": null,
+      "dose": "0.0",
+      "path": "action_hold_injected/episode.json",
+      "V": 1.0,
+      "steps": 71,
+      "done": true,
+      "mission_success": true,
+      "fault_case": "action_hold",
+      "fault_dose": 0.6,
+      "fault_events": 111,
+      "replay_exact": null,
+      "wrapper_sha256": "d7c516bca4682a7ca8f85256f864df454d555d2fa2bd4c81664c27a862b8fcff",
+      "evidence": {
+        "episode.json": {
+          "sha256": "174b351df335b247dbe5eb9486b83373a1bafb718da6b429f73a702541d8d423",
+          "bytes": 43610
+        },
+        "fault_events.json": {
+          "sha256": "32981a879cd10b3eafc6aaa6381e89f9c5f85785c5f39360e23c37dd72b89565",
+          "bytes": 14525
+        }
+      }
+    },
+    {
+      "case": "clean",
+      "seed": null,
+      "dose": "0.0",
+      "path": "action_hold_replay/episode.json",
+      "V": 1.0,
+      "steps": 71,
+      "done": true,
+      "mission_success": true,
+      "fault_case": "action_hold",
+      "fault_dose": 0.6,
+      "fault_events": 111,
+      "replay_exact": true,
+      "wrapper_sha256": "d7c516bca4682a7ca8f85256f864df454d555d2fa2bd4c81664c27a862b8fcff",
+      "evidence": {
+        "episode.json": {
+          "sha256": "8cb1c09a9ec3a4db71aad7e4949a48948a7a869aaf41ac7f26e80bcebf306936",
+          "bytes": 44174
+        },
+        "fault_events.json": {
+          "sha256": "32981a879cd10b3eafc6aaa6381e89f9c5f85785c5f39360e23c37dd72b89565",
+          "bytes": 14525
+        }
+      }
+    },
+    {
+      "case": "clean",
+      "seed": null,
+      "dose": "0.0",
+      "path": "planner_wrong_contact_injected/episode.json",
+      "V": 1.0,
+      "steps": 67,
+      "done": true,
+      "mission_success": true,
+      "fault_case": "planner_wrong_contact",
+      "fault_dose": 0.6,
+      "fault_events": 8,
+      "replay_exact": null,
+      "wrapper_sha256": "d7c516bca4682a7ca8f85256f864df454d555d2fa2bd4c81664c27a862b8fcff",
+      "evidence": {
+        "episode.json": {
+          "sha256": "e36f01d8519ea6c4f01ecabe1941ac0a8aeaa25fb5e87fcb01c7f4c546897a56",
+          "bytes": 41999
+        },
+        "fault_events.json": {
+          "sha256": "bd1e478112ff8eaabcd3ffd0d7ae0e871263ddb15e208e10ae08ebbd5afaf266",
+          "bytes": 1896
+        }
+      }
+    },
+    {
+      "case": "clean",
+      "seed": null,
+      "dose": "0.0",
+      "path": "planner_wrong_contact_replay/episode.json",
+      "V": 1.0,
+      "steps": 67,
+      "done": true,
+      "mission_success": true,
+      "fault_case": "planner_wrong_contact",
+      "fault_dose": 0.6,
+      "fault_events": 0,
+      "replay_exact": true,
+      "wrapper_sha256": "d7c516bca4682a7ca8f85256f864df454d555d2fa2bd4c81664c27a862b8fcff",
+      "evidence": {
+        "episode.json": {
+          "sha256": "d55a6c9cfe7613864a852af1564d735801c588bd9c81692785747c18617a17fd",
+          "bytes": 42573
+        },
+        "fault_events.json": {
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "bytes": 3
+        }
+      }
+    }
+  ]
+}

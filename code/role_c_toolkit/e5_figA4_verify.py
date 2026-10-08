@@ -13,10 +13,11 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from pathlib import Path
 
 ARTIFACTS = Path("role_c_toolkit/artifacts/paper-E5-natural-failures")
-FIGURE_CSV = Path(r"C:\Users\沉倚\Downloads\openmd_figs_xiaozhao\data"
+FIGURE_CSV = Path(os.environ.get("OPENMD_FIGA4_DATA_DIR", "")
                   r"\figA4_natural_failure_pilot_12.csv")
 TOLERANCE = 5e-5
 TERMS = ("planning", "execution", "interface")
