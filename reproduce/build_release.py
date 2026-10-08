@@ -1,4 +1,4 @@
-"""Build the submission release folder.
+﻿"""Build the submission release folder.
 
 Design rules, learned from what is actually on disk:
 
@@ -435,7 +435,7 @@ def main() -> int:
         rep.mkdir(parents=True, exist_ok=True)
         # Root-level metadata: dotfiles must be copied explicitly by name.
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
-                     "PAPER_COVERAGE.md", "PAPER_PROVENANCE.md",
+                     "PAPER_COVERAGE.md", "PAPER_PROVENANCE.md", "GAP_OWNERS.md",
                      "SERVER_SEARCH_RECORD.md",
                      "CODE_COMPARISON.md", ".gitignore"):
             s = assets / name
@@ -452,6 +452,7 @@ def main() -> int:
         n = size = 0
         for name in ("verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
                      "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
+                     "verify_p3a.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
                      "verify_e5pilot.py",
                      "verify_legacy_arm.py",
@@ -468,6 +469,7 @@ def main() -> int:
         for name in ("PAPER_TABLE_VERIFICATION.txt", "P1_GRID_VERIFICATION.txt",
                      "P2_DOSE_VERIFICATION.txt", "SIXARM_VERIFICATION.txt",
                      "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
+                     "P3A_VERIFICATION.txt",
                      "COMPLEX_TIER_VERIFICATION.txt", "MODEL_INVARIANCE_VERIFICATION.txt",
                      "E5PILOT_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
@@ -551,6 +553,8 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
 
 
 

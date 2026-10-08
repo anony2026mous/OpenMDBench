@@ -1,0 +1,85 @@
+schema_version: rule-agent-team@2.0
+set:
+  name: IE 拦截交战场景集
+  member_index: 9
+  zh_name: 分波次双层突防
+  notes: 分层波次：空中两波错开 250 tick、水面一支，考察弹药分配与'打完一波还剩多少'。难度取 IE-01/02 与 IE-04 之间（红 4+2、我 4+3、ingress 0.93）。
+objective_m:
+- -1200.0
+- -200.0
+protected_zone_bounds_m:
+- -1500.0
+- -700.0
+- 1000.0
+- 100.0
+decision_interval_ticks: 5
+facility_weights:
+  facility.command: 2.0
+  facility.berth: 1.0
+defence:
+  faction_id: coalition.defender
+  contact_confidence: 0.0
+  maximum_contact_age_ticks: 8
+  intercept_speed_mps: 43.0
+  weapon_policies:
+  - selector_tags:
+    - interceptor
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    minimum_range_m: 500.0
+    maximum_range_m: 8000.0
+    cooldown_ticks: 5
+  - selector_tags:
+    - usv
+    weapon_ref: weapon.surface-missile@2.0.0
+    minimum_range_m: 0.0
+    maximum_range_m: 3000.0
+    cooldown_ticks: 3
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 43.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  routes:
+  - match_tag: uav
+    objective_m:
+    - -1200.0
+    - -200.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: boat
+    objective_m:
+    - 700.0
+    - -400.0
+    pattern: direct
+    speed_mps: 10.0
+  timeline:
+  - label: air wave 1
+    spawn_tick: 0
+    count: 2
+    axis: north-east, 13-15 km out at 43 m/s
+    behavior: two UAVs run straight at the command post
+  - label: air wave 2
+    spawn_tick: 250
+    count: 2
+    axis: south-east, 17-19 km out
+    behavior: two more UAVs arrive about 250 ticks later on a different bearing; defending wave 1 with everything leaves the second wave unopposed
+  - label: surface element
+    spawn_tick: 0
+    count: 2
+    axis: east, 6-7 km out but slow (10 m/s)
+    behavior: two suicide boats run at the harbour-mouth berth
+  weapon_policies:
+  - match_tag: boat
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    min_range_m: 0.0
+    max_range_m: 150.0
+    shots: 1
+    reserve_for_assigned: 0
+  - match_tag: uav
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 1
+    reserve_for_assigned: 1

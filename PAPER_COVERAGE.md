@@ -1,4 +1,4 @@
-# Paper → repository coverage
+﻿# Paper → repository coverage
 
 Every table, figure and numeric block in the paper, mapped to where its data lives in this
 repository. Written because "the data is in the repo" is a claim that should be checkable,
@@ -15,7 +15,7 @@ Verified on 2026-10-08 against `main.tex` (408 lines) and `appendix.tex` (489 li
 | **Reproducible from this repository** | 12 | the data is here and was matched against the paper's numbers |
 | **Diverges** | 3 | data is here, the printed numbers do not follow from it |
 | **Partial** | 2 | some data is here; the rest is listed below |
-| **Absent** | 1 | no source data in any available tree |
+| **Absent** | 0 | — |
 
 The paper's **primary claim** — the high-fidelity suite table — is in the first category
 and reproduces exactly. Nine checks now run from this bundle:
@@ -49,7 +49,7 @@ and reproduces exactly. Nine checks now run from this bundle:
 | `tab:modelinvariance` + `figA1` | appendix (appendix.tex 178–205) | **2 of 4 models; contrast differs** |
 | `tab:nointel` | **appendix G** (appendix.tex 217–234, inline) | **partial**; legacy arm differs |
 | Anchored critical-fault validation | appendix I.4 (appendix.tex 363–364) | batch present, **numbers do not reproduce** |
-| `tab_p3aseed` + real-stream counterfactual | appendix I.3 (appendix.tex 358–361) | **absent** |
+| `tab_p3aseed` + real-stream counterfactual | appendix I.3 (appendix.tex 358–361) | reproducible |
 | `tab:interface`, `tab:intervention`, `tab:comparison` | appendix (appendix.tex 246, 296) | **no source data located** |
 
 
@@ -215,17 +215,40 @@ Three further points a reviewer should know:
 
 ---
 
-## 3. Absent
+## 3. Reproducible — found after an exhaustive search
 
 ### 3.1 Appendix I.3 — real-stream counterfactual (seeds 601–610) and `tab_p3aseed`
 
 * **Location**: appendix I.3, appendix.tex 358–361; also cited from main.tex 294 and 296
   ("the real-stream counterfactual agrees (10/10 seeds, +0.420)")
-* **Absent**: the counterfactual episodes for seeds 601–610
-* **Warning**: seeds 601, 602, 603, 605, 607 **do** appear in the co-author's
-  `p0-strengthening-20261001/results/E3*/` files — but those are deception-detection
-  `p_real` classification records from a *different experiment that reuses the range*.
-  Matching on seed alone would mis-attribute them and yield a confident wrong answer.
+* **Data**: `data/collaborator_runs/p0-strengthening-20261001/inputs/P3a__llm_goal_causal__s601-610__confirm__v1/`
+  — 10 seed directories, each holding six sub-runs (`llm_original`, `llm_goals_to_hold`,
+  `rule_planner`, plus a self-replay of each), a batch `analysis.json` and a `report.md`
+* **Verdict: fully reproducible, 0/10 cell mismatches.** `reproduce/verify_p3a.py`
+  recomputes the table from the raw episodes:
+
+  | Check | Result |
+  |---|---|
+  | per-seed LLM / hold / rule composites | **10/10 exact** |
+  | `LLM − hold` | mean **+0.420**, positive 10/10 — matches |
+  | `LLM − rule` | mean **−0.260** — matches |
+  | LLM request counts | **10/10 exact** |
+
+  The intervention identifies itself in the data: `intervention.kind =
+  "all_unit_goals_to_legal_hold"` — exactly the "matched all-hold intervention" the
+  caption describes, on the same goal-bound MAPPO executor and decision clock. The batch's
+  own `analysis.json` independently reports mean 0.420 (CI [0.200, 0.637]) and −0.260
+  (CI [−0.483, −0.057]), so two independent paths agree.
+
+* **Counting trap**: `requests.jsonl` holds **two records per LLM call** (one request, one
+  reply) — 30 lines for 15 calls. Counting lines doubles the `LLM calls` column. Use the
+  batch's own `llm_requests` field.
+
+* **Search warning**: seeds 601, 602, 603, 605, 607 *also* appear in the co-author's
+  `p0-strengthening-20261001/results/E3*/` files as deception-detection `p_real` records —
+  a different experiment that reuses the range. Matching on seed alone mis-attributes them
+  and yields a confident wrong answer. The batch was found by searching for the
+  intervention marker (`all-hold`, `goal_stream`), not for the seed numbers.
 
 ### 3.2 `figA4` ΔP/ΔE/ΔI table and appendix I.4's degradation accounting
 
@@ -245,7 +268,7 @@ Appendix I states the four batches are independent and must not be pooled:
 | six-arm accounting | 501–510 | main §6 + appendix I.1 | **present, verified twice** |
 | goal-dose | 512–521 | appendix I.2 | **present, verified** |
 | anchored critical-fault | 561–570 | appendix I.4 | batch on disk, **numbers do not reproduce** |
-| real-stream counterfactual | 601–610 | appendix I.3 | **absent** |
+| real-stream counterfactual | 601–610 | appendix I.3 | **present, verified** |
 
 ---
 
