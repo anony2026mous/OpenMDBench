@@ -12,11 +12,7 @@ import statistics as st
 from collections import defaultdict
 from pathlib import Path
 
-_HERE = Path(__file__).resolve().parent
-_ROOT = _HERE.parent if (_HERE.parent / "data").is_dir() else _HERE
-
-
-ROOT = _ROOT
+ROOT = Path(r"C:\Code\source-code\release\OpenMDBench-Release")
 STAGE = ROOT / "data" / "campaigns" / "paper-e5-e7-priority" / "E7-frequency-stage1"
 BASE = ROOT / "data" / "campaigns" / "paper-e5-e7-priority" / "E7-baseline"
 PAPER = {10: 0.467, 5: 0.733, 2: 0.733}

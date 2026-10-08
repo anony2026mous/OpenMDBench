@@ -5,11 +5,7 @@ import json
 import re
 from pathlib import Path
 
-_HERE = Path(__file__).resolve().parent
-_ROOT = _HERE.parent if (_HERE.parent / "data").is_dir() else _HERE
-
-
-RAW = (_ROOT / "data" / "collaborator_runs"
+RAW = Path(r"C:\Code\source-code\release_assets\collaborator_runs"
            r"\e2-delivery-20261003\raw\P1__six_arm__s501-510__main__v1")
 TABLE = Path(r"C:\Code\source-code\release\OpenMDBench-Release\paper\tables"
              r"\tab_p1_seedgrid.tex")

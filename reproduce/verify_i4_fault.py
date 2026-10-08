@@ -17,11 +17,7 @@ import statistics as st
 from collections import defaultdict
 from pathlib import Path
 
-_HERE = Path(__file__).resolve().parent
-_ROOT = _HERE.parent if (_HERE.parent / "data").is_dir() else _HERE
-
-
-BASE = _ROOT / "data" / "g1-fault-dose"
+BASE = Path(r"C:\Code\source-code\server-experiments\g1-fault-dose")
 
 print("=" * 94)
 print("g1-fault-dose: what the batch contains")

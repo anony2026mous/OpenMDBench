@@ -9,11 +9,7 @@ import json
 import statistics as st
 from pathlib import Path
 
-_HERE = Path(__file__).resolve().parent
-_ROOT = _HERE.parent if (_HERE.parent / "data").is_dir() else _HERE
-
-
-RAW = (_ROOT / "data" / "collaborator_runs"
+RAW = Path(r"C:\Code\source-code\release_assets\collaborator_runs"
            r"\e2-delivery-20261003\raw")
 
 # Values printed in appendix I.2 (paragraph I.2 and the dose-gain table).

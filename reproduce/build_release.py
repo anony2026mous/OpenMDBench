@@ -1,4 +1,4 @@
-"""Build the submission release folder.
+﻿"""Build the submission release folder.
 
 Design rules, learned from what is actually on disk:
 
@@ -364,6 +364,15 @@ def main() -> int:
     print("      E1/Exp2 2x2 headroom probe (appendix G)")
     copy_tree(SRC_ROOT / "release_assets" / "e4-headroom-2x2",
               dest / "data" / "e4-headroom-2x2", label="data/e4-headroom-2x2")
+    # The two appendix tables that had a script but no archived output: the A3
+    # NL-vs-JSON interface ablation (tab:interface) and the complex-tier four-system
+    # intervention study (tab:intervention). Both result sets live in one directory on
+    # the authoring machine and were outside the bundle.
+    print("      platform experiment results (tab:interface, tab:intervention)")
+    copy_tree(SRC_ROOT / "release_assets" / "platform-results",
+              dest / "data" / "platform-results", label="data/platform-results")
+    copy_tree(SRC_ROOT / "release_assets" / "platform-experiments",
+              dest / "data" / "platform-experiments", label="data/platform-experiments")
     print("      e5 attribution records (appendix I.5)")
     copy_tree(SRC_ROOT / "release_assets" / "e5-attribution",
               dest / "data" / "e5-attribution", label="data/e5-attribution")
@@ -471,7 +480,7 @@ def main() -> int:
                      "verify_p3a.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
                      "verify_e6_four_models.py", "verify_g1_deltas.py",
-                     "verify_e5pilot.py", "verify_e2_2x2.py",
+                     "verify_e5pilot.py", "verify_e2_2x2.py", "verify_e6b_minimax.py", "verify_modality.py", "verify_intervention.py",
                      "verify_legacy_arm.py",
                      "compare_code.py",
                      "scan_for_secrets.py",
@@ -488,7 +497,7 @@ def main() -> int:
                      "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
                      "P3A_VERIFICATION.txt",
                      "COMPLEX_TIER_VERIFICATION.txt", "MODEL_INVARIANCE_VERIFICATION.txt",
-                     "E5PILOT_VERIFICATION.txt", "E2_2X2_VERIFICATION.txt",
+                     "E5PILOT_VERIFICATION.txt", "E2_2X2_VERIFICATION.txt", "E6B_MINIMAX_VERIFICATION.txt", "MODALITY_VERIFICATION.txt", "INTERVENTION_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "CODE_COMPARISON.txt",
@@ -570,6 +579,8 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
 
 
 
