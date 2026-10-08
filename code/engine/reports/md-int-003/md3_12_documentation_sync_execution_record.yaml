@@ -1,0 +1,90 @@
+TASK_ID: MD3-12-002
+PHASE: MD3-12
+OBJECTIVE: >-
+  Synchronize the user-facing operating guide and current entity/weapon/event
+  matrix with the completed MD-INT-003 scenarios and generic task-viewport
+  visualization behavior, without changing runtime behavior.
+REQUIREMENTS:
+  - REQ-VIZ-001
+  - REQ-ARCH-004
+  - REQ-DET-001
+INPUTS:
+  - AGENTS.md
+  - reports/md-int-003/md3_09_task_viewport_execution_record.yaml
+  - reports/md-int-003/md3_12_execution_record.yaml
+  - catalog/v2/md_int_003.yaml
+  - scenarios/formal/md_int_003_*/
+  - openmdbench/visualization/formal_v2.py
+  - openmdbench/visualization/live_formal_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - catalog/v2/
+  - scenarios/formal/
+  - openmdbench/visualization/
+  - openmdbench/cli/
+  - reports/md-int-003/
+  - tests/system/
+ALLOWED_WRITE:
+  - docs/OpenMDBench_用户操作手册与场景智能体开发指南.md
+  - docs/OpenMDBench_当前支持实体武器挂载与事件清单.md
+  - reports/md-int-003/md3_12_documentation_sync_execution_record.yaml
+PROHIBITED:
+  - Runtime, Schema, Catalog, scenario, test, parameter or dependency changes;
+    unsupported CLI claims; calibration claims; commits, pushes, cleanup and
+    generated artifacts.
+TEST_LEVEL: T1
+ALLOWED_COMMANDS:
+  - Markdown/source consistency searches, scoped diff checks and existing
+    focused scenario/visualization evidence review.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 45
+ACCEPTANCE:
+  - Both user-facing documents name the three MD-INT-003 scenarios, their
+    surface mission distinction and supported runtime/visualization entry.
+  - The event matrix describes surface weapon/damage/event support accurately.
+  - Documentation distinguishes configured benchmark values from calibration,
+    and does not claim an unavailable CLI entry.
+OUTPUTS:
+  - Updated operating guide, current capability matrix and review record.
+STOP_CONDITIONS:
+  - Accurate documentation would require inventing an interface, parameter or
+    release claim not supported by code and Catalog evidence.
+RESULT:
+  STATUS: DONE
+  CHANGES:
+    - >-
+      The operating guide now names all three MD-INT-003 ScenarioPackages,
+      their mission/difficulty differences, headless run command and the
+      accurate formal-V2 live entry with task-scale viewport behavior.
+    - >-
+      The current capability matrix now includes the scenarios, two surface
+      USV roles, complete surface-fire/self-detonation closure, spatial trigger
+      event and data-driven wreck lifecycle.
+    - >-
+      The guide explicitly records that current CLI `live` choices do not yet
+      expose MD-INT-003, rather than documenting a non-existent command.
+  TESTS:
+    - >-
+      Scoped Markdown diff check passed for both user-facing documents and this
+      record.
+    - >-
+      Catalog reference check verified the documented two weapons and suicide
+      effect exact references exist in catalog/v2/md_int_003.yaml.
+    - >-
+      Reviewed current focused evidence: MD-INT-003 visualization 4 passed,
+      scenarios 6 passed and generic formal renderer 13 passed.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Compared prose with the formal registry, ScenarioPackage data, live
+      function signature, viewport implementation and Catalog resource values.
+      No fabricated runtime, CLI, calibration or release claim was found.
+  COMPATIBILITY: Documentation-only; public interfaces and existing user-guide content remain intact.
+  DETERMINISM: Documentation describes existing fixed-tick, seed and frame behavior only.
+  DOMAIN_IMPACT: Benchmark values remain clearly labelled UNVALIDATED_BENCHMARK.
+  RISKS: >-
+    The current CLI live-parser omission is now explicit in the guide and
+    remains a future interface enhancement, not a hidden operational failure.
+  NEXT_GATE: >-
+    Documentation changes are local and uncommitted; stage/commit/push only on
+    explicit user request.

@@ -1,0 +1,3637 @@
+{
+  "schema": "e4-admission-ledger@2",
+  "generated_utc": "2026-10-03T14:56:58.844275+00:00",
+  "note": "D1′/D2 初始为 pending，必须由真实运行填入 verdict 与 evidence；D1 按 v8 清单以报告量呈现（reported / not_applicable）；D3 因本版本引擎无三档实现记为 blocked。禁止把未跑的门写成 pass。",
+  "gate_definitions": {
+    "D1_prime_decision_form": {
+      "question_en": "greedy scripted rule must not reach 90% of the rule-baseline score",
+      "question_zh": "手写贪心规则是否拿不到 rule+heuristic 基线的 90% 分（核心难度落在调度/取舍）",
+      "verdicts": [
+        "pass",
+        "fail",
+        "pending",
+        "not_applicable",
+        "blocked"
+      ]
+    },
+    "D2_headroom": {
+      "question_en": "best pure baseline SR within [40%, 85%]",
+      "question_zh": "最优纯基线成功率是否落在 [40%, 85%]",
+      "verdicts": [
+        "pass",
+        "fail",
+        "pending",
+        "not_applicable",
+        "blocked"
+      ]
+    },
+    "D3_interface_budget": {
+      "question_en": "granularity tiers monotone, tier gaps > estimator variance, finest B_if >= 0.3",
+      "question_zh": "接口粒度三档 B_if 是否单调且档间距大于估计方差、最细档 ≥ 0.3",
+      "verdicts": [
+        "pass",
+        "fail",
+        "pending",
+        "not_applicable",
+        "blocked"
+      ]
+    },
+    "D1_information_asymmetry": {
+      "question_en": "rule discriminator <= 60% while LLM >= 85% on feint-vs-real",
+      "question_zh": "真假目标语义可辨：规则 ≤60%、LLM ≥85%（v8 起改为报告量，不设通过/不通过）",
+      "verdicts": [
+        "reported",
+        "not_applicable",
+        "blocked"
+      ]
+    }
+  },
+  "d1_mechanism_map": {
+    "IE-06-DECOY-MIXED": "decoy vs armed attacker, same observed air domain",
+    "IE-11-DECOY-SCREEN": "decoy screen vs real raid",
+    "MD-TRK-007": "feint and pursuit: distractors cross the designated track",
+    "MD-AD-005": "mixed traffic: benign diversions share public signatures with true entrants"
+  },
+  "reference_category": "interception-engagement (IE-01 … IE-14, 已入场)",
+  "hifi_control_report": "openmd/doc/competition_four_categories/COMPETITION_ACCEPTANCE_REVIEW_20261001.md",
+  "scenarios": [
+    {
+      "public_id": "MD-AD-002-EASY",
+      "package": "md_ad_002_easy",
+      "contract_id": "MD-AD-002",
+      "tree": "formal",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "b96b4ff00a281ac18466c21a9aae6d8eb8d2fc8ad37c94ce062ce9a1cf19f3fc",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-AD-002-MEDIUM",
+      "package": "md_ad_002_medium",
+      "contract_id": "MD-AD-002",
+      "tree": "formal",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "6f5e445e4e713c8239e83cfef0ca031cb05d14235aef324fc3c205ff470fbddb",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-AD-002-HARD",
+      "package": "md_ad_002_hard",
+      "contract_id": "MD-AD-002",
+      "tree": "formal",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "6928419fda2bfde302ea7d389ea1ebd2c3f46ad252aca78f946e55e3c1c213e1",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-INT-003-EASY",
+      "package": "md_int_003_easy",
+      "contract_id": "MD-INT-003",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "5d962251ac61c060981813409481e38892ed7461acbcf38747ea8834acc1705e",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-INT-003-MEDIUM",
+      "package": "md_int_003_medium",
+      "contract_id": "MD-INT-003",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "a4104a9025aa533db18cd5c4c6599c19d7e67d91407e2e178a5f75e924f420e9",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-INT-003-HARD",
+      "package": "md_int_003_hard",
+      "contract_id": "MD-INT-003",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "53334c40a86075b9955e8f9a0e7ff0a1d19186780384d9c585854eff56a52efd",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-AD-004-DECEPTION",
+      "package": "md_ad_004_deception",
+      "contract_id": "MD-AD-004",
+      "tree": "formal",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "274f8394ee7875791dc03672c52ced7a54e896c58e5e0d29bba05c01146aaa19",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-INT-002-AIR-SURFACE",
+      "package": "md_int_002_air_surface",
+      "contract_id": "MD-INT-002",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "0b49ebda9849cd12d5859f928901a3692cb86ae81c46cc5d5e101b4485b3779e",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-INT-005-STEALTH-MULTI-AXIS",
+      "package": "md_int_005_stealth_multi_axis",
+      "contract_id": "MD-INT-005",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "91c9dd99d4f70ee2590d80215d9fdd0c480fb4c9cc08f43f5f2906585af1d5b2",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-INT-006-SATURATION-ROE",
+      "package": "md_int_006_saturation_roe",
+      "contract_id": "MD-INT-006",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "55ec744935a387e028b8872f807607747a31488360ac2f4ac77221287044bd6c",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "IE-01-SINGLE-TARGET",
+      "package": "ie_01_single_target",
+      "contract_id": "IE-01-SINGLE-TARGET",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "852191d50c305fdd590489b999ea38c93f389fd4299d7f74cd88939a6817d516",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 1,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.167,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "生成器 notes：考察发现—跟踪—拦截链是否闭环（单机几何拦截）",
+          "b_goal_openness": "protected=[facility.command] 单一固定设施",
+          "c_state_space": "world 无区域/规则复杂度，实体 12 个、单一平台类型组合",
+          "d_time_scale": "timeline 单波 t=0，无错开",
+          "e_opponent_diversity": "timeline：no evasive manoeuvre and no second wave",
+          "f_rule_complexity": "world_keys 含 roe_rules（交战时序约束）"
+        },
+        "uncertain": [],
+        "note": "最弱形态基线：几何拦截 + 固定目标，预期先验得分最低一档。"
+      }
+    },
+    {
+      "public_id": "IE-02-DUAL-THREAT",
+      "package": "ie_02_dual_threat",
+      "contract_id": "IE-02-DUAL-THREAT",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "b8e9a6da2272269f272b133eaf85c3a5fb0bad9a9c3310e4f6ab227a6fd6d408",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.667,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：考察多目标任务分配与重复投入",
+          "b_goal_openness": "目标仍为单一指挥所",
+          "c_state_space": "两机两方向，需排序与去重",
+          "d_time_scale": "timeline 同一时刻进入",
+          "e_opponent_diversity": "固定脚本直线突防",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [
+          "a_decision_form",
+          "c_state_space"
+        ],
+        "note": "a 给 3 是因为设计明确以\"目标分配\"为核心；若评审认为两目标规模太小，可降为 2。"
+      }
+    },
+    {
+      "public_id": "IE-03-SURFACE-RAID",
+      "package": "ie_03_surface_raid",
+      "contract_id": "IE-03-SURFACE-RAID",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "5c33b53cc6b5b927097f7c3cccbadb72cc86b6eabfe95484764b704a79861a52",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 1,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.167,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：三艘自爆船窄带平行突入，考察水面封堵与空间协同",
+          "b_goal_openness": "固定打击目标 facility.berth",
+          "c_state_space": "单一水面域，无空中元素",
+          "d_time_scale": "单波 t=0 同时进入",
+          "e_opponent_diversity": "notes：威胁方没有武装无人船，模式固定",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [],
+        "note": "纯几何封堵形态，与清单举的例子一致（D1′-a=1）。"
+      }
+    },
+    {
+      "public_id": "IE-04-COMBINED-ARMS",
+      "package": "ie_04_combined_arms",
+      "contract_id": "IE-04-COMBINED-ARMS",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "fcc2b8d1b54de99113f60b563ec8abda4a8b9fc93d636b35e2391840e9db3632",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.833,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：考察异构平台协同与跨域资源调度",
+          "b_goal_openness": "protected 为固定设施集合",
+          "c_state_space": "空中+水面两域，需跟踪两类运动学",
+          "d_time_scale": "notes：两类到达时间明显错开",
+          "e_opponent_diversity": "固定脚本",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [],
+        "note": "跨域调度是设计核心，a=3；但对手无欺骗，e=1。"
+      }
+    },
+    {
+      "public_id": "IE-05-MULTI-AXIS",
+      "package": "ie_05_multi_axis",
+      "contract_id": "IE-05-MULTI-AXIS",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "a2602a494fc41ef4027a89078c6f8709f0962a7e3c850cb7fe4b27c8ade0efdc",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.833,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：考察多方向态势理解与动态调度",
+          "b_goal_openness": "固定设施",
+          "c_state_space": "两群约 90 度分离，需要方向归并",
+          "d_time_scale": "timeline 两群接近同时",
+          "e_opponent_diversity": "固定脚本",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [],
+        "note": ""
+      }
+    },
+    {
+      "public_id": "IE-06-DECOY-MIXED",
+      "package": "ie_06_decoy_mixed",
+      "contract_id": "IE-06-DECOY-MIXED",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "4722cd6b7ab657743924077c7d9333d79b987c3892245271a6b4cfd1f8e89ff6",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "reported",
+          "evidence": "E10_HF_restricted-continuous_p02_20261003:results/analysis/a01/summary.json#IE-06-DECOY-MIXED",
+          "report": {
+            "numeric_balanced_accuracy": 0.8425,
+            "numeric_ci95": [
+              0.7225,
+              0.96
+            ],
+            "llm_balanced_accuracy": 0.5125,
+            "llm_ci95": [
+              0.4849375,
+              0.545
+            ],
+            "n_events": 400,
+            "seed_clusters": 10,
+            "cinfo_difference": -0.33000000000000007,
+            "cinfo_ci95": [
+              -0.44000000000000006,
+              -0.21250000000000002
+            ],
+            "point_gate_passed": false,
+            "reference_thresholds": {
+              "numeric_max": 0.6,
+              "llm_min": 0.85
+            },
+            "source": "E10_HF_restricted-continuous_p02_20261003:results/analysis/a01/summary.json",
+            "evidence": "E10_HF_restricted-continuous_p02_20261003:results/analysis/a01/summary.json#IE-06-DECOY-MIXED",
+            "scope": "restricted continuous subset versus anonymous briefing; controlled classification only; not certified native online recognition"
+          },
+          "note": "机制：decoy vs armed attacker, same observed air domain"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.5,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "需在真假威胁间分配拦截资源",
+          "b_goal_openness": "真实目标由声明中的威胁/非威胁区分，属有限候选",
+          "c_state_space": "numeric features 不可分、只靠语义声明分辨",
+          "d_time_scale": "诱饵与主攻时序错开",
+          "e_opponent_diversity": "notes：3 真 2 假，诱饵无武器且声明为非威胁",
+          "f_rule_complexity": "打诱饵即自伤，需遵守识别规则"
+        },
+        "uncertain": [],
+        "note": "E10 的 D1 判别实验就用本场景；本行只依据设计声明。"
+      }
+    },
+    {
+      "public_id": "IE-07-CROSS-DOMAIN",
+      "package": "ie_07_cross_domain",
+      "contract_id": "IE-07-CROSS-DOMAIN",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "869301b252f9553f9b34d15269a5b5cae8574d90876fd5b582c79cf2714a622f",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "空中分波次 + 水面同时进入，需要跨域分配",
+          "b_goal_openness": "固定设施",
+          "c_state_space": "低空进入 + 分波次，状态需跨波次维护",
+          "d_time_scale": "event_types 含 spawn（分波次）",
+          "e_opponent_diversity": "固定脚本",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [
+          "c_state_space"
+        ],
+        "note": "notes 记录原需求含 AUV 水下域但引擎不支持，实际只实现空中分波次；c 给 3 系因跨波次状态维护。"
+      }
+    },
+    {
+      "public_id": "IE-08-ISLAND-STRIKE",
+      "package": "ie_08_island_strike",
+      "contract_id": "IE-08-ISLAND-STRIKE",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "f9a759d201a9fa9ff1ee781b71d04a4c563d52ac3c55b801f27de75b86d09967",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "README：同构无人机 + 岛礁设施攻防，分波次双层突防，需在多设施间分配",
+          "b_goal_openness": "protected 为固定岛礁设施",
+          "c_state_space": "event_count 24（分波次 spawn），设施损伤状态需持续跟踪",
+          "d_time_scale": "README：分波次双层突防，第二波在首波交战期间到达",
+          "e_opponent_diversity": "无诱饵声明，但波次到达顺序构成有限策略变化",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [
+          "a_decision_form",
+          "c_state_space"
+        ],
+        "note": "本场景无生成器 spec 条目（注册别名 MD-AD-006-ISLAND-STRIKE），依据其包内 README 标注；e 给 2 表示不确定。"
+      }
+    },
+    {
+      "public_id": "IE-09-STAGGERED-WAVES",
+      "package": "ie_09_staggered_waves",
+      "contract_id": "IE-09-STAGGERED-WAVES",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "1847894ecb0cd5056fd89b0da5e6e9007924fccd6b2ce8d5379eb442c5cf1fd4",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.0,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：考察弹药分配与\"打完一波还剩多少\"",
+          "b_goal_openness": "固定设施（command 权重 2.0 / berth 1.0）",
+          "c_state_space": "spawn_ticks 差异需在状态中维护",
+          "d_time_scale": "timeline：空中两波错开 250 tick",
+          "e_opponent_diversity": "固定脚本两波",
+          "f_rule_complexity": "弹药约束属资源规则"
+        },
+        "uncertain": [],
+        "note": ""
+      }
+    },
+    {
+      "public_id": "IE-10-DUAL-AXIS-PINCER",
+      "package": "ie_10_dual_axis_pincer",
+      "contract_id": "IE-10-DUAL-AXIS-PINCER",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "9176bdc75994c27032db921a0be9342d62a788a68e80eb79cb49eac7a1407034",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.667,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：考察同一时刻的跨域资源分配",
+          "b_goal_openness": "固定设施",
+          "c_state_space": "两轴约 90 度，需要同时跟踪两个域",
+          "d_time_scale": "notes：到打窗口几乎重合（无等待空间）",
+          "e_opponent_diversity": "固定脚本",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [],
+        "note": "与 IE-04 的\"刻意错开\"相反，本场景强调同时性；d 仍为 1（无 deliberation 余量）。"
+      }
+    },
+    {
+      "public_id": "IE-11-DECOY-SCREEN",
+      "package": "ie_11_decoy_screen",
+      "contract_id": "IE-11-DECOY-SCREEN",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "e5f18975568d545d9d5104fa8b1fd8b54be4ef12cc309df9cf690c8ef8331449",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "reported",
+          "evidence": "E10_HF_restricted-continuous_p02_20261003:results/analysis/a01/summary.json#IE-11-DECOY-SCREEN",
+          "report": {
+            "numeric_balanced_accuracy": 0.905,
+            "numeric_ci95": [
+              0.8382352941176471,
+              1.0
+            ],
+            "llm_balanced_accuracy": 0.45,
+            "llm_ci95": [
+              0.36434108527131787,
+              0.492669157620346
+            ],
+            "n_events": 400,
+            "seed_clusters": 10,
+            "cinfo_difference": -0.455,
+            "cinfo_ci95": [
+              -0.6297709923664122,
+              -0.3473557692307693
+            ],
+            "point_gate_passed": false,
+            "reference_thresholds": {
+              "numeric_max": 0.6,
+              "llm_min": 0.85
+            },
+            "source": "E10_HF_restricted-continuous_p02_20261003:results/analysis/a01/summary.json",
+            "evidence": "E10_HF_restricted-continuous_p02_20261003:results/analysis/a01/summary.json#IE-11-DECOY-SCREEN",
+            "scope": "restricted continuous subset versus anonymous briefing; controlled classification only; not certified native online recognition"
+          },
+          "note": "机制：decoy screen vs real raid"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.5,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "需要在诱饵与真主攻之间做取舍",
+          "b_goal_openness": "真实目标由声明与到达时序判断",
+          "c_state_space": "诱饵与真目标观测特征不可分",
+          "d_time_scale": "timeline：真主攻晚 150 tick 才出现",
+          "e_opponent_diversity": "notes：诱饵前置，惩罚\"见接触就打\"",
+          "f_rule_complexity": "识别规则"
+        },
+        "uncertain": [],
+        "note": "E10 的第二个 D1 判别场景。"
+      }
+    },
+    {
+      "public_id": "IE-12-FOG-ONSET",
+      "package": "ie_12_fog_onset",
+      "contract_id": "IE-12-FOG-ONSET",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "81d8c535fbe0592d118894e824c97ef1eae808ed118f08817b2ef7facbbd6dd3",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.0,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "三向同时进入同一目标，需要分配与排序",
+          "b_goal_openness": "固定设施",
+          "c_state_space": "notes：雾提前到 150 tick，传感器能力中途变化",
+          "d_time_scale": "环境事件在中途改变可用信息",
+          "e_opponent_diversity": "固定脚本",
+          "f_rule_complexity": "常规 ROE"
+        },
+        "uncertain": [
+          "d_time_scale"
+        ],
+        "note": "雾属环境降级而非对手策略，故计入 c 而非 e。"
+      }
+    },
+    {
+      "public_id": "IE-13-DEEP-STRIKE",
+      "package": "ie_13_deep_strike",
+      "contract_id": "IE-13-DEEP-STRIKE",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "3695b7dc616fd06da9c3c94ec4f9389c9f9024901c8840feacb2ca00979c473d",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.833,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：两处权重不同，考察目标价值与兵力分配",
+          "b_goal_openness": "固定两设施、权重声明",
+          "c_state_space": "纵深两目标同时受压",
+          "d_time_scale": "两目标同时到达",
+          "e_opponent_diversity": "固定脚本",
+          "f_rule_complexity": "权重规则"
+        },
+        "uncertain": [],
+        "note": ""
+      }
+    },
+    {
+      "public_id": "IE-14-SATURATION-THREE-WAVE",
+      "package": "ie_14_saturation_three_wave",
+      "contract_id": "IE-14-SATURATION-THREE-WAVE",
+      "tree": "formal",
+      "category": "拦截交战 Interception-Engagement",
+      "package_sha256": "c9535bd174eca7383e96c4712fa9ca863a344d921ef41856e8f7ff6486fad958",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.0,
+        "source": "annotated",
+        "evidence": {
+          "a_decision_form": "notes：考察长时段弹药与兵力分配",
+          "b_goal_openness": "固定设施",
+          "c_state_space": "三波共 12 个来袭单元，需持续维护状态",
+          "d_time_scale": "timeline：t=0/300/600 三波",
+          "e_opponent_diversity": "固定脚本饱和突击",
+          "f_rule_complexity": "弹药留存规则"
+        },
+        "uncertain": [],
+        "note": "规模最大档（红 7 机 5 船、我 6+6）。"
+      }
+    },
+    {
+      "public_id": "MD-AD-006-ISLAND-STRIKE",
+      "package": "ie_08_island_strike",
+      "contract_id": "MD-AD-006",
+      "tree": "formal",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "f9a759d201a9fa9ff1ee781b71d04a4c563d52ac3c55b801f27de75b86d09967",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null
+    },
+    {
+      "public_id": "MD-AD-001-STANDARD",
+      "package": "md_ad_001_standard",
+      "contract_id": "MD-AD-001",
+      "tree": "competition_v1",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "622ee1df059adc827126728f7f417d5f28b3b98739cdae41c18eed1257ca6e86",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.4496,
+            "ci95": [
+              0.4454168,
+              0.4537496
+            ],
+            "best_baseline_policy": "indiscriminate",
+            "best_task_relevant_policy": "guard",
+            "best_task_relevant_composite": 0.3533,
+            "headroom_band": "below_window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 indiscriminate = 0.4496，95% CI [0.4454168, 0.4537496]；headroom 分档 below_window（最优基线落在地板控制上）"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.833,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline AD; mechanism 'multiple_waves' -> floor 3",
+          "b_goal_openness": "family baseline AD",
+          "c_state_space": "family baseline AD",
+          "d_time_scale": "family baseline AD; mechanism 'multiple_waves' -> floor 2",
+          "e_opponent_diversity": "family baseline AD",
+          "f_rule_complexity": "family baseline AD"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-AD-002-STANDARD",
+      "package": "md_ad_002_standard",
+      "contract_id": "MD-AD-002",
+      "tree": "competition_v1",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "f3b24678459fea1a6e5dd349352d47a23914c8afdfe595e6384334c9edeb88aa",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.4721,
+            "ci95": [
+              0.46583319999999995,
+              0.4783328
+            ],
+            "best_baseline_policy": "indiscriminate",
+            "best_task_relevant_policy": "guard",
+            "best_task_relevant_composite": 0.4671,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 indiscriminate = 0.4721，95% CI [0.46583319999999995, 0.4783328]；headroom 分档 window（最优基线落在地板控制上）"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.667,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline AD; mechanism 'two_protected_zones' -> floor 3",
+          "b_goal_openness": "family baseline AD",
+          "c_state_space": "family baseline AD",
+          "d_time_scale": "family baseline AD",
+          "e_opponent_diversity": "family baseline AD",
+          "f_rule_complexity": "family baseline AD"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-AD-003-STANDARD",
+      "package": "md_ad_003_standard",
+      "contract_id": "MD-AD-003",
+      "tree": "competition_v1",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "529e6cfc7f1cef4cb8f9b982a2c6bb2ab2118d638416f21150cfb74a88d567be",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.7661,
+            "ci95": [
+              0.6316664,
+              0.833333
+            ],
+            "best_baseline_policy": "indiscriminate",
+            "best_task_relevant_policy": "guard",
+            "best_task_relevant_composite": 0.6503,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 indiscriminate = 0.7661，95% CI [0.6316664, 0.833333]；headroom 分档 window（最优基线落在地板控制上）"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 2,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 1.833,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline AD; mechanism 'outer_inner_zones' -> floor 2",
+          "b_goal_openness": "family baseline AD",
+          "c_state_space": "family baseline AD",
+          "d_time_scale": "family baseline AD",
+          "e_opponent_diversity": "family baseline AD; mechanism 'protected_neutral_traffic' -> floor 3",
+          "f_rule_complexity": "family baseline AD; mechanism 'outer_inner_zones' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-AD-004-STANDARD",
+      "package": "md_ad_004_standard",
+      "contract_id": "MD-AD-004",
+      "tree": "competition_v1",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "b94d51ef467f8d9afbeadd45b39f2ee5a3d43e5bf5c3fa96f3ca3b25a88a9416",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.5436,
+            "ci95": [
+              0.5322218,
+              0.5555554
+            ],
+            "best_baseline_policy": "indiscriminate",
+            "best_task_relevant_policy": "guard",
+            "best_task_relevant_composite": 0.5372,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 indiscriminate = 0.5436，95% CI [0.5322218, 0.5555554]；headroom 分档 window（最优基线落在地板控制上）"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline AD; mechanism 'multiple_waves' -> floor 3",
+          "b_goal_openness": "family baseline AD",
+          "c_state_space": "family baseline AD; mechanism 'jamming_interval' -> floor 3",
+          "d_time_scale": "family baseline AD; mechanism 'multiple_waves' -> floor 2",
+          "e_opponent_diversity": "family baseline AD; mechanism 'jamming_interval' -> floor 3",
+          "f_rule_complexity": "family baseline AD"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-AD-005-STANDARD",
+      "package": "md_ad_005_standard",
+      "contract_id": "MD-AD-005",
+      "tree": "competition_v1",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "ba2deda546dfefec62db44c42feed668fea83f780e519bc00338d2de24064291",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.6261,
+            "ci95": [
+              0.6233332,
+              0.627778
+            ],
+            "best_baseline_policy": "guard",
+            "best_task_relevant_policy": "guard",
+            "best_task_relevant_composite": 0.6261,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 guard = 0.6261，95% CI [0.6233332, 0.627778]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "blocked",
+          "evidence": null,
+          "report": null,
+          "note": "场景具备真假混淆机制（mixed traffic: benign diversions share public signatures with true entrants），但 E10 的判别流水线只覆盖 IE-06/IE-11；需要另建刺激与判别流程，尚未排期。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 1,
+          "b_goal_openness": 2,
+          "c_state_space": 3,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline AD",
+          "b_goal_openness": "family baseline AD; mechanism 'diversion_routes' -> floor 2",
+          "c_state_space": "family baseline AD; mechanism 'opaque_identifiers' -> floor 3",
+          "d_time_scale": "family baseline AD",
+          "e_opponent_diversity": "family baseline AD; mechanism 'diversion_routes' -> floor 3",
+          "f_rule_complexity": "family baseline AD; mechanism 'protected_neutral_traffic' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-AD-006-STANDARD",
+      "package": "md_ad_006_standard",
+      "contract_id": "MD-AD-006",
+      "tree": "competition_v1",
+      "category": "区域拒止 Area Denial",
+      "package_sha256": "fca53145e4a1e85317c3163618cc34d953119c6fc15db47ca7932d8c26d81c37",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = indiscriminate，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.7883,
+            "ci95": [
+              0.788333,
+              0.788333
+            ],
+            "best_baseline_policy": "guard",
+            "best_task_relevant_policy": "guard",
+            "best_task_relevant_composite": 0.7883,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 guard = 0.7883，95% CI [0.788333, 0.788333]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline AD; mechanism 'multiple_protected_zones' -> floor 3",
+          "b_goal_openness": "family baseline AD",
+          "c_state_space": "family baseline AD; mechanism 'jamming_interval' -> floor 3",
+          "d_time_scale": "family baseline AD; mechanism 'staggered_waves' -> floor 2",
+          "e_opponent_diversity": "family baseline AD; mechanism 'jamming_interval' -> floor 3",
+          "f_rule_complexity": "family baseline AD"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-ER-001-STANDARD",
+      "package": "md_er_001_standard",
+      "contract_id": "MD-ER-001",
+      "tree": "competition_v1",
+      "category": "应急响应 Emergency Response",
+      "package_sha256": "5d0ae9d6fd62fc3613c27c82977468d2c4cf643f00b7f285bbfcf1f6ca8fca0d",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = safe，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.8633,
+            "ci95": [
+              0.8633330000000001,
+              0.8633330000000001
+            ],
+            "best_baseline_policy": "safe",
+            "best_task_relevant_policy": "safe",
+            "best_task_relevant_composite": 0.8633,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 safe = 0.8633，95% CI [0.8633330000000001, 0.8633330000000001]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 1.833,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline ER",
+          "b_goal_openness": "family baseline ER",
+          "c_state_space": "family baseline ER; mechanism 'weather_change' -> floor 2",
+          "d_time_scale": "family baseline ER",
+          "e_opponent_diversity": "family baseline ER",
+          "f_rule_complexity": "family baseline ER; mechanism 'zone_activation' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-ER-002-STANDARD",
+      "package": "md_er_002_standard",
+      "contract_id": "MD-ER-002",
+      "tree": "competition_v1",
+      "category": "应急响应 Emergency Response",
+      "package_sha256": "f3acdec138c547322088a39b540e83953de9c4281d0a73d21555861f8e6909cc",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = team，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.8353,
+            "ci95": [
+              0.8351714000000001,
+              0.835343
+            ],
+            "best_baseline_policy": "team",
+            "best_task_relevant_policy": "team",
+            "best_task_relevant_composite": 0.8353,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 team = 0.8353，95% CI [0.8351714000000001, 0.835343]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.5,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline ER",
+          "b_goal_openness": "family baseline ER",
+          "c_state_space": "family baseline ER",
+          "d_time_scale": "family baseline ER",
+          "e_opponent_diversity": "family baseline ER",
+          "f_rule_complexity": "family baseline ER"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-ER-003-STANDARD",
+      "package": "md_er_003_standard",
+      "contract_id": "MD-ER-003",
+      "tree": "competition_v1",
+      "category": "应急响应 Emergency Response",
+      "package_sha256": "5b1f588acdabe1aeec209afcedd0a85458b78a6d9533f791b68e902687abb3da",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = naive，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.4529,
+            "ci95": [
+              0.45288500000000004,
+              0.45288500000000004
+            ],
+            "best_baseline_policy": "naive",
+            "best_task_relevant_policy": "coordinated",
+            "best_task_relevant_composite": 0.4529,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 naive = 0.4529，95% CI [0.45288500000000004, 0.45288500000000004]；headroom 分档 window（最优基线落在地板控制上）"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 1.833,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline ER",
+          "b_goal_openness": "family baseline ER",
+          "c_state_space": "family baseline ER",
+          "d_time_scale": "family baseline ER",
+          "e_opponent_diversity": "family baseline ER; mechanism 'delayed_public_message' -> floor 2",
+          "f_rule_complexity": "family baseline ER; mechanism 'delayed_public_message' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-ER-004-STANDARD",
+      "package": "md_er_004_standard",
+      "contract_id": "MD-ER-004",
+      "tree": "competition_v1",
+      "category": "应急响应 Emergency Response",
+      "package_sha256": "050c1b0b9aa5701a293958ce354272e0c161102e9484622984bd0300b5c0a341",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = preissued，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.9422,
+            "ci95": [
+              0.9422219999999999,
+              0.9422219999999999
+            ],
+            "best_baseline_policy": "preissued",
+            "best_task_relevant_policy": "preissued",
+            "best_task_relevant_composite": 0.9422,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 preissued = 0.9422，95% CI [0.9422219999999999, 0.9422219999999999]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 1,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline ER",
+          "b_goal_openness": "family baseline ER",
+          "c_state_space": "family baseline ER; mechanism 'jamming_interval' -> floor 3",
+          "d_time_scale": "family baseline ER",
+          "e_opponent_diversity": "family baseline ER; mechanism 'jamming_interval' -> floor 3",
+          "f_rule_complexity": "family baseline ER; mechanism 'preissued_route' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-ER-005-STANDARD",
+      "package": "md_er_005_standard",
+      "contract_id": "MD-ER-005",
+      "tree": "competition_v1",
+      "category": "应急响应 Emergency Response",
+      "package_sha256": "3d30ce31721ec73cdca5bb00e85e6d74562a831b7e1c9a51d70a8726b95446c1",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = naive，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.6856,
+            "ci95": [
+              0.4940014,
+              0.7822538
+            ],
+            "best_baseline_policy": "naive",
+            "best_task_relevant_policy": "coordinated",
+            "best_task_relevant_composite": 0.4529,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 naive = 0.6856，95% CI [0.4940014, 0.7822538]；headroom 分档 window（最优基线落在地板控制上）"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 2.0,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline ER",
+          "b_goal_openness": "family baseline ER",
+          "c_state_space": "family baseline ER",
+          "d_time_scale": "family baseline ER; mechanism 'multiple_public_alerts' -> floor 2; mechanism 'delayed_public_confirmation' -> floor 3",
+          "e_opponent_diversity": "family baseline ER",
+          "f_rule_complexity": "family baseline ER; mechanism 'priority_destination' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-ER-006-STANDARD",
+      "package": "md_er_006_standard",
+      "contract_id": "MD-ER-006",
+      "tree": "competition_v1",
+      "category": "应急响应 Emergency Response",
+      "package_sha256": "73c39c0a7fb03ed65266010d6d7bcd6c0aa009315ccdc7d8d165044f9f105c79",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = progress-watch，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.8329,
+            "ci95": [
+              0.8324871999999999,
+              0.8333044000000001
+            ],
+            "best_baseline_policy": "progress-watch",
+            "best_task_relevant_policy": "progress-watch",
+            "best_task_relevant_composite": 0.8329,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 progress-watch = 0.8329，95% CI [0.8324871999999999, 0.8333044000000001]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 3
+        },
+        "prior_score": 1.833,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline ER",
+          "b_goal_openness": "family baseline ER",
+          "c_state_space": "family baseline ER",
+          "d_time_scale": "family baseline ER; mechanism 'multiple_public_alerts' -> floor 2",
+          "e_opponent_diversity": "family baseline ER",
+          "f_rule_complexity": "family baseline ER; mechanism 'zone_activation' -> floor 3"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-001-EASY",
+      "package": "md_rec_001_easy",
+      "contract_id": "MD-REC-001",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "2ba77ac8ff3e59b3e290b4888a037439223fb9a0b501c530e2e2ce3c160d12d3",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = sweep，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "best_baseline_policy": "sweep",
+            "best_task_relevant_policy": "sweep",
+            "best_task_relevant_composite": 1.0,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 sweep = 1.0，95% CI [1.0, 1.0]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-001-HARD",
+      "package": "md_rec_001_hard",
+      "contract_id": "MD-REC-001",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "c71fd8500e4f24abfae1b56e0a64cc18406b204efdc9f0b681b1fdf643a84279",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = sweep，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "best_baseline_policy": "sweep",
+            "best_task_relevant_policy": "sweep",
+            "best_task_relevant_composite": 1.0,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 sweep = 1.0，95% CI [1.0, 1.0]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-001-MEDIUM",
+      "package": "md_rec_001_medium",
+      "contract_id": "MD-REC-001",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "7ff88e46526d9123632ce3176beda695d94cb334cd5b5d175fd9697c6d071a0e",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = sweep，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 1.0,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "best_baseline_policy": "sweep",
+            "best_task_relevant_policy": "sweep",
+            "best_task_relevant_composite": 1.0,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 sweep = 1.0，95% CI [1.0, 1.0]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-002-STANDARD",
+      "package": "md_rec_002_standard",
+      "contract_id": "MD-REC-002",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "d650f05a3ee1443b41b1159117153da482843552151a352fd0afd014312664e3",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = sweep，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.9287,
+            "ci95": [
+              0.9286580000000001,
+              0.9286580000000001
+            ],
+            "best_baseline_policy": "coordinated",
+            "best_task_relevant_policy": "coordinated",
+            "best_task_relevant_composite": 0.9287,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 coordinated = 0.9287，95% CI [0.9286580000000001, 0.9286580000000001]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-003-STANDARD",
+      "package": "md_rec_003_standard",
+      "contract_id": "MD-REC-003",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "f882e6121551b248b3c897eceb3934f0469f2fd936135364163178c5d0174b59",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = coordinated，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.93,
+            "ci95": [
+              0.9294448,
+              0.9305559999999999
+            ],
+            "best_baseline_policy": "coordinated",
+            "best_task_relevant_policy": "coordinated",
+            "best_task_relevant_composite": 0.93,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 coordinated = 0.93，95% CI [0.9294448, 0.9305559999999999]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC; mechanism 'air_surface_contacts' -> floor 3",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-004-STANDARD",
+      "package": "md_rec_004_standard",
+      "contract_id": "MD-REC-004",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "e4d28cca1b46a9db6120244fb280710b1580a2f7e1860fa3af9c8a1d9fc749b8",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = sweep，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.8653,
+            "ci95": [
+              0.865278,
+              0.865278
+            ],
+            "best_baseline_policy": "sweep",
+            "best_task_relevant_policy": "sweep",
+            "best_task_relevant_composite": 0.8653,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 sweep = 0.8653，95% CI [0.865278, 0.865278]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-005-STANDARD",
+      "package": "md_rec_005_standard",
+      "contract_id": "MD-REC-005",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "57248c139a01d751150cac59c3121cbabd593b46a15a1df1a2f2c993875ac002",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = coordinated，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.8042,
+            "ci95": [
+              0.7983330000000001,
+              0.8097222000000001
+            ],
+            "best_baseline_policy": "coordinated",
+            "best_task_relevant_policy": "coordinated",
+            "best_task_relevant_composite": 0.8042,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 coordinated = 0.8042，95% CI [0.7983330000000001, 0.8097222000000001]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 3,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.5,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC; mechanism 'air_surface_contacts' -> floor 3",
+          "d_time_scale": "family baseline REC; mechanism 'communication_delay' -> floor 3",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-006-STANDARD",
+      "package": "md_rec_006_standard",
+      "contract_id": "MD-REC-006",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "4ccddf25d01c896e6a72bc1fd9296e0d603fe97cc9d02399e7a37dd4f3e25921",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = observation-patrol，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.6325,
+            "ci95": [
+              0.6278257999999999,
+              0.6359422
+            ],
+            "best_baseline_policy": "observation-patrol",
+            "best_task_relevant_policy": "observation-patrol",
+            "best_task_relevant_composite": 0.6325,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 observation-patrol = 0.6325，95% CI [0.6278257999999999, 0.6359422]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-007-STANDARD",
+      "package": "md_rec_007_standard",
+      "contract_id": "MD-REC-007",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "a2bc7ea7f446d737a087963d0160b42e32abfd8ad84b0161c3cf619f0129815e",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = sweep，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.8083,
+            "ci95": [
+              0.808333,
+              0.808333
+            ],
+            "best_baseline_policy": "sweep",
+            "best_task_relevant_policy": "sweep",
+            "best_task_relevant_composite": 0.8083,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 sweep = 0.8083，95% CI [0.808333, 0.808333]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC; mechanism 'delayed_contact_spawn' -> floor 3",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-REC-008-STANDARD",
+      "package": "md_rec_008_standard",
+      "contract_id": "MD-REC-008",
+      "tree": "competition_v1",
+      "category": "侦察搜索 Reconnaissance",
+      "package_sha256": "35c4c627026140abef41667aeab5ca620ab224a7818aed06fa90317ccf985dab",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = coordinated，SR 0.8，95% CI [0.4, 1.0]，参照 seed 数 5",
+          "success_rate": 0.8,
+          "ci95": [
+            0.4,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.6743,
+            "ci95": [
+              0.6693694,
+              0.6797294
+            ],
+            "best_baseline_policy": "coordinated",
+            "best_task_relevant_policy": "coordinated",
+            "best_task_relevant_composite": 0.6743,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 coordinated = 0.6743，95% CI [0.6693694, 0.6797294]；headroom 分档 window"
+          },
+          "verdict_binary": "pass"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 2,
+          "c_state_space": 2,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline REC",
+          "b_goal_openness": "family baseline REC",
+          "c_state_space": "family baseline REC",
+          "d_time_scale": "family baseline REC; mechanism 'delayed_contact_spawn' -> floor 3",
+          "e_opponent_diversity": "family baseline REC",
+          "f_rule_complexity": "family baseline REC"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-001-STANDARD",
+      "package": "md_trk_001_standard",
+      "contract_id": "MD-TRK-001",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "a304dd1ca92d122f1e0cdd43df56ef3879e1336bf8b43244b62a3dadf4e2098d",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = follow，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.4276,
+            "ci95": [
+              0.42488660000000006,
+              0.43122160000000004
+            ],
+            "best_baseline_policy": "follow",
+            "best_task_relevant_policy": "follow",
+            "best_task_relevant_composite": 0.4276,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 follow = 0.4276，95% CI [0.42488660000000006, 0.43122160000000004]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 2,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.5,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK",
+          "d_time_scale": "family baseline TRK",
+          "e_opponent_diversity": "family baseline TRK",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-002-STANDARD",
+      "package": "md_trk_002_standard",
+      "contract_id": "MD-TRK-002",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "406dc5e28e1027a6c18c64832cb302d88354699078963b4f0d21453a9371f41e",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = follow，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.3869,
+            "ci95": [
+              0.38054259999999995,
+              0.3927602
+            ],
+            "best_baseline_policy": "follow",
+            "best_task_relevant_policy": "follow",
+            "best_task_relevant_composite": 0.3869,
+            "headroom_band": "below_window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 follow = 0.3869，95% CI [0.38054259999999995, 0.3927602]；headroom 分档 below_window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 1,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.667,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK; mechanism 'diverging_contacts' -> floor 3",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK",
+          "d_time_scale": "family baseline TRK",
+          "e_opponent_diversity": "family baseline TRK",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-003-STANDARD",
+      "package": "md_trk_003_standard",
+      "contract_id": "MD-TRK-003",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "365d94aab2deb76894e54977a706fb72f9be0f0f5a1d6fcdd4c1e277a1d563a9",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = allocated，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.9677,
+            "ci95": [
+              0.9659124,
+              0.9695324
+            ],
+            "best_baseline_policy": "allocated",
+            "best_task_relevant_policy": "allocated",
+            "best_task_relevant_composite": 0.9677,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 allocated = 0.9677，95% CI [0.9659124, 0.9695324]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.0,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK; mechanism 'air_surface_observer_handover' -> floor 3",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK; mechanism 'air_surface_observer_handover' -> floor 3",
+          "d_time_scale": "family baseline TRK",
+          "e_opponent_diversity": "family baseline TRK",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-004-STANDARD",
+      "package": "md_trk_004_standard",
+      "contract_id": "MD-TRK-004",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "a26b554bf532ad7ea7abdf4f49268ab102a5894bfb638fb0853e12372ec96475",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = allocated，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.9844,
+            "ci95": [
+              0.977608,
+              0.9886658
+            ],
+            "best_baseline_policy": "allocated",
+            "best_task_relevant_policy": "allocated",
+            "best_task_relevant_composite": 0.9844,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 allocated = 0.9844，95% CI [0.977608, 0.9886658]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 2,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 2,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.833,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK; mechanism 'piecewise_waypoint_motion' -> floor 2",
+          "d_time_scale": "family baseline TRK",
+          "e_opponent_diversity": "family baseline TRK; mechanism 'piecewise_waypoint_motion' -> floor 2",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-005-STANDARD",
+      "package": "md_trk_005_standard",
+      "contract_id": "MD-TRK-005",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "6626154837225568194b8de289ef308cb5a5676367254f1551f20769ccf21e3b",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = allocated，SR 0.8，95% CI [0.4, 1.0]，参照 seed 数 5",
+          "success_rate": 0.8,
+          "ci95": [
+            0.4,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.8781,
+            "ci95": [
+              0.8647254,
+              0.8904918000000001
+            ],
+            "best_baseline_policy": "allocated",
+            "best_task_relevant_policy": "allocated",
+            "best_task_relevant_composite": 0.8781,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 allocated = 0.8781，95% CI [0.8647254, 0.8904918000000001]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "pass"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 2,
+          "b_goal_openness": 1,
+          "c_state_space": 2,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 1.667,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK; mechanism 'weather_change' -> floor 2",
+          "d_time_scale": "family baseline TRK",
+          "e_opponent_diversity": "family baseline TRK",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-006-STANDARD",
+      "package": "md_trk_006_standard",
+      "contract_id": "MD-TRK-006",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "9cc5f37e82eda6d1f01463ecd9775a8298787dc5724d02061926bf4f6f01622e",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "pass",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = follow，SR 0.0，95% CI [0.0, 0.0]，参照 seed 数 5",
+          "success_rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "pass",
+            "composite": 0.6826,
+            "ci95": [
+              0.6812216,
+              0.6839366
+            ],
+            "best_baseline_policy": "follow",
+            "best_task_relevant_policy": "follow",
+            "best_task_relevant_composite": 0.6826,
+            "headroom_band": "window",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 follow = 0.6826，95% CI [0.6812216, 0.6839366]；headroom 分档 window"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 3,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 1,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK; mechanism 'air_surface_shore_relay' -> floor 3",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK; mechanism 'intermittent_sensor_availability' -> floor 2; mechanism 'air_surface_shore_relay' -> floor 3",
+          "d_time_scale": "family baseline TRK; mechanism 'intermittent_sensor_availability' -> floor 3",
+          "e_opponent_diversity": "family baseline TRK",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-007-STANDARD",
+      "package": "md_trk_007_standard",
+      "contract_id": "MD-TRK-007",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "bd5e3ee47b038d60fd73b5c38ed97435bba405a93a420791b029784cce935804",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = identity-honest，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.9342,
+            "ci95": [
+              0.9310385999999999,
+              0.9380526
+            ],
+            "best_baseline_policy": "identity-honest",
+            "best_task_relevant_policy": "identity-honest",
+            "best_task_relevant_composite": 0.9342,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 identity-honest = 0.9342，95% CI [0.9310385999999999, 0.9380526]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "blocked",
+          "evidence": null,
+          "report": null,
+          "note": "场景具备真假混淆机制（feint and pursuit: distractors cross the designated track），但 E10 的判别流水线只覆盖 IE-06/IE-11；需要另建刺激与判别流程，尚未排期。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 2,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 2,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.167,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK; mechanism 'crossing_tracks' -> floor 3",
+          "d_time_scale": "family baseline TRK",
+          "e_opponent_diversity": "family baseline TRK; mechanism 'crossing_tracks' -> floor 3",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    },
+    {
+      "public_id": "MD-TRK-008-STANDARD",
+      "package": "md_trk_008_standard",
+      "contract_id": "MD-TRK-008",
+      "tree": "competition_v1",
+      "category": "持续跟踪 Tracking",
+      "package_sha256": "448b82afef1f3cc48505cd0e062315f40827d1b4fbd981e5696ee59437c35e06",
+      "gates": {
+        "D1_prime_decision_form": {
+          "verdict": "pending",
+          "evidence": null,
+          "note": null
+        },
+        "D2_headroom": {
+          "verdict": "fail",
+          "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_headroom_final.json",
+          "note": "最优纯基线 = coverage-honest，SR 1.0，95% CI [1.0, 1.0]，参照 seed 数 5",
+          "success_rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "graded": {
+            "measurement": "declared composite Σ wᵢ·valueᵢ over recorded metrics",
+            "verdict": "fail",
+            "composite": 0.8654,
+            "ci95": [
+              0.8612399999999999,
+              0.8683312000000001
+            ],
+            "best_baseline_policy": "coverage-honest",
+            "best_task_relevant_policy": "coverage-honest",
+            "best_task_relevant_composite": 0.8654,
+            "headroom_band": "near_ceiling",
+            "evidence": "role_c_toolkit/artifacts/e4-scenario-family/analysis/d2_graded_final.json",
+            "note": "声明综合分：最优纯基线 coverage-honest = 0.8654，95% CI [0.8612399999999999, 0.8683312000000001]；headroom 分档 near_ceiling"
+          },
+          "verdict_binary": "fail"
+        },
+        "D3_interface_budget": {
+          "verdict": "blocked",
+          "evidence": null,
+          "note": "本版本引擎无粒度三档实现（IE 树全仓无 to_granularity/goal_granularity）；历史三档曾实测失败（B_if 39/39 单元×档位不可估；KSG 三档 0.53/0.48/0.61 非单调且配对差值 95% CI 全跨零）。补实现需改冻结引擎，须主理人决定。"
+        },
+        "D1_information_asymmetry": {
+          "verdict": "not_applicable",
+          "evidence": null,
+          "report": null,
+          "note": "本场景未声明真假混淆/诱饵机制，D1 不适用；补做等于给冻结场景加欺骗机制。"
+        }
+      },
+      "d1_control_scenario": null,
+      "admitted_utc": null,
+      "d1prime_prior": {
+        "scores": {
+          "a_decision_form": 2,
+          "b_goal_openness": 1,
+          "c_state_space": 3,
+          "d_time_scale": 3,
+          "e_opponent_diversity": 3,
+          "f_rule_complexity": 2
+        },
+        "prior_score": 2.333,
+        "source": "derived-from-contract",
+        "evidence": {
+          "a_decision_form": "family baseline TRK",
+          "b_goal_openness": "family baseline TRK",
+          "c_state_space": "family baseline TRK; mechanism 'air_surface_contacts' -> floor 3",
+          "d_time_scale": "family baseline TRK; mechanism 'communication_delay' -> floor 3",
+          "e_opponent_diversity": "family baseline TRK; mechanism 'crossing_tracks' -> floor 3",
+          "f_rule_complexity": "family baseline TRK"
+        },
+        "uncertain": [],
+        "note": "family baseline + mechanism floors; every contribution listed in derived_evidence"
+      }
+    }
+  ],
+  "d1prime_applied": {
+    "matched": 44,
+    "without_d1prime": [
+      "MD-AD-002-EASY",
+      "MD-AD-002-MEDIUM",
+      "MD-AD-002-HARD",
+      "MD-INT-003-EASY",
+      "MD-INT-003-MEDIUM",
+      "MD-INT-003-HARD",
+      "MD-AD-004-DECEPTION",
+      "MD-INT-002-AIR-SURFACE",
+      "MD-INT-005-STEALTH-MULTI-AXIS",
+      "MD-INT-006-SATURATION-ROE",
+      "MD-AD-006-ISLAND-STRIKE"
+    ],
+    "table_sha256": "7dabb0e459acfbb5138c904138778987730c81fd33bf9150112a0302f195da38"
+  },
+  "d2_applied": {
+    "matched": 35,
+    "without_d2": [
+      "MD-INT-003-EASY",
+      "MD-INT-003-MEDIUM",
+      "MD-INT-003-HARD",
+      "MD-INT-002-AIR-SURFACE",
+      "MD-INT-005-STEALTH-MULTI-AXIS",
+      "MD-INT-006-SATURATION-ROE",
+      "IE-01-SINGLE-TARGET",
+      "IE-02-DUAL-THREAT",
+      "IE-03-SURFACE-RAID",
+      "IE-04-COMBINED-ARMS",
+      "IE-05-MULTI-AXIS",
+      "IE-06-DECOY-MIXED",
+      "IE-07-CROSS-DOMAIN",
+      "IE-08-ISLAND-STRIKE",
+      "IE-09-STAGGERED-WAVES",
+      "IE-10-DUAL-AXIS-PINCER",
+      "IE-11-DECOY-SCREEN",
+      "IE-12-FOG-ONSET",
+      "IE-13-DEEP-STRIKE",
+      "IE-14-SATURATION-THREE-WAVE"
+    ]
+  },
+  "d2_graded_applied": {
+    "matched": 30,
+    "without_graded": [],
+    "summary_sha256": "55bd589ac39e9c0fed2af0f997ad41211a351289685475dfe335a5effd4f36b7",
+    "bands": {
+      "below_window": 2,
+      "window": 15,
+      "near_ceiling": 13
+    },
+    "by_family": {
+      "AD": {
+        "scenarios": 6,
+        "in_window": 5,
+        "near_ceiling": 0,
+        "floor_pick": 4
+      },
+      "ER": {
+        "scenarios": 6,
+        "in_window": 4,
+        "near_ceiling": 2,
+        "floor_pick": 2
+      },
+      "REC": {
+        "scenarios": 10,
+        "in_window": 4,
+        "near_ceiling": 6,
+        "floor_pick": 0
+      },
+      "TRK": {
+        "scenarios": 8,
+        "in_window": 2,
+        "near_ceiling": 5,
+        "floor_pick": 0
+      }
+    }
+  }
+}

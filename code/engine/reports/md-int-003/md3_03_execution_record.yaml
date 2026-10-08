@@ -1,0 +1,69 @@
+TASK_ID: MD3-03-001
+PHASE: MD3-03
+OBJECTIVE: >-
+  Extend the single V2 CombatSystem path with generic surface-target support
+  and one-tick delayed effects, preserving air and guided-missile behaviour.
+REQUIREMENTS:
+  - REQ-CBT-001
+  - REQ-CBT-002
+  - REQ-CBT-003
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_execution_record.yaml
+  - docs/adr/ADR-MD3-001-surface-target-domain.md
+  - catalog/v2/md_int_003.yaml
+  - openmdbench/combat/models_v2.py
+  - openmdbench/combat/v2.py
+  - openmdbench/combat/system_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - tests/contract/test_combat_damage_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - docs/adr/
+  - catalog/v2/
+  - openmdbench/combat/
+  - openmdbench/world/
+  - openmdbench/schemas/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/combat/models_v2.py
+  - openmdbench/combat/system_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - tests/contract/test_md_int_003_surface_combat.py
+  - reports/md-int-003/md3_03_execution_record.yaml
+  - reports/md-int-003/surface_combat.md
+PROHIBITED:
+  - MD-INT-003, faction, platform or fixed entity-ID branches in production Python.
+  - A second combat system, direct health/lifecycle mutation, or bypass of Effect/DamageIntent.
+  - Recalibrating benchmark values or treating U1-U13 as validated.
+  - ScenarioPackage/registry/interface changes, T4/T5, full-suite, performance/soak/security tests, commit, push, merge, or cleanup.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused combat/checkpoint contract tests and narrow existing V2 combat regression tests.
+  - Read-only source inspection, syntax/import checks, git status and diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 70
+ACCEPTANCE:
+  - surface is accepted only through generic target-domain compatibility.
+  - delayed_effect consumes ammunition/cooldown at launch, records deterministic pending evidence,
+    and resolves each due impact exactly once on the following tick.
+  - pending continuation state round-trips through the canonical checkpoint.
+  - invalid requests have no ammo, cooldown, pending-queue or weapon-RNG side effect.
+  - guided-missile and instant weapons retain their existing behavior.
+OUTPUTS:
+  - Generic delayed-impact DTO/checkpoint evidence and CombatSystem/World integration.
+  - Focused contract tests and MD3-03 report.
+STOP_CONDITIONS:
+  - A required feature needs a scenario-ID branch, a second combat authority, or direct mutable state in Catalog.
+  - Delayed effects cannot be checkpointed/restored through the canonical World checkpoint.
+  - Existing air/guided-missile behavior regresses under focused T2/T3 tests.

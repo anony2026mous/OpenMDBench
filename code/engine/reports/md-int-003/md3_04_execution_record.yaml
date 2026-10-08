@@ -1,0 +1,108 @@
+TASK_ID: MD3-04-001
+PHASE: MD3-04
+OBJECTIVE: >-
+  Add reusable source-event-triggered effects for continuous zone/collision
+  events, including single-fire detonation, lifecycle policy, wreck behaviour,
+  secondary-effect filtering, checkpoint evidence, and no scenario branches.
+REQUIREMENTS:
+  - REQ-DMG-001
+  - REQ-DMG-002
+  - REQ-DMG-003
+  - REQ-CBT-003
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/surface_combat.md
+  - reports/md-int-003/md3_03_execution_record.yaml
+  - docs/adr/ADR-MD3-003-self-detonation-wreck-lifecycle.md
+  - catalog/v2/md_int_003.yaml
+  - openmdbench/world/boundary_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/scenarios/declarative_v2.py
+  - tests/contract/test_md_int_003_surface_combat.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - docs/adr/
+  - catalog/v2/
+  - openmdbench/world/
+  - openmdbench/combat/
+  - openmdbench/scenarios/
+  - openmdbench/schemas/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/schemas/core_v2.py
+  - openmdbench/combat/models_v2.py
+  - openmdbench/combat/v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/scenarios/declarative_v2.py
+  - tests/contract/test_md_int_003_damage_lifecycle.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_04_execution_record.yaml
+  - reports/md-int-003/damage_lifecycle.md
+PROHIBITED:
+  - Scenario/faction/platform/entity-ID branches in production Python.
+  - Direct health, speed, capability, or lifecycle mutation by scenario data.
+  - A second collision/damage/lifecycle system or non-deterministic global RNG.
+  - Real-world parameter claims, T4/T5, full-suite, performance/soak/security tests,
+    commit, push, merge, or cleanup.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused source-event, boundary/collision, lifecycle/checkpoint and combat tests.
+  - Read-only inspection, syntax/import, git status and diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 90
+ACCEPTANCE:
+  - A data-defined one-shot zone/collision trigger creates only authoritative
+    Effect/DamageIntent records and cannot fire again after restore.
+  - Trigger lifecycle is data-selected: despawn or static wreck; a wreck cannot
+    move, sense, communicate, or fire but remains collision-visible.
+  - Secondary effects use deterministic independent identity-derived sampling and
+    data-defined target filtering; all effects still use simultaneous resolution.
+  - Continuous crossing and entity collision evidence determines source ordering,
+    with no entity traversal order dependence.
+OUTPUTS:
+  - Generic trigger/effect/lifecycle/checkpoint path, focused tests and report.
+STOP_CONDITIONS:
+  - The capability requires a scenario-ID branch or bypasses DamageIntent.
+  - Existing continuous boundary/collision evidence cannot identify source ordering.
+  - Wreck lifecycle cannot be represented without a second mutable world model.
+RESULT:
+  STATUS: DONE
+  IMPLEMENTATION: REMEDIATED_AFTER_REVIEW_FINDINGS
+  TESTS:
+    - "285 passed in 27.02s: MD3-04 + combat/damage/world/catalog contract set"
+    - "201 passed in 7.27s: declarative resource, geography/boundary, world checkpoint, generic schemas"
+    - "py_compile and scoped git diff --check passed"
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      The first read-only review found two P0 defects
+      (session-identity-dependent secondary sampling and nonterminal source
+      re-triggering) and one P1 defect (all destroyed entities becoming implicit
+      wrecks). The current Codex completed a frozen-scope structural self-review
+      of the generic trigger, lifecycle, checkpoint, compiler/schema, and
+      failure-oriented tests after all three fixes. No remaining P0/P1 was found.
+      Per AGENTS.md 3.2 this is SELF_REVIEWED, not a claim of independent review.
+  COMPATIBILITY: >-
+    Existing scenario packages resolve the explicit lifecycle policy to wreck by
+    default; the focused combat, damage, factory, compiler, geography and
+    checkpoint regressions passed. New packages may explicitly use despawn.
+  DETERMINISM: >-
+    Secondary sampling is derived from resolved hash, session seed, trigger and
+    source evidence identity; consumption is checkpointed by resolved trigger
+    and source identity. Same seed with different session IDs is covered.
+  DOMAIN_IMPACT: >-
+    Weapon, collision, trigger and other DamageIntent destruction now shares one
+    data-driven wreck/despawn policy; only recorded wrecks remain collision-visible.
+  RISKS: >-
+    U7 remains UNVALIDATED_BENCHMARK. Full T4/T5, scenario-package migration and
+    interfaces are intentionally deferred to their assigned later phases.
+  NEXT_GATE: "MD3-04 DONE; create and execute the MD3-05 record before modifying MD3-05 scope."

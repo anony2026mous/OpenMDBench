@@ -1,0 +1,84 @@
+TASK_ID: MD3-01-002
+PHASE: MD3-01
+OBJECTIVE: >-
+  Restore the accepted MD-INT-001 decision-record contract required by the
+  legacy compatibility test, without changing runtime behavior or parameters.
+REQUIREMENTS:
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+  - REQ-DET-001
+  - REQ-SEC-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md_int_001_phase_a.md
+  - reports/md_int_001_task_b03.md
+  - tests/contract/test_md_int_001_adrs.py
+  - openmdbench/scenarios/md_int_001_config.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/
+  - openmdbench/scenarios/md_int_001_config.py
+  - tests/contract/test_md_int_001_adrs.py
+ALLOWED_WRITE:
+  - docs/decisions/ADR-MDINT001-001-weihai-world-and-time.md
+  - docs/decisions/ADR-MDINT001-002-uav-kinematics.md
+  - docs/decisions/ADR-MDINT001-003-interceptor-weapon.md
+  - docs/decisions/ADR-MDINT001-004-per-round-simultaneous-damage.md
+  - docs/decisions/ADR-MDINT001-005-breach-priority.md
+  - docs/decisions/ADR-MDINT001-006-metric-na-reweighting.md
+  - docs/decisions/ADR-MDINT001-007-usv-mmg-mode.md
+  - docs/decisions/ADR-MDINT001-008-tick-order.md
+  - reports/md-int-003/full_test_report.md
+  - reports/md-int-003/md3_01_legacy_adr_recovery_execution_record.yaml
+PROHIBITED:
+  - Production/schema/Catalog/scenario/test/configuration changes, real-world
+    calibration claims, dependencies, T2+ system tests, T4/T5, commits, pushes
+    or cleanup.
+TEST_LEVEL: T1
+ALLOWED_COMMANDS:
+  - Markdown/YAML structural validation and the focused ADR contract pytest.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 45
+ACCEPTANCE:
+  - All eight legacy ADR paths exist with accepted status and required sections.
+  - Their decisions match the existing frozen configuration and reports, while
+    preserving benchmark/assumption provenance.
+  - The focused legacy ADR contract passes with no runtime modification.
+OUTPUTS:
+  - Eight accepted legacy decision records, focused contract evidence and an
+    updated full-test failure record.
+STOP_CONDITIONS:
+  - The evidence requires choosing a new parameter, changing current behavior,
+    asserting unverified real-world fidelity, or changing an unrelated artifact.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      1 passed in 0.02s: the focused legacy ADR contract verified all eight
+      decision files, Accepted status and required sections.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Compared each restored decision against the frozen MD-INT-001 schema and
+      historical Phase A/B03 reports. Decisions preserve existing configuration
+      and benchmark provenance; no runtime, schema, Catalog, test or parameter
+      behavior was changed.
+  COMPATIBILITY: >-
+    Restores a documented legacy test contract only. Existing configuration and
+    runtime interfaces are unchanged.
+  DETERMINISM: Not applicable; this is an immutable documentation-artifact repair.
+  DOMAIN_IMPACT: >-
+    The records explicitly retain benchmark/assumption status and make no
+    real-world calibration claim.
+  RISKS:
+    - >-
+      The earlier MD3-11 static quality, full-suite/coverage and resource-scale
+      failures remain unresolved and require their dedicated repair stages.
+  NEXT_GATE: >-
+    Continue with static-quality and native-worker resource remediation before
+    opening a fresh MD3-11 T4/T5 execution record.

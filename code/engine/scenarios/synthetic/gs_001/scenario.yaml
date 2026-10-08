@@ -1,0 +1,67 @@
+schema_version: package@2.0
+scenario:
+  schema_version: "2.0"
+  scenario_id: gs.multifaction-mixed-domain
+  display_name: Generic multi-faction scenario
+  factions:
+    - {schema_version: "2.0", id: faction.alpha}
+    - {schema_version: "2.0", id: faction.bravo}
+    - {schema_version: "2.0", id: faction.civilian}
+  relationships:
+    - schema_version: "2.0"
+      source_faction_id: faction.alpha
+      target_faction_id: faction.bravo
+      relation: hostile
+    - schema_version: "2.0"
+      source_faction_id: faction.alpha
+      target_faction_id: faction.civilian
+      relation: protected
+  entities:
+    - schema_version: "2.0"
+      id: entity-independent
+      faction_id: faction.alpha
+      platform_ref: platforms.generic@2.0.0
+      dynamics_ref: dynamics.generic@2.0.0
+      initial_state:
+        schema_version: "2.0"
+        position_m: [100.0, 200.0, 300.0]
+        velocity_mps: [10.0, 0.0, 0.0]
+        heading_deg: 90.0
+      controller_slot: controllers/entity-independent
+      tags: [generic]
+  formations: []
+  world:
+    schema_version: "2.0"
+    coordinate_system: local_m
+    duration_ticks: 1000
+    tick_seconds: 1.0
+    boundary_policy: constrain_motion
+    zones:
+      - schema_version: "2.0"
+        id: zone.objective
+        geometry_type: polygon
+        coordinates_m: [[0.0, 0.0], [1000.0, 0.0], [0.0, 1000.0]]
+        tags: [objective]
+  events:
+    - schema_version: "2.0"
+      id: event.weather
+      event_type: weather_change
+      trigger: {kind: tick, tick: 5}
+      priority: 0
+      depends_on: []
+      payload: {environment_ref: environments.generic@2.0.0}
+  mission_rules:
+    - schema_version: "2.0"
+      id: rule.timeout
+      priority: 10
+      condition:
+        schema_version: "2.0"
+        operator: time
+        parameters: {tick: 100}
+      outcome: success
+  score_metrics:
+    - schema_version: "2.0"
+      id: metric.survival
+      value: null
+      available: false
+      weight: 1.0

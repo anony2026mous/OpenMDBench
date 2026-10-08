@@ -1,0 +1,489 @@
+%%% OpenMDBench supplementary material (v20260930-merged):
+%%% scenario parameters, API spec, tactic templates, attribution validity,
+%%% metric definitions, grid protocol, deception statistics, grid environment,
+%%% per-seed grid detail (I), and engineering-reliability statistics (J).
+\documentclass[sigconf,anonymous]{aamas}
+
+%%%% For camera-ready, use this
+%\documentclass[sigconf]{aamas}
+
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{pifont} % dingbat check/cross marks (LibertinusMath lacks U+2713)
+\setlength{\emergencystretch}{3em} % give narrow columns room to break around inline math
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% AAMAS-2027 copyright block (do not change!)
+
+\makeatletter
+\gdef\@copyrightpermission{
+  \begin{minipage}{0.2\columnwidth}
+   \href{https://creativecommons.org/licenses/by/4.0/}{\includegraphics[width=0.90\textwidth]{by}}
+  \end{minipage}\hfill
+  \begin{minipage}{0.8\columnwidth}
+   \href{https://creativecommons.org/licenses/by/4.0/}{This work is licensed under a Creative Commons Attribution International 4.0 License.}
+  \end{minipage}
+  \vspace{5pt}
+}
+\makeatother
+
+\setcopyright{ifaamas}
+\acmConference[AAMAS 2027]{Proc.\@ of the 26th International Conference
+on Autonomous Agents and Multiagent Systems (AAMAS 2027)}{3--7 May 2027}{Hanoi, Vietnam}{M.~Baldoni, F.~Fang, W.~Yeoh, N.~Yorke-Smith (eds.)}
+\copyrightyear{2027}
+\acmYear{2027}
+\acmDOI{}
+%\acmPrice{}
+\acmISBN{}
+
+%%% Replace with your OpenReview submission id before submitting.
+\acmSubmissionID{817}
+
+\submissionType{Research Paper Track}
+
+\title[OpenMDBench]{OpenMDBench: Supplementary Material}
+
+%%% Author information is suppressed by the `anonymous' option.
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \city{}
+  \country{}}
+\email{anonymous@example.com}
+
+%%% Notation macros (shared with the main text).
+\newcommand{\sapp}[1]{App.~#1}
+\newcommand{\Cinfo}{C_{\mathrm{info}}}
+\newcommand{\Bif}{B_{\mathrm{if}}}
+\newcommand{\headroom}{\mathrm{headroom}}
+\newcommand{\yes}{\ding{51}}
+\newcommand{\no}{\ding{55}}
+
+\begin{abstract}
+This supplement provides scenario family parameters with the admitted-family table and headroom trend (A), the polling API specification (B), opponent tactic templates and strength knobs (C), attribution validity guarantees (D), layered metric definitions (E), grid training and protocol details (F), deception design statistics (G), the grid environment specification with rescue-channel evidence (H), per-seed grid experiment detail (I), and engineering-reliability statistics (J).
+\end{abstract}
+
+\keywords{supplementary material, evaluation benchmark, multi-domain heterogeneous systems}
+
+\begin{document}
+
+\maketitle
+
+\section{Scenario Family Parameters}\label{app:A}
+
+\paragraph{Designed family.}
+36 scenarios across 5 categories, each at 3 difficulties (108 configurations): Reconnaissance (8), Tracking \& Surveillance (8), Interception \& Response (8), Zone Control (6), Emergency Response (6). Estimated intrinsic couplings: 1.2 / 1.8 / 2.2 / 2.8 / 2.0 respectively. The inter-domain dependency strength $I \in [0,1]$ composes temporal dependency ($+0.3$), spatial co-location ($+0.3$), and information flow ($+0.3$), capped at 1.
+
+\paragraph{Admitted interception-engagement scenarios.}
+Table~\ref{tab:scenparams} lists the 14 admitted scenarios of the interception-engagement category, exported verbatim from the frozen scenario packs released with the benchmark; parameter tables for the remaining categories will be exported from their packs upon admission under the same gates.
+
+\input{tables/tab_scenario_params}
+
+\paragraph{Headroom trend within the admitted family.}
+Across the 14 scenarios, each layered stack's gain over the best monolithic baseline (per-scenario episode means, under the no-intelligence regime of the main results) declines with baseline strength: Spearman $\rho = -0.50$ for LLM+Rule ($p = 0.07$) and $\rho = -0.68$ for LLM+RL ($p = 0.008$), $n = 14$; excluding IE-03, $\rho = -0.37$ ($p = 0.21$) and $\rho = -0.59$ ($p = 0.03$). Five of the eight negative cells fall in the four strongest-baseline scenarios. This is an observational trend on a proxy composite rather than a controlled headroom manipulation, but it is the direction the layering law's headroom term predicts.
+
+\paragraph{Scenario-family admission calibration.}
+To widen coverage beyond the interception-engagement category, an admission campaign re-calibrated 30 scenarios into the headroom window $[0.40, 0.85]$ on the best pure baseline, 5 seeds $\times$ 60 episodes per scenario per batch (batches independent, never pooled). The campaign's category encoding refines the design-level categories above: AD (adversarial-defense, 6), ER (emergency-response, 6), REC (reconnaissance, 10), TRK (tracking, 8); ledger and design-family counts differ by construction---the design-level family states 36 canonical scenarios, the admission ledger tracks 55 entries including re-calibrated variants, and the 30 confirmed scenarios are the subset whose 5-seed re-calibration completed. Under the composite scoring the campaign reaches 15/30 scenarios inside the window (7/30 before re-calibration), with AD (5), ER (4), and REC (4) each contributing $\geq 3$ in-window scenarios---meeting the D2 gate across three categories---while TRK contributes 2 (MD-TRK-005's re-calibrated variant reaches 0.557 in a single-seed check; its 5-seed confirmation is pending). The full admission ledger covers 55 scenarios (DF prior ratings on 44; D2: 16 pass / 19 fail / 20 pending). Re-calibration used declared scenario parameters only (AD: protected-zone advance along the threat axis, $x=520$: $1.000 \rightarrow x=900$: $0.45$--$0.63$; ER: response-zone extension, $+60$ m: $0.914 \rightarrow +70$ m: $0.601$; TRK: observer retreat / blue-target advance), with three documented costs: floor scripts (indiscriminate/naive) become the best pure baselines in several scenarios (difficulty from geometry, not decision quality); several metrics are cliff-shaped (gap 0/1, arrival $1.0 \rightarrow 0.23$) with no continuous gradient; and the feasible difficulty band is narrow (MD-TRK-002 $=0.393$, MD-AD-001 $=0.443$ straddle the window edge).
+
+\paragraph{DF prior-rating validation.}
+The 6-dimension decision-form prior is a 6-point checklist (0/1 per item): (1) cross-domain allocation required; (2) intent inference or deception handling required; (3) protocol/compliance reasoning required; (4) open-language briefing interpretable by an LLM rather than a numeric table; (5) spatial micro-control is \emph{not} the sole bottleneck; (6) a myopic per-unit greedy script falls short of a rule baseline. Items (1)--(4) are semantic-decision forms the LLM handles well; item (5) excludes geometric-micro-control scenarios; item (6) is the operationalization of DF. We rated the prior on 7 paired scenarios and tested its correlation with measured layered gain. Spearman $\rho = -0.0092$ ($p = 0.997$), criterion ($\rho > 0.5$, $p < 0.05$) not met. The test is uninformative rather than falsifying: layered gains range only over $[-0.030, +0.086]$ across the 7 scenarios, and detecting $\rho > 0.5$ at that range would require on the order of 50 scenarios. The scenario-family calibration that standardizes pure baselines into the window also compresses the layered-gain variance the correlation needs. We therefore do not claim predictive validity for the prior rating; DF is supported as a design-side gate plus the anchor pair (grid: DF fails $\rightarrow$ layering does not pay; high-fidelity: DF holds $\rightarrow$ layering pays) and the mechanism probe (Section~6.9), and mid-range quantitative validation is left to the enlarged family.
+
+\section{Polling API Specification}\label{app:B}
+
+The distributed platform separates simulation (server side) from inference (client side). The interface is a RESTful HTTP API exchanging JSON documents; no model weights, code, or environment state beyond the API surface ever crosses the boundary.
+
+\paragraph{Endpoints.}
+(i) \texttt{POST /session} --- create a session, return \texttt{session\_id} plus a capability manifest; (ii) \texttt{GET /session/\{id\}/briefing} --- fetch the current natural-language mission briefing; (iii) \texttt{GET /session/\{id\}/state} --- fetch the rendered observation (layout fixed by scenario configuration: JSON default, natural-language variant available for the modality study); (iv) \texttt{POST /session/\{id\}/decisions} --- submit a decision (goal plan for the planner role, action for the executor role); (v) \texttt{GET /session/\{id\}/events} --- poll termination and event messages; (vi) \texttt{DELETE /session/\{id\}} --- close and archive.
+
+\paragraph{JSON payloads.}
+A decision payload is \texttt{\small\{"goals":[\allowbreak\{"unit":<id>\allowbreak,"goal":<goal-id>\allowbreak,"params":<param-object>\}]\allowbreak, "clock":<tick>\}}; the server replies with \texttt{\small\{"accepted":[...]\allowbreak, "rejected":[...]\allowbreak, "reason":<code>\}}. Goal vocabulary, parameter ranges, and rejection codes are published in the frozen API manifest shipped with the benchmark.
+
+\paragraph{Session resumption and integrity.}
+Simulation advances asynchronously of inference: a 60\,s LLM deliberation does not block the server, and sessions are resumable from the last acknowledged tick. Resumption was verified under 120\,s injected decision latency (load test, 20 parallel sessions, 0 desynchronizations). Integrity measures bound the trust model: per-session rate limits on decision submissions, action-pattern consistency checks (rejected actions outside the manifest vocabulary or parameter ranges), and manifest-hash verification on session creation.
+
+\section{Tactic Templates and Strength Knobs}\label{app:C}
+
+The scripted opponent deploys through tactic templates---saturation pressure, multi-axis feint, escorted advance, dispersed probing---each parameterized by calibrated strength knobs. Knobs adjust wave cadence, feint ratio, escort count, and probing dispersion; the knob sweep doubles as the D2 headroom-calibration instrument (baseline success-rate operating window $[40\%, 85\%]$ for the admitted suite). Templates are deterministic functions of the scenario clock and the role-standardized briefing channel; they never read the evaluated agent's private state.
+
+\section{Attribution Validity Guarantees}\label{app:D}
+
+Five pre-registered checks guard the counterfactual-replay decomposition: (i) identical interface definitions across counterfactuals; (ii) deterministic dynamics with fixed seeds; (iii) replay consistency---own-trace replay reproduces original performance; (iv) monotonicity---qualitatively worse executors yield larger $\Delta E$; (v) reference-component quality independently validated on single-domain subtasks.
+
+\paragraph{Executor-effectiveness precheck.}
+Attribution requires an executor that responds to goals. When the executor sits at a performance floor, planner differences are masked; attribution is therefore gated with an executor responsiveness test (goal-conditioned vs.\ monolithic SR gap) and floor effects are reported explicitly.
+
+\paragraph{Anchored-fault extension.}
+To sharpen localization, each synthetic fault is anchored at a \emph{critical opportunity} in a pre-matched trajectory prefix (state fingerprint matching the clean run up to injection), with injection reach, local consequence, and endgame effect reported separately. The layer of first appearance is localized at the goal/action recording boundary in 20/20 paired seeds under four gates: integrity-and-replay (fault injection does not break trace replay), critical-exposure (the anchored opportunity is genuinely decision-relevant), matched-prefix (fingerprints align up to injection), and boundary-localization (the recording boundary discriminates the layer). These are known synthetic faults on a rule-planner base under matched prefixes---calibration of the recording-and-replay pipeline, not blind natural-fault attribution.
+
+\paragraph{Determinism scope.}
+Replay assumes a deterministic system, satisfied by the grid. The real-stream counterfactual validates the decomposition on the \emph{live} LLM planning stream replay-gated, with the goal recording boundary---where planner output enters the interface---fixed by instrumentation. On the nondeterministic high-fidelity endpoint, the diagnosis instead uses the prompt-level audit and the three-part stability criterion. Counterfactual executor substitution freezes the original goal sequence by construction, so faults that degrade the executor itself (rather than its goals) are outside the measured scope of the replay-gated attribution.
+
+\section{Layered Metric Suite}\label{app:E}
+
+\paragraph{Planning-attributable.}
+Mission Understanding Score (behavior--priority alignment); Resource Allocation Efficiency (vs.\ MILP optimum); Adaptability Score (time-to-recover after instruction switches, normalized by severity); Cross-Domain Coordination Score (handover success and timing across domains, track-maintenance ratios); Opponent Intent Inference Score with sub-metrics Anticipation Lead Time, Feint Detection Rate, Target Prediction Accuracy.
+
+\paragraph{Execution-attributable.}
+Task Success Rate; Time/Energy Efficiency; Collision \& Safety Score; Tracking Accuracy; friction statistics (fuel, interference events, packet loss, obstacle collisions).
+
+\paragraph{Composite.}
+$S_{\mathrm{total}} = w_P \cdot S_P + w_E \cdot S_E$, with $w_P = w_E = 0.5$. Both component scores are normalized to $[0,1]$, so $S_{\mathrm{total}} \in [0,1]$. Aggregation uses paired statistics (Wilcoxon signed-rank, sign tests, bootstrap CIs) with seeds paired across systems. All raw measures are dumped per-episode as released traces.
+
+\section{Grid Training and Protocol Details}\label{app:F}
+
+\paragraph{MAPPO training.}
+CTDE, goal-conditioned (11-dim conditioning), 3 seeds $\times$ 5M--20M steps per difficulty, curriculum plus shaped variants on the complex tier; 31 checkpoints frozen with a SHA256 environment manifest.
+
+\paragraph{Complex-layer layered-stack confirmation (P0-1).}
+To close the gap noted in Section~6.2---complex-tier layered stacks were previously unmeasured---a frozen five-seed paired batch (seeds 63101--63105) ran all four stacks on complex (continuous mode, 150-step cap, frozen scenario parameters) with the same fixed medium checkpoint (SHA256 \texttt{223dbf74\ldots cd0a8}; a single training seed, so the five environment seeds reflect fixed-model environmental variance, not five independent training runs). Per-seed composites and paired differences:
+
+\begin{table}[H]
+\centering
+\caption{Complex-tier four-stack batch (5 paired seeds): mean composite and success rate with paired differences against the same-condition pure baseline (seed-bootstrap 95\% CIs).}
+\label{tab:complexlayered}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Stack & Mean $V$ & SR & Paired $\Delta V$ [95\% CI] \\
+\midrule
+Rule (rule planner + GOAI heuristic) & 0.787 & 80\% & --- \\
+Pure MAPPO (fixed medium checkpoint) & 0.240 & 0\% & --- \\
+LLM+heuristic & 0.400 & 20\% & $-0.387$ [$ -0.707$, $-0.053$] \\
+LLM+MAPPO & 0.220 & 0\% & $-0.020$ [$-0.073$, $+0.027$] \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+The paired LLM+heuristic$-$Rule difference excludes zero ($-0.387$, 95\% CI $[-0.707,-0.053]$): with decision-form mismatch, the LLM planner does not merely fail to help, it hurts---the same heuristic executor scores 0.787 with rule goals and 0.400 with LLM goals. The LLM+MAPPO$-$Pure MAPPO difference does not exclude zero, consistent with the executor floor (0\% SR in both arms). Across tiers the layered deficit widens from medium ($\Delta V_A = -0.213$, Table~2 of the main text) to complex ($-0.387$), the direction predicted by the decision-form-mismatch gradient. Protocol, per-seed rows, and engine hashes are in the packaged batch \texttt{P0\_GRID\_COMPLEX\_LAYERED\_20261006\_p01} (20 completed formal episodes, protocol SHA256 \texttt{25115d36\ldots 0e4f4}).
+
+\paragraph{Complex-domain effective coverage (B1 audit).}
+A domain-coverage audit (10 seeds $\times$ 10 scenarios $\times$ 4 configurations, $n=400$) measured the effective domain coverage $C_{\mathrm{eff}} = |\text{domain}| \times \text{SR}$ on the complex tier. Results: Rule $1.933$ [1.800, 2.000]; LLM+heuristic $1.987$ [1.960, 2.000]; LLM+MAPPO $1.668$ [1.474, 1.873]; Pure MAPPO $0$ (SR floor). The complex tier's effective coverage is roughly half that of the medium tier, consistent with the cross-tier SR gap. The high-fidelity 14-scenario B1 coverage audit was not completed before the submission deadline; the 14-scenario effective coverage is therefore not claimed as a finished deliverable.
+\paragraph{Baseline-strength diagnostic (E14).}
+Because the complex tier's pure-MAPPO success rate is 0\%, we ran a frozen-scenario diagnostic re-training audit (12 configurations $\times$ 3 training seeds, continuous mode, 8 envs, 4096 steps/rollout, goal-injection probability 0.5; inference by the deterministic actor without goals; seed-bootstrap 95\% CIs, 3 independent training seeds, 20k resamples): doubled training length (10M steps), medium-weight curriculum (weight init only, optimizer/reset-normalizer reinitialized), and two hyperparameter sweeps (halved LR; doubled LR with doubled entropy). All best and final confirmation success rates remain 0\% across all 12 configurations. Critically, a frozen \emph{medium}-tier checkpoint transfers directly to complex at 50\% pre-check success (5/10) yet collapses to 0\% after on-complex fine-tuning. Together this is evidence of training dynamics---policy forgetting under on-complex goal injection and distribution shift---not task unsolvability; the boundary claim of Section~6.2 rests on the deployment outcome (layering shows no net advantage), not on this causal attribution. A structural intervention (simplified complex re-training) was not executed, as it requires changing frozen scenario parameters and separate authorization.
+
+\paragraph{Headroom-manipulation feasibility probe (Experiment 2).}
+Section~6.7 notes that the negative side of P3 cannot be tested as a within-family information gradient; this paragraph records the probe behind that claim. All runs use the scripted rule planner only (no LLM calls), on the IE-05 multi-axis family, with the same execution tier and metric field, so the probe isolates the planning layer.
+Two studies were run; they manipulate different variables and are never merged. \emph{Study 1} (existing frozen gate data, seeds 4151--4160, 4 quantity tiers $\times$ 10) contrasts allocation-decision rules at a fixed strong dose: $greedy{=}\mathrm{true}$ vs.\ $greedy{=}\mathrm{false}$. The difference is positive in 4/4 tiers (range $+0.012$ to $+0.106$; 2/4 exclude zero), i.e., allocation-rule quality contributes on the order of $+0.1$. \emph{Study 2} (new runs, seeds 64101--64105) contrasts planning-information availability: full plans vs.\ degraded (hold) plans, after a 32-tier baseline scan located near-saturated tiers (scan range $0.17$--$1.00$). The full-vs-degraded effect is significant in 5/5 tiers, magnitude $+0.62$ to $+0.73$---an order of magnitude larger than allocation-rule quality, and a successful positive control for the information manipulation. A granularity probe (N013, seed 64101) confirms the manipulation is effectively binary: removing only \texttt{target\_id} from the goal collapses the tier to $\approx 0.18$, while removing position/speed/pattern/constraints changes nothing ($0.9692$ in both cases), because the executor consumes only \texttt{target\_id}.
+The 2$\times$2 interaction is \emph{not} attributable to headroom, for three reasons that must accompany any citation: (i) the degraded arm is a structural floor---$V \approx 0.18$ across all tiers, insensitive to tier and seed, so it carries no difficulty fingerprint; (ii) the tiers split by scan $V$ do not differ by pre-registered difficulty; (iii) all seed-level variance comes from the full-information arm, making the interaction descriptive only. Combined with Study 1, the family separates the contributions cleanly---plan availability ($\approx 0.7$) vs.\ allocation-rule quality ($\approx 0.1$)---yet its headroom dimension is not resolvable by information-level manipulation, which is why condition (iii)'s causal evidence is carried by the cross-family contrast of Section~6.7 rather than a within-family information gradient. Data: \texttt{e1\_2x2\_option1.json}, \texttt{e1\_2x2\_option2.json}; Study 2 batch SHA-256-manifested (594 files).
+
+\paragraph{LLM serving.}
+Qwen3.8-27B on vLLM (temperature 0.1); complex-tier evaluation concurrency capped at 2 after load tests. Engineering-reliability statistics for all LLM-served batches appear in \sapp{J}.
+
+\paragraph{Model-invariance scan (four models, juxtaposed not pooled).}
+On grid medium (goal-mode strong vs.\ hold, LLM+RL with the frozen MAPPO executor), two dense (Qwen3.8-27B, Qwen3-8B; local vLLM, output cap 1024) and two MoE (MiniMax-M3, MiniMax-M2.7-highspeed; third-party API, output cap 8192) planners were compared with paired seeds per batch. Each batch freezes independently; batches differ in serving regime and output cap, so they are juxtaposed and never merged into one estimate.
+
+\begin{table}[H]
+\centering
+\caption{Model-invariance scan: interface causal necessity (strong$-$hold) and deployment deficit (strong$-$pure RL), seed-bootstrap 95\% CIs. Four models reproduce the interface condition; the fastest MoE closes the gap to pure RL in strong---a headroom boundary, not a violation.}
+\label{tab:modelinvariance}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & Qwen3.8-27B & Qwen3-8B & MM-M3 & MM-M2.7-hs \\
+\midrule
+strong$-$hold & $+0.431$ [$0.226$, $0.615$] & $+0.464$ [$0.269$, $0.656$] & $+0.313$ [$0.003$, $0.600$] & $+0.450$ [$0.140$, $0.700$] \\
+vs.\ pure RL & $-0.433$ [$-0.800$, $0.067$] & $-0.200$ [$-0.800$, $0.133$] & $-0.422$ [$-0.700$, $0.067$] & $+0.022$ [$0.000$, $0.067$] \\
+$n$ seeds & 13 (3 ref.) & 13 (3 ref.) & 10 (3 ref.) & 10 (3 ref.) \\
+Serving & local/1024 & local/1024 & API/8192 & API/8192 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+MM = MiniMax.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{figures/figA1_model_invariance.pdf}
+\caption{Model-invariance scan with frozen estimates and 95\% confidence intervals for strong$-$hold and deployment relative to pure RL. The MM-M2.7-hs deployment interval includes zero: a headroom boundary, not a violation. Serving settings are shown below each model name.}
+\label{fig:a1model}
+\end{figure}
+
+Pre-registered criteria: interface causal necessity $=$ mean(V$_{\mathrm{strong}} - V_{\mathrm{hold}}$) $> 0$ with bootstrap CI lower bound $> 0$; deployment deficit $=$ mean(V$_{\mathrm{strong}} - V_{\mathrm{pure\,RL}}$) $< 0$. The deployment-deficit criterion is comparatively fragile: each batch has only three reference seeds, so intervals are wide. MiniMax models are MoE (428B/A23B, 230B/A10B); total and active parameters vary jointly against the dense Qwen models, so the table supports no claim of monotonicity in parameter scale. The fastest MoE reached the pure-RL level in strong condition---the law's headroom premise vanishing---recorded as a boundary, not relabeled.
+
+\paragraph{Protocol gates.}
+The main run was preceded by per-scenario determinism gates, cross-arm channel-fairness audits (identical interfaces and rendering across arms of a contrast), and manifest-hash freezing of engine and scenario versions. Goal-dose batches ran on an engine release and score metric kept separate from the payoff runs; contrasts are strictly within batch, seeds are the sampling unit (no tick-level pseudo-replication).
+
+\paragraph{Trace provenance note.}
+Released grid traces predate the unified role standard and label the defender \texttt{blue} / the scripted opponent \texttt{red}; all reported numbers are unchanged under the relabeling.
+
+\section{Deception Design and Discrimination Statistics}\label{app:G}
+
+\paragraph{Feature indistinguishability.}
+In the grid, 50\% of transports are feints whose numeric features (position, speed, signature) are indistinguishable from genuine targets; the only tell is heading kinematics visible through repeated semantic contacts, never in the local grid encoding. On the high-fidelity suite, the pre-registered IA protocol measures a numeric-feature discriminator at or below 60\% (rule) and the LLM-based intent model at or above 85\% on feint-vs-real; the outcome is reported as a diagnostic and mechanism probe, not an acceptance gate (Section~6.9).
+
+\paragraph{Observed feint exposure on the grid (six-arm batch).}
+Over seeds 501--510, the rule-rule stack observed 4 feints and hit all 4 observed; rule-rl observed 1; llm-rl observed 1; pure-rl observed 2; the LLM stacks observed 0 feints. Feint hits are a behavioral proxy, not detection accuracy: with $\leq$1 feint observed per LLM stack in 10 seeds, we do \emph{not} claim an autonomous feint-recognition rate; feint handling contributes only where feints are actually observed and engaged.
+
+\paragraph{Intelligence-regime ablation (high-fidelity).}
+The no-intelligence regime removes opponent wave-by-wave intelligence (including future ground truth) from the briefing; the legacy regime retains it. Per-stack differences ($n$ = episodes per regime):
+
+\begin{table}[h]
+\centering
+\caption{Intelligence-regime ablation on the three LLM stacks (same 14 scenarios): no-intelligence vs.\ legacy wave-by-wave opponent intelligence (including future ground truth); $n$ = episodes per regime; positive $\Delta$ = no-intelligence higher.}
+\label{tab:nointel}
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Stack & $n$ & Legacy & No-intel & $\Delta$ \\
+\midrule
+LLM+Rule & 70 & 0.769 & 0.790 & $+0.021$ \\
+LLM+RL & 70 & 0.783 & 0.783 & $+0.000$ \\
+Pure LLM & 70 & 0.516 & 0.431 & $-0.085$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Grid Environment Specification and Rescue-Channel Evidence}\label{app:H}
+
+\paragraph{Environment.}
+$20 \times 20$ grid, 150 steps; blue fields 2 USVs + 1 UAV with a UAV$\to$USV track-based standoff-interception chain (task-coupling modes: independent / sequential / continuous; the continuous mode is used throughout the batches of Appendix~\ref{app:I}). Red runs scripted multi-wave intrusions with deception by construction. Three difficulty tiers scale entity counts, action noise (0--0.20), communication delay/loss, anomaly rate (false reports, unknown relabeling), and an optional UAV-seeking interference source.
+
+\paragraph{Interface modality comparison (paired seeds).}
+Natural-language vs.\ JSON state rendering for the same scenarios:
+
+\begin{table}[H]
+\centering
+\caption{Interface modality comparison (paired seeds). JSON wins at low semantic load; NL trends back at high load.}
+\label{tab:interface}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+Tier ($n$) & NL SR & JSON SR & $\Delta$(NL$-$JSON) & sign test \\
+\midrule
+simple (15) & 93\% & 87\% & $+7\%$ & $p = 0.50$ \\
+medium (45) & 69\% & 84\% & $\mathbf{-16\%}$ & $p = 0.98$ \\
+complex (45) & 11\% & 7\% & $+4.4\%$ & $p = 0.34$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Replanning-frequency and interface-cost sweep.}
+Exploratory sweep on grid medium (continuous mode, goal-mode strong, LLM+RL with a frozen MAPPO executor, 3 seeds/condition; new batch, not pooled with Appendix~\ref{app:I} batches). Replanning interval $k\in\{10,5,2\}$ steps; briefing content and GOAI format fixed; seed-level bootstrap 95\% CIs:
+
+\begin{table}[H]
+\centering
+\caption{Replanning-frequency sweep on grid medium (3 seeds/condition, goal-mode strong). Utility rises $10\!\to\!5$ and flattens $5\!\to\!2$ while interface cost grows $\approx$2.5$\times$; every frequency trails the pure-RL baseline. Descriptive plateau candidate, not confirmatory saturation (ceiling effects; small $n$).}
+\label{tab:frequency}
+\resizebox{\columnwidth}{!}{%
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Replanning interval & Utility $V$ [95\% CI] & $\Delta V$ vs.\ pure RL [95\% CI] & tokens/100 steps \\
+\midrule
+$k=10$ & $0.467$ [$0.229$, $0.751$] & $-0.511$ [$-0.771$, $-0.197$] & $12{,}641$ \\
+$k=5$ & $0.733$ [$0.373$, $1.000$] & $-0.244$ [$-0.627$, $+0.052$] & $23{,}466$ \\
+$k=2$ & $0.733$ [$0.373$, $1.000$] & $-0.244$ [$-0.627$, $+0.052$] & $56{,}403$ \\
+pure RL & $0.978$ & --- & $0$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{figures/figA2_replanning_sweep.pdf}
+\caption{Replanning-frequency sweep on grid medium (3 seeds/condition, goal-mode strong). Utility rises $10\!\to\!5$ and flattens $5\!\to\!2$ while interface cost grows $\approx$2.5$\times$; every frequency trails the pure-RL baseline. Descriptive plateau candidate, not confirmatory saturation (ceiling effects; small $n$).}
+\label{fig:a2replan}
+\end{figure}
+
+Paired increments: $k=10\to5$: $+0.267$ [$0.029$, $0.551$]; $k=5\to2$: $0.000$ [$0.000$, $0.000$]. Costs are operational proxies (calls, API tokens, briefing bytes), not Shannon bits; requested replanning frequency does not imply every goal was accepted.
+
+\paragraph{Intervention study (informed planner).}
+Main-text Section~6.5 cites the full table; per-system results on the complex tier (20 paired episodes):
+
+\begin{table}[H]
+\centering
+\caption{Intervention study on the complex tier (20 paired episodes). The informed LLM planner receives rendered heading kinematics and a six-point exclusive intelligence brief; performance does not move.}
+\label{tab:intervention}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+System & SR & Contrast & $\Delta$SR [95\% CI] \\
+\midrule
+rule + heuristic & 65\% & --- & --- \\
+rule\_intel (feint filter) & 60\% & vs.\ rule & $-5$ [$-15, 0$] \\
+LLM + heuristic & 10\% & --- & --- \\
+\textbf{LLM + exclusive intel} & \textbf{5\%} & vs.\ LLM & $\mathbf{-5}$ [$-20, +10$] \\
+ & & vs.\ rule & $\mathbf{-60}$ [$-85, -30$] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Rescue-channel trace evidence.}
+Planner traces for the informed LLM show the intelligence is read and cited: non-interception of scouts, interference-tolerant tracking, and standoff requirements all appear in emitted plans; performance nevertheless does not move. The frequency intervention (replanning $10 \to 5$ steps) leaves SR unchanged at 5\%.
+
+\section{Grid Per-Seed Experiment Detail}\label{app:I}
+
+All batches in this appendix use the medium tier, continuous task-authorization mode, 10 seeds per condition, and the score metric of Appendix~\ref{app:H}. Seed-bootstrap 95\% CIs; contrasts strictly within batch; four batches are independent and must not be pooled for statistical statements.
+
+\paragraph{I.1 Six-arm accounting batch (seeds 501--510).}
+Table~\ref{tab:p1seed} gives per-seed composites. Arm means (complete arms only): Rule+Rule 0.913, Pure RL 0.883, Rule+RL 0.810, LLM+Rule 0.700, LLM+RL 0.673, Pure LLM 0.280. Deployment algebra per seed (available for all 10 seeds, residuals 0): $\bar P = -0.213$ (planner), $\bar E = -0.103$ (executor), $\bar I = +0.077$ (interface), $B = 0$; $\Delta V_A = -0.213$, $\Delta V_B = -0.240$, both 95\% CIs excluding 0. This is deployed-system algebra, not causal component attribution (the causal interface contribution is measured by the goal-dose protocol of I.2). Rule-rule and RL both observe $\geq$1 feint; LLM stacks observe 0 feints (\sapp{G}).
+
+\input{tables/tab_p1_seedgrid}
+
+\paragraph{I.2 Goal-dose batch (seeds 512--521).}
+Table~\ref{tab:p2seed} gives per-seed composites under the four paired interface conditions (strong / mask1 / mask2 / hold). Strong$-$hold: Rule+RL $+0.457$ (95\% CI $[+0.247, +0.667]$; 0.670 vs.\ 0.213), LLM+RL $+0.537$ ($[+0.313, +0.737]$; 0.750 vs.\ 0.213); under hold both stacks score 0.213 with 0/10 successes and 10/10 port breaches, and the planner-source contrast collapses to 0.000. Manipulation gates: all retained masked and hold interventions were legal executor actions, so the intervention changes the information carried by the interface rather than the executor's action space. The dose--gain curve (Table~\ref{tab:dosegain}) is monotone from hold to mask1 in both stacks (adjacent contrasts mask2$-$hold and mask1$-$mask2 exclude 0), while only the rule-rl sample mean falls from mask1 to strong (0.833 vs.\ 0.670; llm-rl rises $0.710 \to 0.750$), with the strong$-$mask1 contrast including 0 for both stacks---non-monotonicity is a bounded sample phenomenon, not a statistically established decline. Doses are unit-availability levels, not bits; no information bandwidth is estimated.
+
+\begin{table}[H]
+\centering
+\caption{Dose--gain statistics (goal-dose batch, 10 paired seeds, 20{,}000 bootstrap draws): mean $V$ and relative-to-hold gain with seed-bootstrap 95\% CIs for all eight stack--dose combinations.}
+\label{tab:dosegain}
+\small
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Stack & Dose & Mean $V$ & Gain vs.\ hold & [95\% CI] \\
+\midrule
+rule-rl & hold & 0.213 & +0.000 & [0.000, 0.000] \\
+rule-rl & mask2 & 0.450 & +0.237 & [0.037, 0.450] \\
+rule-rl & mask1 & 0.833 & +0.620 & [0.400, 0.780] \\
+rule-rl & strong & 0.670 & +0.457 & [0.247, 0.663] \\
+llm-rl & hold & 0.213 & +0.000 & [0.000, 0.000] \\
+llm-rl & mask2 & 0.517 & +0.303 & [0.100, 0.510] \\
+llm-rl & mask1 & 0.710 & +0.497 & [0.277, 0.697] \\
+llm-rl & strong & 0.750 & +0.537 & [0.317, 0.723] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{figures/figA3_dose_gain.pdf}
+\caption{Goal-channel dose comparison. Panel (a) shows frozen mean utility; panel (b) shows paired gains relative to hold with their supplied 95\% confidence intervals. Gain intervals are not marginal mean-utility intervals. The rule-rl mean falls from mask1 to strong, whereas the llm-rl mean rises; no monotonic trend is imposed.}
+\label{fig:a3dose}
+\end{figure}
+
+Adjacent contrasts: mask2$-$hold $+0.237$ [$0.037$, $0.450$] (rule-rl) / $+0.303$ [$0.100$, $0.510$] (llm-rl); mask1$-$mask2 $+0.383$ [$0.077$, $0.680$] / $+0.193$ [$0.007$, $0.397$]; strong$-$mask1 $-0.163$ [$-0.447$, $0.130$] / $+0.040$ [$-0.263$, $0.347$]. This is a deployment-specific dose response, not a fit of $f$ in Eq.~(4) of the main text.
+
+\input{tables/tab_p2_seedgrid}
+
+\paragraph{I.3 Real-stream counterfactual (seeds 601--610).}
+Table~\ref{tab:p3aseed} gives per-seed composites. The primary estimand is the authentic LLM Goal stream versus legal all-hold on the same decision clock with the same goal-bound MAPPO executor and seed: $+0.420$ (95\% CI $[0.200, 0.637]$), positive in 10/10 seeds. The secondary contrast (live LLM vs.\ rule planner, same executor) is $-0.260$: the stream's total contribution is distinct from planner quality. This comparison does not separate goal semantic quality from closed-loop feedback, and oracle optimality is not assumed.
+
+\input{tables/tab_p3a_seedgrid}
+
+\paragraph{I.4 Anchored critical-fault validation (seeds 561--570).}
+All four gates pass: integrity-and-replay, critical-exposure, matched-prefix, boundary-localization. Layer-of-first-appearance localization: 20/20 paired seeds at the goal/action recording boundary. Loss accounting: planner-side injection costs 0.567 score / 0.7 success / 0.7 extra port breach per episode (10 seeds); executor-side injection costs 0.327 score / 0.4 success / 0.4 extra breach; local target-hit losses are 1.0 and 1.0 respectively. These are known synthetic faults on a rule+heuristic-GOAI base under matched prefixes---calibration, not blind natural-fault attribution.
+
+\paragraph{I.5 Natural-failure blind-attribution pilot.}
+Twelve real failures were selected by pre-registered rules (first 9 high-fidelity failures from IE-03/IE-08 LLM+RL runs, seeds 5101--5112; first 3 grid failures from the LLM-planner/GOAI-executor batch, seeds 5201--5212; failure $=$ defender score $<0.6$). Replay gates pass 12/12 (exact state-trajectory reproduction), attribution completes 12/12 with zero algorithmic errors, and all components are frozen (v9 RL weights, withheld briefings, Qwen3.8-27B BF16, temperature 0.1, max\_tokens 1024, thinking off; 536-file engine hash verified). Independent human annotation (blind IDs E5-01\ldots E5-12, random key withheld) agrees with the machine labels in 4/12 cases; Cohen's $\kappa = 0.25$.
+
+\begin{table}[H]
+\centering
+\caption{Natural-failure pilot: machine counterfactual labels vs.\ independent blind human annotation (12 cases). $\Delta P$/$\Delta E$ = planning/execution replacement contrasts; $\Delta I$ = synergy term; disagreements concentrate at the machine-interface vs.\ human-balanced boundary.}
+\label{tab:e5pilot}
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}llcccl@{}}
+\toprule
+Case & Source & $\Delta P$ & $\Delta E$ & $\Delta I$ & Machine / Human \\
+\midrule
+E5-01 & IE-03 s5104 & 0.34 & 0.71 & $-0.58$ & exec / exec \\
+E5-02 & IE-08 s5102 & 0.01 & 0.03 & 0.35 & interface / balanced \\
+E5-03 & IE-08 s5101 & $-0.03$ & 0.00 & 0.30 & interface / balanced \\
+E5-04 & grid s5202 & 0.10 & 0.00 & 0.60 & interface / balanced \\
+E5-05 & IE-08 s5103 & $-0.01$ & 0.08 & 0.22 & interface / balanced \\
+E5-06 & IE-03 s5102 & 0.41 & 0.01 & 0.29 & planning / planning \\
+E5-07 & IE-03 s5105 & 0.00 & 0.01 & 0.40 & interface / balanced \\
+E5-08 & grid s5201 & 0.77 & 0.07 & $-0.67$ & planning / planning \\
+E5-09 & grid s5204 & 0.20 & 0.00 & 0.60 & interface / interface \\
+E5-10 & IE-03 s5101 & 0.48 & 0.00 & 0.21 & planning / exec \\
+E5-11 & IE-08 s5104 & 0.02 & $-0.02$ & 0.17 & interface / balanced \\
+E5-12 & IE-08 s5105 & $-0.24$ & $-0.18$ & 0.57 & interface / balanced \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{figures/figA4_natural_failure_pilot.pdf}
+\caption{Natural-failure blind-attribution pilot: machine counterfactual labels vs.\ independent blind human annotation (12 cases). Colored bars mark the term setting the machine label, $\max(\Delta P, \Delta E, |\Delta I|)$; shaded rows mark machine--human disagreement.}
+\label{fig:a4pilot}
+\end{figure}
+
+Machine label distribution: interface 8, planning 3, execution 1; human: balanced 7, execution 2, planning 2, interface 1. Confusion concentrates on the machine-interface label: 7 of 8 are read by humans as balanced, and every disagreement traces to label semantics---the $\Delta I$ term maximal means \emph{marginal interaction} (both layers individually inert, jointly improving), which human annotators read as \emph{both layers suspect}. No disagreement is an algorithmic error (replay gates exact). The pilot is reported as a disclosed boundary: attribution is calibrated for injected faults and quantifies marginal-interaction contributions; natural-scenario fault \emph{location} should be read with the $\Delta I$ semantics in mind. Disagreement cases were not discarded, labels were not re-assigned, and no post hoc criterion adjustment was made.
+
+\section{High-Fidelity Headroom Calibration and Conditional Gains (E1)}\label{app:K}
+
+\paragraph{Design and frozen protocol.}
+E1 operates on interception-engagement scenario IE-05 at four frozen quantities (17/18/19/27 units). Calibration (960 episodes, seeds 4101--4110), gate checks (4151--4160), and confirmation (4201--4210) use disjoint seed blocks. Confirmation runs three stacks per quantity---Rule (fixed pure baseline, pre-selected from the calibration menu), LLM+Rule, LLM+RL---on the same ten seeds per condition (120 episodes total; device-a ran 17/18, device-b ran 19/27). The fixed pure baseline is the strongest pure architecture by calibration mean; pure RL and pure LLM are not re-run on the confirmation sample, so $V_m$ here is a fixed Rule baseline, not a sample-maximum. All 120 reports pass SHA verification and the original wave-qualification eligibility; no episodes were discarded or re-selected.
+
+\paragraph{Primary scores (frozen): composite $V$ and success rate.}
+\begin{center}
+\resizebox{\columnwidth}{!}{%
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}cclcccc@{}}
+\toprule
+Quantity & Device & Rule $V$ & LLM+Rule $V$ & LLM+RL $V$ & SR (R / LR / LRL) \\
+\midrule
+17 & device-a & 0.621 & 0.744 & 0.638 & 90\% / 100\% / 100\% \\
+18 & device-a & 0.646 & 0.715 & 0.648 & 100\% / 100\% / 100\% \\
+19 & device-b & 0.693 & 0.675 & 0.664 & 100\% / 90\% / 100\% \\
+27 & device-b & 0.575 & 0.694 & 0.564 & 90\% / 100\% / 90\% \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\paragraph{Paired gains vs.\ fixed Rule baseline (seed-level, 20000-percentile bootstrap, seed 20261001).}
+\begin{center}
+\resizebox{\columnwidth}{!}{%
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Quantity & LLM+Rule $-$ Rule & LLM+RL $-$ Rule & Positive/negative seeds (LLM+Rule) \\
+\midrule
+17 & $+0.123$ [$+0.063$, $+0.191$] & $+0.017$ [$-0.073$, $+0.116$] & 9 / 1 \\
+18 & $+0.069$ [$-0.010$, $+0.153$] & $+0.002$ [$-0.082$, $+0.085$] & 7 / 3 \\
+19 & $-0.018$ [$-0.107$, $+0.060$] & $-0.029$ [$-0.087$, $+0.042$] & 4 / 6 \\
+27 & $+0.119$ [$+0.003$, $+0.245$] & $-0.011$ [$-0.123$, $+0.101$] & 7 / 3 \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+At the Bonferroni-style 99.375\% level (8 comparisons), quantity 17 remains interval-excluding ($[+0.043, +0.218]$); quantity 27 becomes $[-0.039, +0.296]$ and is reported as a nominal-level point gain. Cross-zero intervals mean current data cannot distinguish sign; they are not ``no effect'' claims.
+
+\paragraph{Headroom direction (diagnostic, not a controlled test).}
+With the score-scale upper bound 1 as a descriptive reference, $H_{\mathrm{cal}} = 1 - \text{calibration Rule } V$: 17: 0.464; 18: 0.403; 19: 0.434; 27: 0.411 (all four calibration SRs are 80\%, so the intended 40\%/60\%/80\% SR tiers were not achieved). Confirmation $H_{\mathrm{confirm}} = 1 - \text{confirmation Rule } V$: 17: 0.379; 18: 0.354; 19: 0.307; 27: 0.425. Paired direction comparisons (within-device): 17$\rightarrow$18 and 19$\rightarrow$27 both show score-space decreases in calibration; hybrid gain changes agree in direction on 17$\rightarrow$18 (both LLM+Rule and LLM+RL) and disagree on 19$\rightarrow$27, with all 95\% CIs straddling zero. We therefore report E1 as calibration feasibility plus partial direction confirmation (the pre-registered contingency plan B: partial, directionally mixed), not as a causal ``less headroom, less gain'' verification---the separated headroom tiers required for that test were not achieved, and these limits are not used to discard or relabel results.
+
+\paragraph{Score-component decomposition of gains.}
+To identify which scoring components drive the LLM+Rule advantage, we decompose the $V$ difference into the native score weights (terminal, facility, depth, leak, exchange, ammo, surface). The table below reports per-component arithmetic contributions to the $V$ gap (not causal attribution):
+
+\begin{center}
+\resizebox{\columnwidth}{!}{%
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}ccrrrrrrrr@{}}
+\toprule
+Qty & Arch & Terminal & Facility & Depth & Leak & Exchange & Ammo & Surface \\
+\midrule
+17 & LLM+Rule & $+0.020$ & $+0.040$ & $+0.034$ & $+0.013$ & $+0.010$ & $+0.006$ & $+0.000$ \\
+17 & LLM+RL   & $+0.020$ & $-0.030$ & $+0.003$ & $+0.011$ & $+0.010$ & $+0.002$ & $+0.000$ \\
+18 & LLM+Rule & $+0.000$ & $+0.036$ & $+0.017$ & $+0.012$ & $+0.003$ & $+0.003$ & $-0.003$ \\
+18 & LLM+RL   & $+0.000$ & $-0.013$ & $-0.005$ & $+0.012$ & $+0.003$ & $+0.004$ & $+0.000$ \\
+19 & LLM+Rule & $-0.020$ & $-0.006$ & $+0.008$ & $+0.007$ & $+0.003$ & $-0.004$ & $-0.008$ \\
+19 & LLM+RL   & $+0.000$ & $-0.031$ & $-0.008$ & $+0.009$ & $+0.005$ & $-0.001$ & $-0.004$ \\
+27 & LLM+Rule & $+0.020$ & $+0.051$ & $+0.018$ & $+0.007$ & $+0.016$ & $+0.007$ & $+0.001$ \\
+27 & LLM+RL   & $+0.000$ & $-0.031$ & $-0.001$ & $+0.003$ & $+0.016$ & $+0.001$ & $+0.001$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+Facility health and depth are the largest positive contributors for LLM+Rule at quantities 17 and 27; the RL executor shows a consistent facility-health deficit under LLM+RL. These are arithmetic decompositions of the score difference, not counterfactual planning/execution attributions.
+
+\paragraph{Gate status and engineering quality.}
+IA (information asymmetry) not certified; DF (decision-form match) not passed on this endpoint; D2 (calibration headroom window) passed via 80\% calibration SR, while confirmation Rule SR rises to 90--100\%---a separated-sample drift, recorded without retroactive threshold adjustment; Rule-executor D3 (interface manipulability screening) passed, RL-executor D3 not passed. Inference service: 4800/4800 (device-a) and 4721/4721 (device-b) request/response pairs, zero LLM errors; 52 and 77 parse failures/old-plan reuses respectively, all episodes retained (no post hoc exclusion); temperature verified at 0.0 with thinking disabled for this batch. Quantity 27 retains the frozen MAX\_CONTACTS=20 executor cap; truncated-contact warnings appear in logs, so 27-unit visibility is not claimed, and the cap is not asserted as the cause of weak RL gains without a further frozen contrast.
+
+\section{Engineering Reliability and Reproducibility Statistics}\label{app:J}
+
+All numbers below derive from the released per-episode traces; no LLM-served batch reported a fallback.
+
+\paragraph{Grid serving (six-arm batch, seeds 501--510).}
+647 LLM inference calls across all LLM-involved arms: 0 errors, 0 empty responses, 0 fallbacks, 0 masked-goal rejections; latency p50 0.97\,s, p95 12.05\,s. All 60 episodes eligible with zero runtime errors.
+
+\paragraph{Real-stream batch (seeds 601--610).}
+127 real LLM requests (Table~\ref{tab:p3aseed}, LLM-calls column), all verified: own-run, exact replay, and hold intervention each reproduced on the same seed with byte-identical manifests. 60 replays audited for direct ground-truth leakage: 0 cases.
+
+\paragraph{High-fidelity endpoint.}
+Each LLM stack runs five seeds (7/11/13/17/19; one episode per scenario--seed); because the endpoint is nondeterministic, a fixed seed is one independent replication rather than a paired replay. Comparisons use the pre-registered three-part stability criterion (mean-win, every-seed-win, split-half-win). Rule/RL baselines never read the briefing channel and are reused byte-identical from the frozen archive (SHA-256 verified); LLM+RL uses a single locked checkpoint. Engine and scenario versions are frozen by manifest hash before admission.
+
+\end{document}

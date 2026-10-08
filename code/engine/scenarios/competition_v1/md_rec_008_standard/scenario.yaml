@@ -1,0 +1,1291 @@
+schema_version: package@2.0
+adapter_id: adapter.v2
+scenario:
+  schema_version: '2.0'
+  scenario_id: competition.MD-REC-008.standard
+  factions:
+  - schema_version: '2.0'
+    id: red
+  - schema_version: '2.0'
+    id: blue
+  relationships: []
+  entities:
+  - schema_version: '2.0'
+    id: unit.r01
+    faction_id: red
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    - sensor.competition-air-easy@1.0.0
+    controller_slot: slot.unit.r01
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 0.0
+      - -600.0
+      - 120.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.r02
+    faction_id: red
+    platform_ref: platform.competition-picket-usv@1.1.0
+    dynamics_ref: dynamics.competition-picket-usv@1.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    - sensor.competition-surface-easy@1.0.0
+    controller_slot: slot.unit.r02
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 100.0
+      - 0.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.r03
+    faction_id: red
+    platform_ref: platform.competition-shore-site@1.0.0
+    dynamics_ref: dynamics.fixed-site@2.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    - sensor.competition-shore-easy@1.0.0
+    controller_slot: slot.unit.r03
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - -200.0
+      - 0.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.r04
+    faction_id: red
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    - sensor.competition-air-easy@1.0.0
+    controller_slot: slot.unit.r04
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 0.0
+      - 600.0
+      - 160.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.x01
+    faction_id: blue
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    controller_slot: slot.unit.x01
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 850.0
+      - -600.0
+      - 220.0
+      velocity_mps:
+      - -2.0
+      - -3.6739403974420594e-16
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.x02
+    faction_id: blue
+    platform_ref: platform.competition-picket-usv@1.1.0
+    dynamics_ref: dynamics.competition-picket-usv@1.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    controller_slot: slot.unit.x02
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 850.0
+      - 0.0
+      - 0.0
+      velocity_mps:
+      - -2.0
+      - -3.6739403974420594e-16
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.x03
+    faction_id: blue
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - communication.competition-recon-delayed@1.0.0
+    controller_slot: slot.unit.x03
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 850.0
+      - 600.0
+      - 220.0
+      velocity_mps:
+      - -2.0
+      - -3.6739403974420594e-16
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  formations: []
+  world:
+    schema_version: '2.0'
+    coordinate_system: local_m
+    duration_ticks: 241
+    tick_seconds: 1.0
+    zones:
+    - schema_version: '2.0'
+      id: zone.s01.c01
+      geometry_type: polygon
+      coordinates_m:
+      - - 370.0
+        - -730.0
+      - - 630.0
+        - -730.0
+      - - 630.0
+        - -470.0
+      - - 370.0
+        - -470.0
+    - schema_version: '2.0'
+      id: zone.s01.c02
+      geometry_type: polygon
+      coordinates_m:
+      - - 770.0
+        - -730.0
+      - - 1030.0
+        - -730.0
+      - - 1030.0
+        - -470.0
+      - - 770.0
+        - -470.0
+    - schema_version: '2.0'
+      id: zone.s02.c01
+      geometry_type: polygon
+      coordinates_m:
+      - - 370.0
+        - -130.0
+      - - 630.0
+        - -130.0
+      - - 630.0
+        - 130.0
+      - - 370.0
+        - 130.0
+    - schema_version: '2.0'
+      id: zone.s02.c02
+      geometry_type: polygon
+      coordinates_m:
+      - - 770.0
+        - -130.0
+      - - 1030.0
+        - -130.0
+      - - 1030.0
+        - 130.0
+      - - 770.0
+        - 130.0
+    - schema_version: '2.0'
+      id: zone.s03.c01
+      geometry_type: polygon
+      coordinates_m:
+      - - 370.0
+        - 470.0
+      - - 630.0
+        - 470.0
+      - - 630.0
+        - 730.0
+      - - 370.0
+        - 730.0
+    - schema_version: '2.0'
+      id: zone.s03.c02
+      geometry_type: polygon
+      coordinates_m:
+      - - 770.0
+        - 470.0
+      - - 1030.0
+        - 470.0
+      - - 1030.0
+        - 730.0
+      - - 770.0
+        - 730.0
+  events:
+  - schema_version: '2.0'
+    id: event.spawn-unit.x04
+    event_type: spawn
+    trigger:
+      tick: 75
+    payload:
+      entity:
+        schema_version: '2.0'
+        id: unit.x04
+        faction_id: blue
+        platform_ref: platform.interceptor-uav@2.0.0
+        dynamics_ref: dynamics.interceptor-uav@2.0.0
+        component_refs:
+        - communication.competition-recon-delayed@1.0.0
+        controller_slot: controller/unit.x04
+        initial_state:
+          schema_version: '2.0'
+          position_m:
+          - 910.0
+          - -600.0
+          - 220.0
+          velocity_mps:
+          - -2.0
+          - -3.6739403974420594e-16
+          - 0.0
+          heading_deg: 270.0
+          health: 1.0
+          energy: 1.0
+        tags: []
+  - schema_version: '2.0'
+    id: event.spawn-unit.x05
+    event_type: spawn
+    trigger:
+      tick: 75
+    payload:
+      entity:
+        schema_version: '2.0'
+        id: unit.x05
+        faction_id: blue
+        platform_ref: platform.competition-picket-usv@1.1.0
+        dynamics_ref: dynamics.competition-picket-usv@1.0.0
+        component_refs:
+        - communication.competition-recon-delayed@1.0.0
+        controller_slot: controller/unit.x05
+        initial_state:
+          schema_version: '2.0'
+          position_m:
+          - 910.0
+          - 0.0
+          - 0.0
+          velocity_mps:
+          - -2.0
+          - -3.6739403974420594e-16
+          - 0.0
+          heading_deg: 270.0
+          health: 1.0
+          energy: 1.0
+        tags: []
+  - schema_version: '2.0'
+    id: event.spawn-unit.x06
+    event_type: spawn
+    trigger:
+      tick: 75
+    payload:
+      entity:
+        schema_version: '2.0'
+        id: unit.x06
+        faction_id: blue
+        platform_ref: platform.interceptor-uav@2.0.0
+        dynamics_ref: dynamics.interceptor-uav@2.0.0
+        component_refs:
+        - communication.competition-recon-delayed@1.0.0
+        controller_slot: controller/unit.x06
+        initial_state:
+          schema_version: '2.0'
+          position_m:
+          - 910.0
+          - 600.0
+          - 220.0
+          velocity_mps:
+          - -2.0
+          - -3.6739403974420594e-16
+          - 0.0
+          heading_deg: 270.0
+          health: 1.0
+          energy: 1.0
+        tags: []
+  - schema_version: '2.0'
+    id: event.spawn-unit.x07
+    event_type: spawn
+    trigger:
+      tick: 150
+    payload:
+      entity:
+        schema_version: '2.0'
+        id: unit.x07
+        faction_id: blue
+        platform_ref: platform.interceptor-uav@2.0.0
+        dynamics_ref: dynamics.interceptor-uav@2.0.0
+        component_refs:
+        - communication.competition-recon-delayed@1.0.0
+        controller_slot: controller/unit.x07
+        initial_state:
+          schema_version: '2.0'
+          position_m:
+          - 970.0
+          - -600.0
+          - 220.0
+          velocity_mps:
+          - -2.0
+          - -3.6739403974420594e-16
+          - 0.0
+          heading_deg: 270.0
+          health: 1.0
+          energy: 1.0
+        tags: []
+  - schema_version: '2.0'
+    id: event.spawn-unit.x08
+    event_type: spawn
+    trigger:
+      tick: 150
+    payload:
+      entity:
+        schema_version: '2.0'
+        id: unit.x08
+        faction_id: blue
+        platform_ref: platform.competition-picket-usv@1.1.0
+        dynamics_ref: dynamics.competition-picket-usv@1.0.0
+        component_refs:
+        - communication.competition-recon-delayed@1.0.0
+        controller_slot: controller/unit.x08
+        initial_state:
+          schema_version: '2.0'
+          position_m:
+          - 970.0
+          - 0.0
+          - 0.0
+          velocity_mps:
+          - -2.0
+          - -3.6739403974420594e-16
+          - 0.0
+          heading_deg: 270.0
+          health: 1.0
+          energy: 1.0
+        tags: []
+  - schema_version: '2.0'
+    id: event.spawn-unit.x09
+    event_type: spawn
+    trigger:
+      tick: 150
+    payload:
+      entity:
+        schema_version: '2.0'
+        id: unit.x09
+        faction_id: blue
+        platform_ref: platform.interceptor-uav@2.0.0
+        dynamics_ref: dynamics.interceptor-uav@2.0.0
+        component_refs:
+        - communication.competition-recon-delayed@1.0.0
+        controller_slot: controller/unit.x09
+        initial_state:
+          schema_version: '2.0'
+          position_m:
+          - 970.0
+          - 600.0
+          - 220.0
+          velocity_mps:
+          - -2.0
+          - -3.6739403974420594e-16
+          - 0.0
+          heading_deg: 270.0
+          health: 1.0
+          energy: 1.0
+        tags: []
+  - schema_version: '2.0'
+    id: event.weather-onset
+    event_type: weather_change
+    trigger:
+      tick: 70
+    payload:
+      environment_ref: environment.competition-tracking-fog@1.0.0
+  - schema_version: '2.0'
+    id: event.weather-clear
+    event_type: weather_change
+    trigger:
+      tick: 150
+    payload:
+      environment_ref: environment.clear@2.0.0
+  - schema_version: '2.0'
+    id: event.observation-gap-0
+    event_type: component_suppression
+    trigger:
+      tick: 120
+    payload:
+      target_entity_id: unit.r01
+      component_ref: sensor.competition-air-easy@1.0.0
+      duration_ticks: 30
+  - schema_version: '2.0'
+    id: event.communication-gap
+    event_type: component_suppression
+    trigger:
+      tick: 120
+    payload:
+      target_entity_id: unit.r02
+      component_ref: communication.competition-recon-delayed@1.0.0
+      duration_ticks: 25
+  - schema_version: '2.0'
+    id: event.deadline
+    event_type: mission_marker
+    trigger:
+      tick: 241
+    payload:
+      marker_id: marker.deadline
+  - schema_version: '2.0'
+    id: event.success
+    event_type: mission_marker
+    trigger:
+      tick: 241
+    payload:
+      marker_id: marker.success
+  - schema_version: '2.0'
+    id: event.timeout
+    event_type: mission_marker
+    trigger:
+      tick: 241
+    payload:
+      marker_id: marker.timeout
+  mission_states:
+  - state.active
+  - state.success
+  - state.timeout
+  mission_rules:
+  - schema_version: '2.0'
+    id: rule.success
+    priority: 100
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: all
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+      parameters:
+        conditions:
+        - operator: time
+          parameters:
+            comparison: '>='
+            tick: 241
+        - operator: score
+          parameters:
+            metric_id: metric.discovery
+            comparison: '>='
+            value: 1.0
+        - operator: score
+          parameters:
+            metric_id: metric.coverage
+            comparison: '>='
+            value: 1.0
+        - operator: score
+          parameters:
+            metric_id: metric.freshness
+            comparison: '>='
+            value: 0.2
+        - operator: score
+          parameters:
+            metric_id: metric.information_timeliness
+            comparison: '>='
+            value: 0.25
+        - operator: score
+          parameters:
+            metric_id: metric.delivered_recall
+            comparison: '>='
+            value: 1.0
+    outcome:
+      set_state: state.success
+      emit_event: event.success
+      terminal: true
+      result: objective_complete
+      ranking:
+        red: 1
+        blue: 2
+  - schema_version: '2.0'
+    id: rule.timeout
+    priority: 10
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: time
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+      parameters:
+        comparison: '>='
+        tick: 241
+    outcome:
+      set_state: state.timeout
+      emit_event: event.timeout
+      terminal: true
+      result: objective_incomplete
+      ranking:
+        red: 2
+        blue: 1
+  scoring:
+    aggregation_version: utility-v1
+    aggregation: sum
+    direction: maximize
+    weight_policy: normalized_sum_one
+    metrics:
+    - id: metric.discovery
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        - unit.r04
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.16666666666666666
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-recon-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.discovery
+        kind: recall
+        groups:
+        - group_id: observation.01
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x01
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.02
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x02
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.03
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x03
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.04
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x04
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.05
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x05
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.06
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x06
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.07
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x07
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.08
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x08
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.09
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x09
+          start_tick: 151
+          end_tick: 241
+        maximum_age_ticks: 2
+        delivery: null
+        unit: '1'
+    - id: metric.coverage
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        - unit.r04
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.16666666666666666
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-recon-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.coverage
+        kind: coverage
+        groups:
+        - group_id: sector.01
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - zone.s01.c01
+          - zone.s01.c02
+          start_tick: 1
+          end_tick: 241
+        - group_id: sector.02
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - zone.s02.c01
+          - zone.s02.c02
+          start_tick: 1
+          end_tick: 241
+        - group_id: sector.03
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - zone.s03.c01
+          - zone.s03.c02
+          start_tick: 1
+          end_tick: 241
+        maximum_age_ticks: 2
+        delivery: null
+        unit: '1'
+    - id: metric.discovery_timeliness
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        - unit.r04
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.16666666666666666
+      available: true
+      value: 0.0
+      required: false
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-recon-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.discovery_timeliness
+        kind: discovery_timeliness
+        groups:
+        - group_id: observation.01
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x01
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.02
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x02
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.03
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x03
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.04
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x04
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.05
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x05
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.06
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x06
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.07
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x07
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.08
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x08
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.09
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x09
+          start_tick: 151
+          end_tick: 241
+        maximum_age_ticks: 2
+        delivery: null
+        unit: '1'
+    - id: metric.freshness
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        - unit.r04
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.16666666666666666
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-recon-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.freshness
+        kind: fresh_fraction
+        groups:
+        - group_id: observation.01
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x01
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.02
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x02
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.03
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x03
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.04
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x04
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.05
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x05
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.06
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x06
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.07
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x07
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.08
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x08
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.09
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x09
+          start_tick: 151
+          end_tick: 241
+        maximum_age_ticks: 2
+        delivery: null
+        unit: '1'
+    - id: metric.information_timeliness
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        - unit.r04
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.16666666666666666
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-recon-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.information_timeliness
+        kind: information_freshness
+        groups:
+        - group_id: observation.01
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x01
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.02
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x02
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.03
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x03
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.04
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x04
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.05
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x05
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.06
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x06
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.07
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x07
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.08
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x08
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.09
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r03
+          - unit.r04
+          item_ids:
+          - unit.x09
+          start_tick: 151
+          end_tick: 241
+        maximum_age_ticks: 2
+        delivery: null
+        unit: '1'
+    - id: metric.delivered_recall
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        - unit.r04
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.16666666666666666
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-recon-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.delivered_recall
+        kind: delivered_recall
+        groups:
+        - group_id: observation.01
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x01
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.02
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x02
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.03
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x03
+          start_tick: 1
+          end_tick: 75
+        - group_id: observation.04
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x04
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.05
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x05
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.06
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x06
+          start_tick: 76
+          end_tick: 150
+        - group_id: observation.07
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x07
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.08
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x08
+          start_tick: 151
+          end_tick: 241
+        - group_id: observation.09
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          - unit.r04
+          item_ids:
+          - unit.x09
+          start_tick: 151
+          end_tick: 241
+        maximum_age_ticks: 8
+        delivery:
+          recipient_entity_id: unit.r03
+          recipient_controller_slot: slot.unit.r03
+        unit: '1'
+  score_metrics: []
+  controller_policy: explicit_uncontrolled
+  controller_slots:
+  - id: slot.unit.r01
+    controller_id: agent.unit.r01
+    faction_id: red
+    controller_endpoint_ref: unit.r01
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r01
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.r02
+    controller_id: agent.unit.r02
+    faction_id: red
+    controller_endpoint_ref: unit.r02
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r02
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.r03
+    controller_id: agent.unit.r03
+    faction_id: red
+    controller_endpoint_ref: unit.r03
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r03
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.r04
+    controller_id: agent.unit.r04
+    faction_id: red
+    controller_endpoint_ref: unit.r04
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r04
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.x01
+    controller_id: agent.unit.x01
+    faction_id: blue
+    controller_endpoint_ref: unit.x01
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.x01
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.x02
+    controller_id: agent.unit.x02
+    faction_id: blue
+    controller_endpoint_ref: unit.x02
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.x02
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.x03
+    controller_id: agent.unit.x03
+    faction_id: blue
+    controller_endpoint_ref: unit.x03
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.x03
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  visibility:
+  - view: referee
+    scope: truth
+    allow: true
+  - view: public
+    scope: public
+    allow: true
+  - view: faction
+    faction_id: red
+    scope: own_and_contacts
+    allow: true
+  - view: faction
+    faction_id: blue
+    scope: own_and_contacts
+    allow: true

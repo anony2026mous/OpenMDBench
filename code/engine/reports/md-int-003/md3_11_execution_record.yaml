@@ -1,0 +1,107 @@
+TASK_ID: MD3-11-001
+PHASE: MD3-11
+OBJECTIVE: >-
+  Execute the explicitly authorized MD-INT-003 full-quality, performance,
+  concurrency, security and long-stability gate after MD3-10 T3 completion.
+REQUIREMENTS:
+  - REQ-PERF-001
+  - REQ-DET-001
+  - REQ-SEC-001
+  - REQ-OBS-001
+  - REQ-CHK-001
+  - REQ-RPL-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_10_execution_record.yaml
+  - reports/md-int-003/determinism.md
+  - scenarios/formal/md_int_003_*/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - scenarios/formal/
+  - catalog/v2/
+  - openmdbench/
+  - tests/
+ALLOWED_WRITE:
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/performance_concurrency.md
+  - reports/md-int-003/security_report.md
+  - reports/md-int-003/full_test_report.md
+  - reports/md-int-003/md3_11_execution_record.yaml
+PROHIBITED:
+  - Production/schema/Catalog/scenario changes, test weakening, dependencies,
+    commits, pushes, cleanup, generated repository artifacts or real-world
+    calibration claims.
+TEST_LEVEL: T4/T5
+ALLOWED_COMMANDS:
+  - Explicitly authorized format/Ruff/strict-mypy/Bandit/full-pytest/coverage;
+    headless/live performance, 16/32 concurrency, 30-seed-per-policy, 100-game
+    batch, security adversarial and bounded-resource/soak commands.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 480
+ACCEPTANCE:
+  - Full quality gate, coverage, performance, concurrency, 100-game stability,
+    security and bounded-resource evidence meet the documented MD3-11 gate or
+    report a measured resource threshold without masking any failure.
+OUTPUTS:
+  - Full-test, performance/concurrency and security reports with command,
+    environment, hash, seed, duration, failure classification and residual-risk
+    evidence.
+STOP_CONDITIONS:
+  - Missing explicit T4/T5 authorization, unavailable required tool, resource
+    limit, security-sensitive external authority, or a failing gate needing a
+    scope-changing implementation decision.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      T4 static gate: Ruff format/check, strict mypy over openmdbench and
+      tests, Bandit and repository Python compilation all exited zero.
+    - >-
+      Fresh full pytest: 1,312 contract + 263 integration + 428 remaining +
+      108 system = 2,111 passed; warnings were Taichi/Gym deprecations and
+      headless rendering/font notices only.
+    - >-
+      Branch coverage sampled in three timed groups: 2,003 passed and 85%
+      combined coverage. The full system group separately passed without the
+      coverage tracer.
+    - >-
+      T5: L1/L2/L3 1,500-tick mean steps 74.418/78.267/78.312 ms; 16 and 32
+      isolated sessions passed; 100 complete matches passed with L1=40,
+      L2=30 and L3=30 seeds.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reports and artifact aggregates were reconciled with the repaired log,
+      deterministic lifecycle, communication recovery, native worker and
+      mission-score paths. No test was weakened or skipped.
+  COMPATIBILITY: >-
+    Public log/replay/checkpoint and public-agent interfaces remain unchanged;
+    buffered logs flush at close and audit receipt history remains complete.
+  DETERMINISM: >-
+    Combustion substreams no longer include session IDs; trigger consumption,
+    lifecycle and receipt indexes are checkpoint-reconstructible and covered by
+    determinism/checkpoint regressions.
+  DOMAIN_IMPACT: >-
+    No scenario parameters, Catalog values or fidelity claims were changed.
+  RISKS:
+    - >-
+      One multiprocessing resource-tracker child remains after native session
+      close, bounded across the 100-match evidence; retain operational
+      monitoring.
+    - >-
+      Benchmark parameters remain UNVALIDATED_BENCHMARK and the platform RF-15
+      release boundary remains NOT_RELEASABLE.
+  REPORTS:
+    - reports/md-int-003/full_test_report.md
+    - reports/md-int-003/performance_concurrency.md
+    - reports/md-int-003/security_report.md
+  NEXT_GATE: >-
+    MD3-12 frozen read-only self-review is complete; no release/commit action
+    is implied by this record.

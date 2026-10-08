@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Set up project
+        run: make setup PYTHON=python
+      - name: Import smoke
+        run: .venv/bin/python -c "import openmdbench; print(openmdbench.__version__)"
+      - name: Lint
+        run: make lint
+      - name: Type check
+        run: make typecheck
+      - name: Test
+        run: make test

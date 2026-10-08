@@ -1,0 +1,118 @@
+{
+  "schema": "hifi-record-episode@1",
+  "case": {
+    "id": "ie-08-island-strike__llm-rl__s31",
+    "scenario": "IE-08-ISLAND-STRIKE",
+    "seed": 31,
+    "planner": "llm-rl"
+  },
+  "planner": "llm-rl",
+  "status": "complete",
+  "started_utc": "2026-10-01T19:22:08.717499+00:00",
+  "snapshot": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261001T191215Z-7c3bded0",
+  "endpoint": null,
+  "source_pin_commit": "ccabad00154e9c6209e227859470f96449dec498",
+  "recorder_sha256": "ed890c4f1adaaedd184237352d5a994f4df0fcd908a3a5e67956052fac169dde",
+  "cli_argv": [
+    "--scenario",
+    "IE-08-ISLAND-STRIKE",
+    "--seed",
+    "31",
+    "--planner",
+    "llm-rl",
+    "--max-ticks",
+    "1800",
+    "--pure-llm-envelope",
+    "executor",
+    "--frontend",
+    "graph",
+    "--llm-briefing",
+    "withheld",
+    "--llm-backend",
+    "vllm",
+    "--llm-base-url",
+    "http://127.0.0.1:8001/v1",
+    "--llm-model",
+    "Qwen3.8-27B",
+    "--llm-max-tokens",
+    "1024",
+    "--plan-interval",
+    "10",
+    "--decision-interval",
+    "5",
+    "--rl-speed-source",
+    "legacy_tags",
+    "--checkpoint-dir",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-record-validation-20261001/legacy_s31_self_replay/checkpoints",
+    "--log",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-record-validation-20261001/legacy_s31_self_replay/events.jsonl",
+    "--output",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-record-validation-20261001/legacy_s31_self_replay/report.json",
+    "--rl-theta",
+    "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261001T191215Z-7c3bded0/openmd/code/eval/_w1_runs/rl/theta_arm5_llm_reward_v9.npz",
+    "--goal-granularity",
+    "strong"
+  ],
+  "smoke_only": false,
+  "replay": {
+    "from": "/mnt/QTJC/chenyi-codex/experiments/five-seed-fill-20260930T153924Z/episodes/ie-08-island-strike__llm-rl__s31",
+    "mode": "self",
+    "requests_sha256": "09a1f2e62cbf4fd94d3f174a7b48c7df2caa1661381fcaec018ea7719d2a05b0",
+    "recorded_calls": 106,
+    "ticks_derived": true
+  },
+  "compiled_hashes": {
+    "resolved_hash": "sha256:d5e05259e7730080a2b231298525425b0558b03095c244847eb7bdd69ff3e108",
+    "catalog_hash": "sha256:7dbf89ec664bdf3169975ed07cbd1be9096a615dd6980507c32e4c35fbba977f",
+    "model_registry_hash": "sha256:5a5bf3b3bdd83d28f7cc57a52f77f4a40f0cc3bb67da444ef6b8ea1113dec9c6"
+  },
+  "weights_sha256": {
+    "openmd/code/eval/_w1_runs/rl/theta_rl_legacy2.npz": "da7e6426f0035030d8a557dfe5a90d65fc18a704dc955d49ef34e66b5008435a",
+    "openmd/code/eval/_w1_runs/rl/theta_arm5_llm_reward_v9.npz": "b87e302046128682055ff958a7c094f2b28c691ce6201ebfbb2bd7ac42e060d0"
+  },
+  "engine_module_origin": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261001T191215Z-7c3bded0/openmd/source-code/source_codes/openmdbench/__init__.py",
+  "runtime_packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "taichi": "1.7.3",
+    "torch": "2.14.0+cpu",
+    "pydantic": "2.13.5",
+    "PyYAML": "6.0.3"
+  },
+  "finished_utc": "2026-10-01T20:09:46.322967+00:00",
+  "llm_calls": 106,
+  "replay_divergence": [],
+  "trajectory_frames": 1057,
+  "decision_frames": 1056,
+  "trajectory_last_tick": 1056,
+  "trajectory_complete": true,
+  "trajectory_error": null,
+  "ticks_run": 1056,
+  "eligible_for_main_score": true,
+  "natural_terminal": true,
+  "terminal_result": {
+    "rule_id": "rule.facilities-lost",
+    "outcome": "intruder_success",
+    "priority": 100,
+    "tick": 1056,
+    "latched": true,
+    "trigger_evidence": {
+      "event_id": "event.facilities-lost",
+      "candidate_hash": "sha256:d185b5047fa4fae4b27a1755838b773a2ad16bb73c0ab0fb1099eeb25959c174",
+      "selection_policy": "priority_desc_rule_id_asc_event_id_asc"
+    },
+    "ranking": {
+      "coalition.defender": 2,
+      "coalition.intruder": 1
+    },
+    "result": "intruder_success"
+  },
+  "defender_score": 0.2862,
+  "artifacts_sha256": {
+    "report.json": "ab9166187fc3d483e042299d09ec1d2c8bcd95ff0edd944511842a2940249e3b",
+    "events.jsonl": "fbec8401a6ffb2e5c6f60a2c30f6976d95230ce6948cf8af8ac3e84c891487db",
+    "trajectory.jsonl": "5533a91e96592a6a3a83bef43d27fcce2750724da139548d92dab69481acbb0d",
+    "decisions.jsonl": "7045858fc74b8d9e97e090f13b6f302a0b9e89fd325144734f897b6aec4a1818",
+    "requests.jsonl": "2194985763a7ace51ed34329beb04a971eba81a3b43000ecdf309a2338f1f78d"
+  }
+}

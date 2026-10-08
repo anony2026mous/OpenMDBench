@@ -1,0 +1,71 @@
+TASK_ID: MD3-02-001
+PHASE: MD3-02
+OBJECTIVE: >-
+  Build a standalone, versioned MD-INT-003 benchmark Catalog closure that
+  reuses the Weihai map and existing trusted V2 models, without a scenario
+  package or runtime-mechanism implementation.
+REQUIREMENTS:
+  - REQ-GEO-001
+  - REQ-ENT-001
+  - REQ-ENT-002
+  - REQ-DYN-001
+  - REQ-SEN-001
+  - REQ-COM-001
+  - REQ-ENE-001
+  - REQ-ENV-001
+  - REQ-CBT-001
+  - REQ-CBT-002
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/md3_00_baseline_audit.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_01_contract_decisions.md
+  - docs/adr/ADR-MD3-001-surface-target-domain.md
+  - docs/adr/ADR-MD3-005-environment-modifier-order.md
+  - catalog/v2/md_ad_002.yaml
+  - openmdbench/catalog/formal_v2.py
+  - openmdbench/catalog/v2.py
+  - openmdbench/dynamics/native_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - docs/adr/
+  - catalog/v2/
+  - openmdbench/catalog/
+  - openmdbench/dynamics/
+  - tests/contract/test_catalog_registry_v2.py
+  - tests/integration/test_native_mmg_adapter_v2.py
+ALLOWED_WRITE:
+  - catalog/v2/md_int_003.yaml
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_execution_record.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+PROHIBITED:
+  - ScenarioPackage/registry/production runtime/schema changes.
+  - Health, ammo, cooldown, RNG, pending or queue runtime state in Catalog.
+  - Any MD-INT-003 condition branch in production Python.
+  - Real-world-calibrated claims; all U1-U13 remain UNVALIDATED_BENCHMARK.
+  - T4/T5, full suite, performance/concurrency/security/soak, commit, push, merge, cleanup.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Catalog parser/compiler and focused pytest for the new Catalog closure.
+  - Read-only source inspection, YAML validation, git status/diff.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 55
+ACCEPTANCE:
+  - Exact resource identities, dependency graph, model compatibility, units/source/fidelity and no runtime state are validated.
+  - Weihai map source/hash is reused exactly.
+  - All V4 benchmark resources are versioned without scenario IDs or fixed entity IDs.
+  - Focused contract tests pass and validate failure cases.
+OUTPUTS:
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+  - reports/md-int-003/catalog_closure.md
+STOP_CONDITIONS:
+  - A needed resource type/model factory is unavailable in V2 and requires an unapproved production mechanism change.
+  - Map source/hash or resource compatibility cannot be validated.
+  - Resource data would need to encode mutable runtime state.

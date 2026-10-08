@@ -1,0 +1,78 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-ER-001",
+  "difficulty": "standard",
+  "name": "Weather Diversion",
+  "evaluated_side": "red",
+  "status": "candidate_not_competition_accepted",
+  "duration_seconds": 180,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 180,
+  "adjudication_tick": 181,
+  "task": "Dispatch to confirmed requests, dwell for three ticks, avoid published risk regions. Arrival is not rescue.",
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "responders": [
+    "unit.r01",
+    "unit.r02"
+  ],
+  "initial_requests": [
+    {
+      "request_id": "request.01",
+      "destination": {
+        "schema_version": "2.0",
+        "id": "zone.request01",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            1100.0,
+            -100.0
+          ],
+          [
+            1300.0,
+            -100.0
+          ],
+          [
+            1300.0,
+            100.0
+          ],
+          [
+            1100.0,
+            100.0
+          ]
+        ]
+      },
+      "priority": 1
+    }
+  ],
+  "risk_regions": [
+    {
+      "schema_version": "2.0",
+      "id": "zone.hazard01",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          420.0,
+          -180.0
+        ],
+        [
+          780.0,
+          -180.0
+        ],
+        [
+          780.0,
+          180.0
+        ],
+        [
+          420.0,
+          180.0
+        ]
+      ]
+    }
+  ],
+  "difficulty_rationale": "One standard event-mechanism candidate; three levels require measured policy separation first.",
+  "fidelity": "UNVALIDATED synthetic 180-second microbenchmark, not paper-duration reproduction"
+}

@@ -1,0 +1,750 @@
+schema_version: catalog-bundle@2.0
+resources:
+  - schema_version: "2.0"
+    resource_type: maps
+    id: map.weihai-local
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content:
+      geographic_crs: EPSG:4326
+      origin_wgs84: [122.2, 37.51, 0.0]
+      bounds_m: [[-20000.0, -20000.0, -100.0], [40000.0, 20000.0, 4000.0]]
+      raw_sha256: sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675
+      terrain_source:
+        format: raw-polygon-list-wgs84@1.0
+        path: env/map_data/weihai_raw_lonlat.txt
+        sha256: sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675
+        polygon_indices: [1]
+      visualization_source:
+        format: weihai-raw-lonlat@1.0
+        path: env/map_data/weihai_raw_lonlat.txt
+        sha256: sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675
+        coastline_start: 3
+        coastline_end: 134
+        harbor_end: 137
+        land_polygon_indices: [1]
+      parameter_source: existing-v2-map-resource
+      fidelity: VERIFIED_REUSE
+
+  - schema_version: "2.0"
+    resource_type: dynamics
+    id: dynamics.defender-interdictor-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.native-sim2sea-mmg@2.0.0
+    dependencies: []
+    content:
+      compatible_platform_types: [defender-interdictor-usv]
+      mobile: true
+      max_speed_mps: 15.0
+      max_nps: 200.0
+      max_rudder_rad: 0.3
+      controller_gain: 1.0
+      substeps: 10
+      integration_dt_s: 0.1
+      benchmark_requested_max_speed_mps: 15.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+      implementation_note: sim2sea-l7-proxy-requires-200-rps-actuator-envelope-for-15-mps-usv-target; benchmark-speed-needs-model-calibration
+  - schema_version: "2.0"
+    resource_type: dynamics
+    id: dynamics.attacker-suicide-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.native-sim2sea-mmg@2.0.0
+    dependencies: []
+    content:
+      compatible_platform_types: [attacker-suicide-usv]
+      mobile: true
+      max_speed_mps: 18.0
+      max_nps: 240.0
+      max_rudder_rad: 0.3
+      controller_gain: 1.0
+      substeps: 10
+      integration_dt_s: 0.1
+      benchmark_requested_max_speed_mps: 18.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+      implementation_note: sim2sea-l7-proxy-requires-240-rps-actuator-envelope-for-18-mps-usv-target; benchmark-speed-needs-model-calibration
+  - schema_version: "2.0"
+    resource_type: dynamics
+    id: dynamics.surface-isuav
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.native-uav-kinematics@2.0.0
+    dependencies: []
+    content:
+      compatible_platform_types: [surface-isuav]
+      mobile: true
+      max_speed_mps: 35.0
+      max_turn_rate_deg_s: 20.0
+      max_vertical_speed_mps: 10.0
+      max_acceleration_mps2: 5.0
+      max_deceleration_mps2: 6.0
+      min_altitude_m: 30.0
+      max_altitude_m: 1000.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: dynamics
+    id: dynamics.shore-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.native-fixed@2.0.0
+    dependencies: []
+    content:
+      compatible_platform_types: [shore-surface-radar]
+      mobile: false
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: dynamics
+    id: dynamics.neutral-civilian-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.native-sim2sea-mmg@2.0.0
+    dependencies: []
+    content:
+      compatible_platform_types: [neutral-civilian-usv]
+      mobile: true
+      max_speed_mps: 12.9
+      max_nps: 5.0
+      max_rudder_rad: 0.3
+      controller_gain: 1.0
+      substeps: 10
+      integration_dt_s: 0.1
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+
+  - schema_version: "2.0"
+    resource_type: collision_shapes
+    id: shape.defender-interdictor-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [defender-interdictor-usv], shape: obb, half_extents_m: [5.0, 1.5, 1.5], parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: collision_shapes
+    id: shape.attacker-suicide-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [attacker-suicide-usv], shape: obb, half_extents_m: [4.0, 1.2, 1.2], parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: collision_shapes
+    id: shape.surface-isuav
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [air], compatible_platform_types: [surface-isuav], shape: sphere, radius_m: 1.5, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: collision_shapes
+    id: shape.shore-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [land], compatible_platform_types: [shore-surface-radar], shape: aabb, half_extents_m: [6.0, 6.0, 4.0], parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: collision_shapes
+    id: shape.neutral-civilian-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [neutral-civilian-usv], shape: obb, half_extents_m: [4.0, 1.2, 1.2], parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: visualization_assets
+    id: visual.defender-interdictor-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [defender-interdictor-usv], profile: armed_usv_generic, length_m: 20.0, width_m: 6.0, color_role: faction, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: visualization_assets
+    id: visual.attacker-suicide-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [attacker-suicide-usv], profile: fast_usv_generic, length_m: 12.0, width_m: 4.0, color_role: faction, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: visualization_assets
+    id: visual.surface-isuav
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [air], compatible_platform_types: [surface-isuav], profile: uav_generic, length_m: 12.0, width_m: 18.0, color_role: faction, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: visualization_assets
+    id: visual.shore-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [land], compatible_platform_types: [shore-surface-radar], profile: shore_radar_generic, length_m: 12.0, width_m: 12.0, color_role: faction, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: visualization_assets
+    id: visual.neutral-civilian-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [neutral-civilian-usv], profile: civilian_usv_generic, length_m: 10.0, width_m: 3.0, color_role: neutral, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: energy
+    id: energy.defender-interdictor-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [defender-interdictor-usv], capacity_j: 720000000.0, idle_power_w: 1200.0, transit_power_w: 18000.0, idle_rate_per_second: 0.0000016666666666666667, motion_rate_per_meter: 0.0000018087855297157624, sensor_power_w: 600.0, relay_power_w: 400.0, fire_energy_j: 15000.0, high_sea_multiplier: 1.25, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: energy
+    id: energy.attacker-suicide-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [attacker-suicide-usv], capacity_j: 360000000.0, idle_power_w: 800.0, transit_power_w: 15000.0, idle_rate_per_second: 0.000002222222222222222, motion_rate_per_meter: 0.0000030577087794432546, sensor_power_w: 300.0, relay_power_w: 0.0, fire_energy_j: 0.0, high_sea_multiplier: 1.35, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: energy
+    id: energy.surface-isuav
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [air], compatible_platform_types: [surface-isuav], capacity_j: 180000000.0, idle_power_w: 350.0, transit_power_w: 4000.0, idle_rate_per_second: 0.0000019444444444444444, motion_rate_per_meter: 0.0000005793650793650794, sensor_power_w: 700.0, relay_power_w: 500.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: energy
+    id: energy.shore-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [land], compatible_platform_types: [shore-surface-radar], capacity_j: 1.0, idle_power_w: 0.0, idle_rate_per_second: 0.0, motion_rate_per_meter: 0.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: energy
+    id: energy.neutral-civilian-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_domains: [surface], compatible_platform_types: [neutral-civilian-usv], capacity_j: 180000000.0, idle_power_w: 500.0, transit_power_w: 9000.0, idle_rate_per_second: 0.000002777777777777778, motion_rate_per_meter: 0.0000036601307189542482, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: communications
+    id: communication.defender-surface-tactical
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv, surface-isuav, shore-surface-radar], slot_type: communication, range_m: 20000.0, bandwidth_bps: 1000000, delay_s: 0.5, ttl_s: 3.0, loss_probability: 0.02, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: communications
+    id: communication.defender-surface-tactical
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv, shore-surface-radar], slot_type: communication, range_m: 20000.0, bandwidth_bps: 1000000, delay_s: 0.5, ttl_s: 3.0, loss_probability: 0.02, max_relay_hops: 2, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: communications
+    id: communication.defender-uav-surface-tactical
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: communication, range_m: 50000.0, bandwidth_bps: 1000000, delay_s: 0.5, ttl_s: 3.0, loss_probability: 0.02, max_relay_hops: 2, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: communications
+    id: communication.attacker-surface-tactical
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [attacker-suicide-usv], slot_type: communication, range_m: 10000.0, bandwidth_bps: 256000, delay_s: 0.5, ttl_s: 3.0, loss_probability: 0.05, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: communications
+    id: communication.neutral-navigation
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [neutral-civilian-usv], slot_type: communication, range_m: 5000.0, bandwidth_bps: 64000, delay_s: 1.0, ttl_s: 1.0, loss_probability: 0.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: damage_models
+    id: damage.surface-interdict
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {effect_types: [kinetic], health_scale: 0.45, disabled_threshold: 0.5, destroyed_threshold: 0.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: damage_models
+    id: damage.suicide-warhead
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {effect_types: [explosive], health_scale: 1.0, disabled_threshold: 0.5, destroyed_threshold: 0.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: damage_models
+    id: damage.secondary-explosion
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {effect_types: [explosive], health_scale: 0.6, disabled_threshold: 0.5, destroyed_threshold: 0.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: effects
+    id: effect.surface-interdict-hit
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [damage.surface-interdict@2.0.0]
+    content: {effect_type: kinetic, damage_model_ref: damage.surface-interdict@2.0.0, magnitude: 0.45, unit: "1", parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: effects
+    id: effect.suicide-detonation
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [damage.suicide-warhead@2.0.0]
+    content: {effect_type: explosive, damage_model_ref: damage.suicide-warhead@2.0.0, magnitude: 1.0, unit: "1", detonation_radius_m: 35.0, attacker_lifecycle: despawn, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: effects
+    id: effect.secondary-explosion
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [damage.secondary-explosion@2.0.0]
+    content: {effect_type: explosive, damage_model_ref: damage.secondary-explosion@2.0.0, magnitude: 0.6, unit: "1", detonation_radius_m: 20.0, trigger_probability: 0.2, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: weapons
+    id: weapon.usv-surface-interdictor
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [effect.surface-interdict-hit@2.0.0]
+    content:
+      allowed_platform_types: [defender-interdictor-usv]
+      target_domains: [surface]
+      effect_ref: effect.surface-interdict-hit@2.0.0
+      min_range_m: 200.0
+      max_range_m: 6000.0
+      hit_probability: 0.65
+      delivery_model: delayed_effect
+      impact_delay_ticks: 1
+      cooldown_ticks: 2
+      energy_per_shot: 0.000020833333333333333
+      rounds_per_action: 1
+      contact_required: true
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: weapons
+    id: weapon.suicide-usv-warhead
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [effect.suicide-detonation@2.0.0, effect.secondary-explosion@2.0.0]
+    content:
+      allowed_platform_types: [attacker-suicide-usv]
+      target_domains: [surface, land]
+      effect_ref: effect.suicide-detonation@2.0.0
+      secondary_effect_ref: effect.secondary-explosion@2.0.0
+      min_range_m: 0.0
+      max_range_m: 35.0
+      hit_probability: 1.0
+      delivery_model: contact_detonation
+      impact_delay_ticks: 1
+      cooldown_ticks: 0
+      energy_per_shot: 0.0
+      rounds_per_action: 1
+      contact_required: true
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: ammunition
+    id: ammunition.usv-surface-interdictor
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [weapon.usv-surface-interdictor@2.0.0]
+    content: {weapon_ref: weapon.usv-surface-interdictor@2.0.0, mass_per_round_kg: 8.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: ammunition
+    id: ammunition.suicide-usv-warhead
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [weapon.suicide-usv-warhead@2.0.0]
+    content: {weapon_ref: weapon.suicide-usv-warhead@2.0.0, mass_per_round_kg: 120.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: loadouts
+    id: loadout.defender-surface-interdictor
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [weapon.usv-surface-interdictor@2.0.0, ammunition.usv-surface-interdictor@2.0.0]
+    content: {compatible_platform_types: [defender-interdictor-usv], required_slots: [surface-weapon], mass_kg: 120.0, weapon_refs: [weapon.usv-surface-interdictor@2.0.0], ammunition_refs: [ammunition.usv-surface-interdictor@2.0.0], parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: loadouts
+    id: loadout.attacker-suicide-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [weapon.suicide-usv-warhead@2.0.0, ammunition.suicide-usv-warhead@2.0.0]
+    content: {compatible_platform_types: [attacker-suicide-usv], required_slots: [suicide-warhead], mass_kg: 150.0, weapon_refs: [weapon.suicide-usv-warhead@2.0.0], ammunition_refs: [ammunition.suicide-usv-warhead@2.0.0], parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 12000.0, probability: 0.8, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 2, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-eo-ir
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 6000.0, probability: 0.85, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 1, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 25000.0, probability: 0.82, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 2, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-eo-ir
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 10000.0, probability: 0.88, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 1, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.shore-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [shore-surface-radar], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 30000.0, probability: 0.8, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 3, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.attacker-navigation-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [attacker-suicide-usv], slot_type: sensor, kind: navigation_radar, target_domains: [surface, land], range_m: 3000.0, probability: 0.9, range_noise_fraction: 0.05, bearing_noise_deg: 2.0, update_ticks: 1, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  # Immutable L1/L2/L3 profiles.  The patch-level versions are separate
+  # benchmark definitions, rather than a mutable difficulty switch.
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-surface-radar
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 8000.0, detection_probability: 0.95, probability: 0.95, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 2, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-eo-ir
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 4000.0, detection_probability: 0.95, probability: 0.95, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.70, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-surface-radar
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 12000.0, detection_probability: 0.95, probability: 0.95, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 2, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-eo-ir
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 6000.0, detection_probability: 0.95, probability: 0.95, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.70, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.shore-surface-radar
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [shore-surface-radar], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 20000.0, detection_probability: 0.95, probability: 0.95, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 3, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.attacker-navigation-radar
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [attacker-suicide-usv], slot_type: sensor, kind: navigation_radar, target_domains: [surface, land], range_m: 3000.0, detection_probability: 0.95, probability: 0.95, range_noise_fraction: 0.05, bearing_noise_deg: 1.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-surface-radar
+    version: 2.2.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 8000.0, detection_probability: 0.88, probability: 0.88, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 2, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-eo-ir
+    version: 2.2.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 4000.0, detection_probability: 0.88, probability: 0.88, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.70, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-surface-radar
+    version: 2.2.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 12000.0, detection_probability: 0.88, probability: 0.88, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 2, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-eo-ir
+    version: 2.2.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 6000.0, detection_probability: 0.88, probability: 0.88, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.70, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.shore-surface-radar
+    version: 2.2.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [shore-surface-radar], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 20000.0, detection_probability: 0.88, probability: 0.88, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 3, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.attacker-navigation-radar
+    version: 2.2.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [attacker-suicide-usv], slot_type: sensor, kind: navigation_radar, target_domains: [surface, land], range_m: 3000.0, detection_probability: 0.88, probability: 0.88, range_noise_fraction: 0.08, bearing_noise_deg: 2.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-surface-radar
+    version: 2.3.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 8000.0, detection_probability: 0.80, probability: 0.80, range_noise_fraction: 0.10, bearing_noise_deg: 3.0, update_ticks: 2, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.defender-usv-eo-ir
+    version: 2.3.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [defender-interdictor-usv], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 4000.0, detection_probability: 0.80, probability: 0.80, range_noise_fraction: 0.10, bearing_noise_deg: 3.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.70, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-surface-radar
+    version: 2.3.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 12000.0, detection_probability: 0.80, probability: 0.80, range_noise_fraction: 0.10, bearing_noise_deg: 3.0, update_ticks: 2, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.isuav-eo-ir
+    version: 2.3.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [surface-isuav], slot_type: sensor, kind: eo_ir, target_domains: [surface], range_m: 6000.0, detection_probability: 0.80, probability: 0.80, range_noise_fraction: 0.10, bearing_noise_deg: 3.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.70, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.shore-surface-radar
+    version: 2.3.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [shore-surface-radar], slot_type: sensor, kind: radar, target_domains: [surface], range_m: 20000.0, detection_probability: 0.80, probability: 0.80, range_noise_fraction: 0.10, bearing_noise_deg: 3.0, update_ticks: 3, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: sensors
+    id: sensor.attacker-navigation-radar
+    version: 2.3.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {compatible_platform_types: [attacker-suicide-usv], slot_type: sensor, kind: navigation_radar, target_domains: [surface, land], range_m: 3000.0, detection_probability: 0.80, probability: 0.80, range_noise_fraction: 0.10, bearing_noise_deg: 3.0, update_ticks: 1, confirmation_frames: 2, stale_after_ticks: 3, engagement_max_age_ticks: 10, minimum_contact_confidence: 0.70, high_sea_range_multiplier: 0.75, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: platforms
+    id: platform.defender-interdictor-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [energy.defender-interdictor-usv@2.0.0, shape.defender-interdictor-usv@2.0.0, visual.defender-interdictor-usv@2.0.0]
+    content:
+      platform_type: defender-interdictor-usv
+      domain: surface
+      mobile: true
+      allowed_dynamics: [dynamics.defender-interdictor-usv@2.0.0]
+      component_slots: [surface-weapon, sensor, sensor, communication]
+      payload_capacity_kg: 350.0
+      mass_kg: 5000.0
+      energy_ref: energy.defender-interdictor-usv@2.0.0
+      collision_shape_ref: shape.defender-interdictor-usv@2.0.0
+      visualization_ref: visual.defender-interdictor-usv@2.0.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: platforms
+    id: platform.attacker-suicide-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [energy.attacker-suicide-usv@2.0.0, shape.attacker-suicide-usv@2.0.0, visual.attacker-suicide-usv@2.0.0]
+    content:
+      platform_type: attacker-suicide-usv
+      domain: surface
+      mobile: true
+      allowed_dynamics: [dynamics.attacker-suicide-usv@2.0.0]
+      component_slots: [suicide-warhead, sensor, communication]
+      payload_capacity_kg: 300.0
+      mass_kg: 2800.0
+      energy_ref: energy.attacker-suicide-usv@2.0.0
+      collision_shape_ref: shape.attacker-suicide-usv@2.0.0
+      visualization_ref: visual.attacker-suicide-usv@2.0.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: platforms
+    id: platform.surface-isuav
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [energy.surface-isuav@2.0.0, shape.surface-isuav@2.0.0, visual.surface-isuav@2.0.0]
+    content:
+      platform_type: surface-isuav
+      domain: air
+      mobile: true
+      allowed_dynamics: [dynamics.surface-isuav@2.0.0]
+      component_slots: [sensor, sensor, communication]
+      payload_capacity_kg: 0.0
+      mass_kg: 250.0
+      energy_ref: energy.surface-isuav@2.0.0
+      collision_shape_ref: shape.surface-isuav@2.0.0
+      visualization_ref: visual.surface-isuav@2.0.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: platforms
+    id: platform.shore-surface-radar
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [energy.shore-surface-radar@2.0.0, shape.shore-surface-radar@2.0.0, visual.shore-surface-radar@2.0.0]
+    content:
+      platform_type: shore-surface-radar
+      domain: land
+      mobile: false
+      allowed_dynamics: [dynamics.shore-surface-radar@2.0.0]
+      component_slots: [sensor, communication]
+      payload_capacity_kg: 0.0
+      mass_kg: 5000.0
+      energy_ref: energy.shore-surface-radar@2.0.0
+      collision_shape_ref: shape.shore-surface-radar@2.0.0
+      visualization_ref: visual.shore-surface-radar@2.0.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+  - schema_version: "2.0"
+    resource_type: platforms
+    id: platform.neutral-civilian-usv
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: [energy.neutral-civilian-usv@2.0.0, shape.neutral-civilian-usv@2.0.0, visual.neutral-civilian-usv@2.0.0]
+    content:
+      platform_type: neutral-civilian-usv
+      domain: surface
+      mobile: true
+      allowed_dynamics: [dynamics.neutral-civilian-usv@2.0.0]
+      component_slots: [communication]
+      payload_capacity_kg: 0.0
+      mass_kg: 1800.0
+      energy_ref: energy.neutral-civilian-usv@2.0.0
+      collision_shape_ref: shape.neutral-civilian-usv@2.0.0
+      visualization_ref: visual.neutral-civilian-usv@2.0.0
+      parameter_source: MD-INT-003-V4
+      fidelity: UNVALIDATED_BENCHMARK
+
+  - schema_version: "2.0"
+    resource_type: environments
+    id: environment.md3-clear
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {weather: clear, sea_state: 1, motion_speed_multiplier: 1.0, sensor_range_multiplier: 1.0, weapon_hit_probability_multiplier: 1.0, communication_loss_multiplier: 1.0, energy_consumption_multiplier: 1.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: environments
+    id: environment.md3-high-sea
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {weather: high_sea_state, sea_state: 5, motion_speed_multiplier: 0.75, sensor_range_multiplier: 0.7, weapon_hit_probability_multiplier: 0.8, communication_loss_multiplier: 1.5, energy_consumption_multiplier: 1.25, water_current_speed_mps: 1.5, wind_speed_mps: 12.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: environments
+    id: environment.md3-high-sea
+    version: 2.1.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {weather: high_sea_state, sea_state: 5, motion_speed_multiplier: 0.70, sensor_range_multiplier: 1.0, sensor_profile_multiplier_keys: {sensor.range: high_sea_range_multiplier}, weapon_hit_probability_multiplier: 0.80, communication_loss_multiplier: 1.0, communication_loss_additive: 0.05, energy_consumption_multiplier: 1.30, water_current_speed_mps: 1.5, wind_speed_mps: 12.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+
+  - schema_version: "2.0"
+    resource_type: missions
+    id: mission.surface-assault-template
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {geometry_primitives: [radial_area, annular_sector, front_track_crossing, path_conflict], objective_types: [protect_port, interdict_surface, preserve_neutral], time_limit_s: 1500.0, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
+  - schema_version: "2.0"
+    resource_type: scoring
+    id: scoring.surface-assault-template
+    version: 2.0.0
+    engine_compatibility: ">=2.0.0,<3.0.0"
+    model_id: models.formal-data@2.0.0
+    dependencies: []
+    content: {metrics: [port_damage, attacker_interdicted, defender_survival, neutral_harm, zone_occupancy, path_conflict], missing_data_policy: metric_data_missing, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}

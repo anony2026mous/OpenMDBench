@@ -1,0 +1,30 @@
+schema_version: rule-agent-team@2.0
+objective_m: [0.0, 0.0]
+protected_zone_bounds_m: [-8000.0, -8000.0, 8000.0, 8000.0]
+decision_interval_ticks: 10
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 42.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  timeline:
+    - {label: axis-ne, spawn_tick: 0, count: 1, axis: north-east, behavior: "low-observable approach from north-east axis"}
+    - {label: axis-east, spawn_tick: 50, count: 1, axis: center-east, behavior: "direct penetration along center corridor"}
+    - {label: axis-se, spawn_tick: 100, count: 1, axis: south-east, behavior: "low-observable approach from south-east axis"}
+  routes:
+    - {match_tag: axis-ne, objective_m: [0.0, 3000.0], speed_mps: 40.0}
+    - {match_tag: axis-east, objective_m: [0.0, 0.0], speed_mps: 42.0}
+    - {match_tag: axis-se, objective_m: [0.0, -3000.0], speed_mps: 40.0}
+defence:
+  faction_id: coalition.defender
+  intercept_speed_mps: 40.0
+  contact_confidence: 0.50
+  maximum_contact_age_ticks: 12
+  weapon_policies:
+    - selector_tags: [interceptor]
+      weapon_ref: weapon.interceptor-missile@2.0.0
+      minimum_range_m: 500.0
+      maximum_range_m: 8000.0
+      cooldown_ticks: 5

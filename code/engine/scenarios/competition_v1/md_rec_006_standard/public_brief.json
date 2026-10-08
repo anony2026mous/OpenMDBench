@@ -1,0 +1,160 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-REC-006",
+  "name": "Storm Watch",
+  "difficulty": "standard",
+  "status": "candidate_not_competition_accepted",
+  "evaluated_side": "red",
+  "duration_seconds": 240,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 240,
+  "adjudication_tick": 241,
+  "search_sectors": [
+    {
+      "sector_id": "sector.01",
+      "cells": [
+        {
+          "schema_version": "2.0",
+          "id": "zone.s01.c01",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              320.0,
+              170.0
+            ],
+            [
+              580.0,
+              170.0
+            ],
+            [
+              580.0,
+              430.0
+            ],
+            [
+              320.0,
+              430.0
+            ]
+          ]
+        },
+        {
+          "schema_version": "2.0",
+          "id": "zone.s01.c02",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              720.0,
+              170.0
+            ],
+            [
+              980.0,
+              170.0
+            ],
+            [
+              980.0,
+              430.0
+            ],
+            [
+              720.0,
+              430.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "sector_id": "sector.02",
+      "cells": [
+        {
+          "schema_version": "2.0",
+          "id": "zone.s02.c01",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              270.0,
+              -430.0
+            ],
+            [
+              530.0,
+              -430.0
+            ],
+            [
+              530.0,
+              -170.0
+            ],
+            [
+              270.0,
+              -170.0
+            ]
+          ]
+        },
+        {
+          "schema_version": "2.0",
+          "id": "zone.s02.c02",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              670.0,
+              -430.0
+            ],
+            [
+              930.0,
+              -430.0
+            ],
+            [
+              930.0,
+              -170.0
+            ],
+            [
+              670.0,
+              -170.0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "suggested_sector_assignments": {
+    "unit.r01": [
+      "sector.01"
+    ],
+    "unit.r02": [
+      "sector.02"
+    ]
+  },
+  "own_assets": [
+    {
+      "entity_id": "unit.r01",
+      "domain": "air",
+      "sensor_range_m": 450
+    },
+    {
+      "entity_id": "unit.r02",
+      "domain": "surface",
+      "sensor_range_m": 450
+    },
+    {
+      "entity_id": "unit.r03",
+      "domain": "shore",
+      "sensor_range_m": 450
+    }
+  ],
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "report_protocol": {
+    "recipient_entity_id": "unit.r03",
+    "recipient_controller_slot": "slot.unit.r03",
+    "schema_version": "competition-contact-report@1.0",
+    "fields": [
+      "contact_id",
+      "observed_tick"
+    ],
+    "report_interval_ticks": 3,
+    "maximum_information_age_ticks": 8
+  },
+  "task": "Survey every assigned sector and maintain timely information until the deadline. Report only contacts published in your own observations; no engagement is required.",
+  "difficulty_rationale": "One mechanism-specific standard; held-out policy distributions must justify further tiers.",
+  "fidelity": "UNVALIDATED synthetic 240-second native candidate; not paper-duration or calibrated real-world reproduction"
+}

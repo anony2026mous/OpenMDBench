@@ -1,0 +1,99 @@
+TASK_ID: MD3-06-003
+PHASE: MD3-06
+OBJECTIVE: >-
+  Repair generic faction-observation recovery after a jamming session ends,
+  without replaying expired sensor reports or introducing scenario-specific logic.
+REQUIREMENTS:
+  - REQ-COM-001
+  - REQ-COM-002
+  - REQ-OBS-001
+  - REQ-CHK-001
+  - REQ-DET-001
+  - REQ-ARCH-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_06_execution_record.yaml
+  - reports/md-int-003/full_test_report.md
+  - tests/system/test_jamming_observation_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/combat_evidence_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/world/
+  - openmdbench/sessions/
+  - openmdbench/systems/
+  - tests/system/
+  - tests/contract/
+ALLOWED_WRITE:
+  - openmdbench/world/factory_v2.py
+  - tests/system/test_jamming_observation_v2.py
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_06_communication_recovery_execution_record.yaml
+PROHIBITED:
+  - Scenario/faction/platform/entity-ID branches, contact truth injection,
+    changing sensor-configured stale semantics, test weakening, dependencies,
+    T4/T5/full suite, commits, pushes or cleanup.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused observation, checkpoint, communication and determinism pytest;
+    syntax/import and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 90
+ACCEPTANCE:
+  - Jamming hides the isolated owner and its reports only while active.
+  - Removing jamming restores still-valid reports after checkpoint restoration.
+  - Sensor-created reports continue to expire at their configured stale threshold;
+    no expired report is replayed.
+  - Behavior is generic, deterministic and has no scenario identity branch.
+OUTPUTS:
+  - Generic World contact-retention repair, failure-oriented regression evidence
+    and an updated communication report/traceability entry.
+STOP_CONDITIONS:
+  - The repair requires scenario identity, bypasses Observation/World authority,
+    changes transport TTL semantics, or needs T4/T5 authorization.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      1 passed in 12.33s: a short jamming session hides only the isolated
+      owner/report, survives checkpoint restore, restores the still-valid
+      report after jamming ends, and removes it when its declared lifetime
+      expires.
+    - >-
+      9 passed in 13.63s: the jamming recovery regression together with the
+      MD-INT-003 environment/communication contract suite.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reviewed the retention split at the World authority boundary. Sensor
+      records retain their configured stale threshold; explicitly installed
+      records have no sensor refresh provenance and retain only through their
+      declared maximum valid age. Observation remains a pure filter over the
+      retained authority store, and no session, scenario, faction or entity
+      identity affects the rule.
+  COMPATIBILITY: >-
+    Existing sensor records retain their exact configured stale behavior.
+    Explicit World contact evidence now honours its explicit max-age contract
+    rather than an unrelated default sensor stale value.
+  DETERMINISM: >-
+    Retention is a pure comparison of immutable evidence fields and current
+    tick; it neither samples RNG nor depends on ordering or session identity.
+  DOMAIN_IMPACT: >-
+    Jamming remains a communication/observation availability filter. It does
+    not delete, recreate or replay contacts and does not affect damage,
+    lifecycle or transport TTL semantics.
+  RISKS:
+    - >-
+      Map-derived RF line-of-sight remains UNVALIDATED_BENCHMARK and is outside
+      this generic observation-recovery correction.
+  NEXT_GATE: >-
+    Repair the independent legacy ADR artifact failure and the MD3-11 static
+    quality/resource gates before rerunning the full T4/T5 stage.

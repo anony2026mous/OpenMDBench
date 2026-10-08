@@ -1,0 +1,68 @@
+TASK_ID: MD3-11-005
+PHASE: MD3-11
+OBJECTIVE: >-
+  Eliminate redundant Taichi core reinitialization for uninterrupted legacy
+  Sim2Sea MMG adapter steps while preserving state-switch isolation.
+REQUIREMENTS:
+  - REQ-DYN-001
+  - REQ-DET-001
+  - REQ-PERF-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/full_test_report.md
+  - openmdbench/domains/surface/mmg_adapter.py
+  - tests/integration/test_single_usv_1000_ticks.py
+  - tests/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/domains/surface/
+  - openmdbench/envs/
+  - openmdbench/runners/
+  - env/
+  - tests/
+ALLOWED_WRITE:
+  - openmdbench/domains/surface/mmg_adapter.py
+  - tests/integration/
+  - tests/unit/test_mmg_adapter.py
+  - reports/md-int-003/
+PROHIBITED:
+  - Dynamics model/parameter changes, replay or checkpoint contract changes,
+    test weakening, dependency changes, global cross-adapter state sharing,
+    commits, pushes, and cleanup.
+TEST_LEVEL: T5
+ALLOWED_COMMANDS:
+  - Focused pytest, deterministic runtime benchmarks, py_compile, Ruff, mypy,
+    source scans, and scoped diff checks.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 180
+ACCEPTANCE:
+  - Consecutive steps of one adapter do not reset the shared core.
+  - Switching adapters reloads the active adapter's own state before stepping.
+  - Snapshot/restore and 1,000-tick existing MMG regression remain deterministic.
+OUTPUTS:
+  - Cached owner-aware MMG adapter, isolation regression test, and performance
+    evidence suitable for a fresh full-quality run.
+STOP_CONDITIONS:
+  - The source reveals hidden per-step state that cannot be represented by the
+    adapter snapshot, or the optimization changes an existing trajectory.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      Focused legacy MMG adapter regression passed; fresh integration and full
+      pytest groups passed, including snapshot/restore and 1,000-tick coverage.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      An adapter reuses its core for uninterrupted own-state steps and reloads
+      state when ownership switches, preserving per-adapter isolation.
+  COMPATIBILITY: Existing adapter snapshot and trajectory interfaces unchanged.
+  DETERMINISM: Cached reuse and switching are covered by deterministic regression.
+  DOMAIN_IMPACT: No MMG parameter or fidelity adjustment.
+  RISKS: Native core lifecycle remains monitored by the MD3-11 resource probes.

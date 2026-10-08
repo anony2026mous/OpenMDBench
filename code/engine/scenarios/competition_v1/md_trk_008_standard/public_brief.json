@@ -1,0 +1,275 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-TRK-008",
+  "difficulty": "standard",
+  "name": "Mixed-Domain Tracking",
+  "status": "candidate_not_competition_accepted",
+  "evaluated_side": "red",
+  "duration_seconds": 240,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 240,
+  "adjudication_tick": 241,
+  "scoring_start_tick": 20,
+  "observers": [
+    "unit.r01",
+    "unit.r02",
+    "unit.r03",
+    "unit.r04",
+    "unit.r05",
+    "unit.r06",
+    "unit.r07"
+  ],
+  "observer_domains": {
+    "unit.r01": "air",
+    "unit.r02": "air",
+    "unit.r03": "surface",
+    "unit.r04": "shore",
+    "unit.r05": "surface",
+    "unit.r06": "surface",
+    "unit.r07": "shore"
+  },
+  "mobile_observers": [
+    "unit.r01",
+    "unit.r02",
+    "unit.r03",
+    "unit.r05",
+    "unit.r06"
+  ],
+  "initial_designation_regions": [
+    {
+      "schema_version": "2.0",
+      "id": "cue.01",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          235.0,
+          -265.0
+        ],
+        [
+          365.0,
+          -265.0
+        ],
+        [
+          365.0,
+          -135.0
+        ],
+        [
+          235.0,
+          -135.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.02",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          435.0,
+          155.0
+        ],
+        [
+          565.0,
+          155.0
+        ],
+        [
+          565.0,
+          285.0
+        ],
+        [
+          435.0,
+          285.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.03",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          235.0,
+          -165.0
+        ],
+        [
+          365.0,
+          -165.0
+        ],
+        [
+          365.0,
+          -35.0
+        ],
+        [
+          235.0,
+          -35.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.04",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          285.0,
+          35.0
+        ],
+        [
+          415.0,
+          35.0
+        ],
+        [
+          415.0,
+          165.0
+        ],
+        [
+          285.0,
+          165.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.05",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          635.0,
+          135.0
+        ],
+        [
+          765.0,
+          135.0
+        ],
+        [
+          765.0,
+          265.0
+        ],
+        [
+          635.0,
+          265.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.06",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          685.0,
+          -265.0
+        ],
+        [
+          815.0,
+          -265.0
+        ],
+        [
+          815.0,
+          -135.0
+        ],
+        [
+          685.0,
+          -135.0
+        ]
+      ]
+    }
+  ],
+  "task": "Maintain the initially designated observable contacts until the deadline; one detection is not completion. Maintain public designation identity and send track-report@1.0 messages to the declared receiver.",
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "difficulty_rationale": "One mechanism-specific standard candidate; three levels require measured separation and calibration.",
+  "fidelity": "UNVALIDATED synthetic 240-second microbenchmark, not paper-duration reproduction",
+  "track_reporting": {
+    "schema_version": "track-report@1.0",
+    "track_ids": [
+      "cue.01",
+      "cue.02",
+      "cue.03",
+      "cue.04",
+      "cue.05",
+      "cue.06"
+    ],
+    "recipient_entity_id": "unit.r04",
+    "recipient_controller_slot": "slot.unit.r04",
+    "reporter_ids": [
+      "unit.r01",
+      "unit.r02",
+      "unit.r03",
+      "unit.r05",
+      "unit.r06"
+    ],
+    "suggested_interval_ticks": 4,
+    "maximum_age_ticks": 12,
+    "message_fields": {
+      "schema_version": "track-report@1.0",
+      "track_id": "a public initial-designation ID",
+      "contact_id": "an unchanged opaque organic contact ID from this reporter",
+      "observed_tick": "the exact native sample tick",
+      "reported_tick": "the native send tick"
+    },
+    "scoring": [
+      {
+        "metric_id": "metric.report_coverage",
+        "kind": "delivered_coverage",
+        "comparison": ">=",
+        "threshold": 0.7,
+        "native_condition": {
+          "comparison": ">=",
+          "value": 0.7
+        }
+      },
+      {
+        "metric_id": "metric.report_identity",
+        "kind": "identity_accuracy",
+        "comparison": ">=",
+        "threshold": 0.95,
+        "native_condition": {
+          "comparison": ">=",
+          "value": 0.95
+        }
+      },
+      {
+        "metric_id": "metric.report_switch_rate",
+        "kind": "identity_switch_rate",
+        "comparison": "<=",
+        "threshold": 0.05,
+        "native_condition": {
+          "comparison": ">=",
+          "value": 0.95
+        }
+      },
+      {
+        "metric_id": "metric.report_freshness",
+        "kind": "delivered_freshness",
+        "comparison": ">=",
+        "threshold": 0.4,
+        "native_condition": {
+          "comparison": ">=",
+          "value": 0.4
+        }
+      }
+    ],
+    "score_window": {
+      "start_tick_inclusive": 20,
+      "end_tick_exclusive": 241
+    },
+    "score_weight": 0.5,
+    "calibration": "UNVALIDATED candidate thresholds declared before report experiments",
+    "scope": "Identity reports must actually arrive at the named endpoint; sensor detection alone is insufficient.",
+    "limitations": [
+      "Organic references only; shared-only sample receiver proof is absent from the native mission snapshot.",
+      "True-position error is not computed by this protocol."
+    ]
+  },
+  "asset_profile": {
+    "name": "DEF-P3",
+    "air": 2,
+    "surface": 3,
+    "shore": 2,
+    "status": "candidate_reference_budget"
+  }
+}

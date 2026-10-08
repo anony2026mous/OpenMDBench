@@ -1,0 +1,76 @@
+{
+  "schema": "grid-role-c-6-reference-counterfactual@1",
+  "config": {
+    "seed": 5203,
+    "difficulty": "medium",
+    "task_mode": "continuous",
+    "interval": 10,
+    "planner": "llm",
+    "executor": "heuristic",
+    "checkpoint_sha256": null,
+    "base_url": "http://127.0.0.1:8001/v1",
+    "model": "Qwen3.8-27B"
+  },
+  "instrumentation_sha256": "186c2357d9577d35b746f4abf7bd0df4b40d2394c7c27c2b8addcc46c12ba965",
+  "self_replay_gate": true,
+  "reference_quality_independently_verified": false,
+  "oracle_causal_attribution_validated": false,
+  "reference_improvement_planning": -0.06666666666666665,
+  "reference_improvement_execution": 0.0,
+  "reference_nonadditivity": 0.06666666666666665,
+  "full_reference_improvement": 0.0,
+  "identity_residual": 0.0,
+  "reports": {
+    "original": {
+      "V": 1.0,
+      "done": true,
+      "aborted": null,
+      "replay_exact": null,
+      "steps": 81,
+      "report_sha256": "a3025d70b17c57496914d325238d7a77654d5b157c551b2b23871a55647d3cbd",
+      "trace_sha256": "4c9627101fff7b7b6026b2c1c3722adf7e888076827cb04438f4003f74baf731"
+    },
+    "self_replay": {
+      "V": 1.0,
+      "done": true,
+      "aborted": null,
+      "replay_exact": true,
+      "steps": 81,
+      "report_sha256": "77971a99bdb38404763f3976eef66f9ba6bf3afd8cb1ea5bbaeeb3407278bb8a",
+      "trace_sha256": "98730313d934df37e99ef176ebde38406702f49c9c514b8f8ce0e2313243517c"
+    },
+    "reference_executor": {
+      "V": 1.0,
+      "done": true,
+      "aborted": null,
+      "replay_exact": false,
+      "steps": 106,
+      "report_sha256": "9e0298526cd346674ea0b298c1526d76647850c7f8ff629a73948a3ae53d2293",
+      "trace_sha256": "fd6c3e294c3e944e3d95e8fa708d5d985ce4f52232582876e4699eae65b0392d"
+    },
+    "reference_planner": {
+      "V": 0.9333333333333333,
+      "done": true,
+      "aborted": null,
+      "replay_exact": null,
+      "steps": 150,
+      "report_sha256": "6a2d21568059cc275dbc96d77c30446f5030e3ace92e7d91150090f6b871364d",
+      "trace_sha256": "25c9b764d35cfea01010201877eec50ab3338c701b5e71675b4d6653ae7fa9ff"
+    },
+    "reference_full": {
+      "V": 1.0,
+      "done": true,
+      "aborted": null,
+      "replay_exact": null,
+      "steps": 150,
+      "report_sha256": "426cd968b7151386df2738cb1bd5179b7e7c4732e97b97bc5f05c760402b0be7",
+      "trace_sha256": "d7799953af756208461288a61822acb9cf573a0a2d65da7768de838f24e28e45"
+    }
+  },
+  "limits": [
+    "Reference components are not independently qualified oracles",
+    "Frozen original goals in executor substitution only",
+    "Diverged trajectories need external-randomness alignment for eventwise claims",
+    "Reference contrasts are not P1 deployed-system P/E/I"
+  ]
+}

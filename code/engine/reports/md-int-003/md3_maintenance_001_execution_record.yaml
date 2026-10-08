@@ -1,0 +1,155 @@
+TASK_ID: MD3-MAINT-001
+PHASE: post-MD3-12 corrective maintenance
+OBJECTIVE: >-
+  Reproduce, diagnose, minimally repair, and review three reported MD-INT-003
+  defects: ineffective USV MMG motion, normalized-energy fire rejection, and
+  missing timeout terminal_result.
+REQUIREMENTS:
+  - REQ-DYN-001
+  - REQ-ENE-001
+  - REQ-CBT-002
+  - REQ-CBT-003
+  - REQ-MIS-002
+  - REQ-SCN-003
+  - REQ-DET-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/surface_combat.md
+  - reports/md-int-003/mission_scoring.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_12_execution_record.yaml
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/md_int_003.yaml
+  - scenarios/formal/md_int_003_*/
+  - openmdbench/dynamics/
+  - openmdbench/combat/
+  - openmdbench/missions/
+  - openmdbench/sessions/
+  - openmdbench/world/
+  - openmdbench/scenarios/
+  - tests/
+ALLOWED_WRITE:
+  - catalog/v2/md_int_003.yaml
+  - openmdbench/dynamics/native_v2.py
+  - openmdbench/dynamics/sim2sea_mmg_worker.py
+  - openmdbench/domains/surface/controller_v2.py
+  - openmdbench/systems/generic_v2.py
+  - openmdbench/combat/system_v2.py
+  - openmdbench/missions/engine_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/sessions/lifecycle_v2.py
+  - openmdbench/sessions/gateway_v2.py
+  - openmdbench/scenarios/declarative_v2.py
+  - tests/contract/test_md_int_003_catalog_closure.py
+  - tests/contract/test_md_int_003_surface_combat.py
+  - tests/contract/test_mmg_step_many_contract_v2.py
+  - tests/contract/test_mission_scoring_engine_v2.py
+  - tests/system/test_md_int_003_scenarios.py
+  - tests/determinism/test_md_int_003_system_determinism.py
+  - tests/unit/test_mmg_navigation_controller_v2.py
+  - reports/md-int-003/md3_maintenance_001_execution_record.yaml
+  - reports/md-int-003/maintenance_001_report.md
+PROHIBITED:
+  - Scenario-ID, faction, or entity-ID special cases.
+  - Test weakening, tolerance widening, dependency changes, T4/T5, commits,
+    pushes, cleanup, or modifying unrelated user worktree changes.
+  - Treating UNVALIDATED_BENCHMARK values as calibrated performance data.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Read-only source/search/Git inspection.
+  - Targeted pytest, compiler/session scenario runs, py_compile, and scoped
+    diff/search review commands.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 180
+ACCEPTANCE:
+  - A normal MD-INT-003 USV reaches a materially advancing MMG state under a
+    valid navigation command without changing the fixed 1 s tick or substep
+    semantics.
+  - Valid fire consumes energy under one declared unit contract; invalid fire
+    still has no ammo/RNG/energy side effect.
+  - The time-limit terminal path latches a non-null timeout result and preserves
+    terminated/truncated semantics and checkpoint equivalence.
+  - Targeted T2/T3 regression, deterministic restoration, and frozen-scope
+    self-review have no P0/P1 finding.
+OUTPUTS:
+  - Reproduction evidence, minimal repair, tests, review findings, and a
+    maintenance report.
+STOP_CONDITIONS:
+  - Missing/contradictory unit authority, a defect requiring a schema-breaking
+    public-interface decision, or a failing unrelated baseline requiring scope
+    expansion returns NEEDS_DECISION.
+RESULT:
+  STATUS: DONE
+  HEAD: 9429392666df2928fc61934e49923733deeacb1d
+  REPRODUCTION:
+    - >-
+      Before the repair, a valid 18 m/s attacker-USV navigation command produced
+      approximately 0.0024 m/s after the first tick and 0.045 m/s after 20 ticks.
+      The 5 rps native envelope was the limiting path.
+    - >-
+      Entity.state.energy is a 0..1 fraction while the USV weapon declared
+      energy_per_shot as 15000 J.  Combat therefore compared 0..1 against 15000
+      and rejected every otherwise legal fire request.
+    - >-
+      At the final duration interval, physical motion advanced from tick 1499 to
+      1500, but mission evaluation still used tick 1499.  The time rule never
+      observed its declared deadline and terminal_result remained null.
+  REPAIR:
+    - >-
+      Extended the generic Sim2Sea L7-proxy actuator ceiling to 240 rps and
+      configured each MMG adapter from its data-declared speed bound; the two
+      MD-INT-003 USV resources now declare the actuator envelopes required for
+      their requested 15/18 m/s operating targets.
+    - >-
+      Kept runtime energy as a dimensionless fraction: converted catalog energy
+      rates and the defender weapon per-shot cost by their declared capacity,
+      and exposed mission energy facts with unit 1.
+    - >-
+      Moved generic mission/scoring evaluation to the post-interval World tick,
+      and mapped timeout to Gymnasium truncated=True (not terminated=True).
+  TESTS:
+    - >-
+      pytest -q tests/contract/test_md_int_003_catalog_closure.py
+      tests/contract/test_md_int_003_damage_lifecycle.py
+      tests/contract/test_md_int_003_environment_communication.py
+      tests/contract/test_md_int_003_mission_geometry.py
+      tests/contract/test_md_int_003_surface_combat.py
+      tests/contract/test_mmg_step_many_contract_v2.py
+      tests/determinism/test_md_int_003_system_determinism.py
+      tests/integration/test_md_int_003_interfaces.py
+      tests/system/test_md_int_003_scenarios.py
+      tests/system/test_md_int_003_visualization.py
+      => 78 passed in 184.23s
+    - >-
+      pytest -q tests/contract/test_mission_scoring_engine_v2.py
+      tests/contract/test_native_dynamics_adapter_v2.py
+      tests/contract/test_session_action_pipeline_v2.py
+      tests/integration/test_md_int_003_interfaces.py
+      => 143 passed in 18.36s
+    - >-
+      mypy openmdbench/dynamics/native_v2.py
+      openmdbench/dynamics/sim2sea_mmg_worker.py
+      openmdbench/domains/surface/controller_v2.py
+      openmdbench/world/factory_v2.py openmdbench/sessions/gateway_v2.py
+      => Success: no issues found in 5 source files
+    - >-
+      ruff check on changed files => passed; factory_v2 has only its pre-existing
+      unrelated E501 at line 4247 when E501 is enabled.
+  REVIEW:
+    P0_P1_FINDINGS: 0
+    DETERMINISM: >-
+      Checkpoint restoration and the MD-INT-003 deterministic suite passed.
+      No scenario/faction/entity identity branch was introduced in production code.
+    RESIDUAL_RISK: >-
+      The actuator envelopes allow functional motion through the existing L7 proxy,
+      but source hydrodynamic data has not calibrated those 15/18 m/s benchmark
+      targets.  Catalog fidelity remains UNVALIDATED_BENCHMARK.

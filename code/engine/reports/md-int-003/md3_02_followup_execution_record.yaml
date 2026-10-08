@@ -1,0 +1,100 @@
+TASK_ID: MD3-02-002
+PHASE: MD3-02
+OBJECTIVE: >-
+  Add versioned, benchmark-labelled surface sensor and defender-UAV communication
+  profiles so L1/L2/L3 can select their required observation/relay characteristics
+  only through Catalog references.
+REQUIREMENTS:
+  - REQ-SEN-001
+  - REQ-SEN-002
+  - REQ-COM-001
+  - REQ-LVL-001
+  - REQ-ARCH-002
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_execution_record.yaml
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - scenarios/formal/
+  - openmdbench/catalog/
+  - openmdbench/scenarios/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_followup_execution_record.yaml
+PROHIBITED:
+  - Runtime/schema/agent code changes, scenario/faction/entity-ID branches,
+    real-world calibration claims, global RNG, T4/T5, full-suite, dependency
+    change, commit, push, cleanup, or generated-artifact write.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused Catalog closure/compiler/version/hash tests, syntax/import and scoped
+    diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 60
+ACCEPTANCE:
+  - Each difficulty can reference a compatible, immutable sensor profile set;
+    profile data contains range, probability, range/bearing noise, update period,
+    source and UNVALIDATED_BENCHMARK fidelity.
+  - Defender UAV communication is a distinct compatible resource with the declared
+    relay range/hop policy; no runtime identity special case is needed.
+  - Existing resource references remain valid and Catalog/compiler closure passes.
+OUTPUTS:
+  - Versioned data resources, failure-oriented Catalog closure tests and updated
+    MD3-02 evidence.
+STOP_CONDITIONS:
+  - The requirement needs a runtime scenario branch or a non-Catalog state value.
+RESULT:
+  STATUS: DONE
+  MODIFIED_FILES:
+    - catalog/v2/md_int_003.yaml
+    - tests/contract/test_md_int_003_catalog_closure.py
+    - reports/md-int-003/requirements_traceability.md
+    - reports/md-int-003/catalog_closure.md
+    - reports/md-int-003/md3_02_followup_execution_record.yaml
+  COMMANDS:
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -m pytest -q
+      tests/contract/test_md_int_003_catalog_closure.py
+      tests/contract/test_catalog_registry_v2.py
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -c
+      "load_catalog_bundle_v2(...); print(resource-count/content-hash/file-sha256)"
+    - git diff --check -- catalog/v2/md_int_003.yaml tests/contract/test_md_int_003_catalog_closure.py reports/md-int-003
+  TEST_RESULT: "56 passed in 1.91s; direct Catalog load: 71 resources; diff check clean."
+  CATALOG_HASH: sha256:7b78ab0877afcfb7ca25a9ff5ced52cce9895188a996ff16d9da7316a3e57413
+  CATALOG_FILE_SHA256: dafe1a27486a73c27786dd458c0270d9847afb30f0886929e36709ce95390f25
+  REVIEW: SELF_REVIEWED
+  COMPATIBILITY: >-
+    Existing @2.0.0 resources remain immutable and valid; new exact references
+    add only versioned sensor profiles and a UAV-only communication resource.
+  DETERMINISM: >-
+    Catalog data is immutable and hash-addressed; no RNG, session, scenario-ID,
+    faction-ID, or entity-ID branch was added.
+  DOMAIN_IMPACT: >-
+    L1/L2/L3 now have explicit 8/4/12/6/20/3 km sensor data, Pd/noise/report
+    data, and 20 km surface versus 50 km UAV relay resources, all labelled
+    UNVALIDATED_BENCHMARK.
+  KNOWN_RISK: >-
+    The generic subsystem currently does not consume measurement-noise or
+    update-period fields, so this data closure is not evidence of three-level
+    observation behavior. MD3-06 follow-up is required before MD3-07 resumes.
+  NEXT: MD3-06 follow-up for generic sensor profile consumption and deterministic measurement behavior.

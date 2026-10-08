@@ -1,0 +1,84 @@
+TASK_ID: MD3-11-004
+PHASE: MD3-11
+OBJECTIVE: >-
+  Remove avoidable per-session native MMG/Taichi runtime allocation that caused
+  16-session resource exhaustion, while retaining isolated per-session vessel
+  state and deterministic results.
+REQUIREMENTS:
+  - REQ-DYN-001
+  - REQ-DET-001
+  - REQ-PERF-001
+  - REQ-MEM-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/performance_concurrency.md
+  - reports/md-int-003/full_test_report.md
+  - openmdbench/dynamics/
+  - openmdbench/domains/surface/
+  - env/
+  - tests/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/dynamics/
+  - openmdbench/domains/surface/
+  - openmdbench/world/
+  - openmdbench/sessions/
+  - env/
+  - tests/
+  - pyproject.toml
+ALLOWED_WRITE:
+  - openmdbench/dynamics/
+  - openmdbench/domains/surface/
+  - tests/contract/
+  - tests/integration/
+  - tests/performance/
+  - tools/t5_md_int_003_concurrency.py
+  - artifacts/md-int-003/
+  - reports/md-int-003/
+PROHIBITED:
+  - Reducing MMG fidelity, changing Catalog/scenario parameters, global mutable
+    per-session world state, quality-rule bypasses, test weakening, dependency
+    changes, commits, pushes, or cleanup.
+TEST_LEVEL: T5
+ALLOWED_COMMANDS:
+  - Focused pytest, headless performance/concurrency scripts, ps/FD/RSS
+    measurement, py_compile, Ruff, and source/diff scans.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 360
+ACCEPTANCE:
+  - Process-global native runtime setup occurs at most once per process.
+  - Independent sessions retain independent MMG state and deterministic output.
+  - 16 concurrent MD-INT-003 sessions complete under the host resource limit;
+    32 sessions are measured and either pass or produce a concrete limit.
+OUTPUTS:
+  - Runtime-lifecycle implementation, isolation/concurrency tests, performance
+    evidence, and updated MD3-11 records.
+STOP_CONDITIONS:
+  - The source confirms that solving the resource issue requires a native
+    runtime redesign, simulation-fidelity change, or a resource-policy choice
+    that cannot be made from the documented requirements.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      Native focused suite passed 81 items; isolated 16 and 32 session probes
+      both passed at tick 2 with active RSS below 403 MB.
+    - >-
+      100 sequential complete 1,500-tick matches passed without RSS, thread,
+      FD or child-process growth after close.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      One process owns one Taichi core and multiplexes handle-specific vessel
+      state. World/session state remains isolated and no fidelity reduction was
+      introduced.
+  COMPATIBILITY: External dynamics and session interfaces unchanged.
+  DETERMINISM: Handle loading occurs before each native step and checkpoint tests pass.
+  DOMAIN_IMPACT: MMG catalog parameters and model fidelity are unchanged.
+  RISKS: A bounded multiprocessing resource tracker child remains after close.

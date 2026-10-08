@@ -1,0 +1,68 @@
+schema_version: rule-agent-team@2.0
+set:
+  name: IE 拦截交战场景集
+  member_index: 3
+  zh_name: 水面突袭
+  notes: 三艘自爆船在窄带内平行突入，考察水面封堵、空间协同与防线维持；威胁方没有武装无人船，我方对海火力只有武装无人船。
+objective_m:
+- 700.0
+- -400.0
+protected_zone_bounds_m:
+- 400.0
+- -700.0
+- 1000.0
+- -100.0
+decision_interval_ticks: 5
+facility_weights:
+  facility.berth: 1.0
+defence:
+  faction_id: coalition.defender
+  contact_confidence: 0.0
+  maximum_contact_age_ticks: 8
+  intercept_speed_mps: 43.0
+  weapon_policies:
+  - selector_tags:
+    - interceptor
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    minimum_range_m: 500.0
+    maximum_range_m: 8000.0
+    cooldown_ticks: 5
+  - selector_tags:
+    - usv
+    weapon_ref: weapon.surface-missile@2.0.0
+    minimum_range_m: 0.0
+    maximum_range_m: 3000.0
+    cooldown_ticks: 3
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 43.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  routes:
+  - match_tag: uav
+    objective_m:
+    - 700.0
+    - -400.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: boat
+    objective_m:
+    - 700.0
+    - -400.0
+    pattern: direct
+    speed_mps: 10.0
+  timeline:
+  - label: surface raid group
+    spawn_tick: 0
+    count: 3
+    axis: east, a narrow bearing band on the harbour approach
+    behavior: three suicide boats run in parallel at the harbour-mouth berth, saturating the approach
+  weapon_policies:
+  - match_tag: boat
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    min_range_m: 0.0
+    max_range_m: 150.0
+    shots: 1
+    reserve_for_assigned: 0

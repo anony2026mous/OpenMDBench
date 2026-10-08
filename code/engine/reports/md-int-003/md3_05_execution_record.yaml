@@ -1,0 +1,127 @@
+TASK_ID: MD3-05-001
+PHASE: MD3-05
+OBJECTIVE: >-
+  Add reusable public intercept guidance, continuous radial/sector/interdiction
+  geometry facts, and authoritative mission/scoring semantics without a
+  scenario-specific planner, geometry judge, or score path.
+REQUIREMENTS:
+  - REQ-CBT-004
+  - REQ-MIS-001
+  - REQ-MIS-002
+  - REQ-SCR-001
+  - REQ-SCR-002
+  - REQ-SCR-003
+  - REQ-ACT-003
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/damage_lifecycle.md
+  - reports/md-int-003/md3_04_execution_record.yaml
+  - docs/adr/ADR-MD3-002-interdict-helper-boundary.md
+  - docs/adr/ADR-MD3-004-interdiction-geometry-primitives.md
+  - docs/adr/ADR-MD3-007-terminal-and-truncation-semantics.md
+  - docs/adr/ADR-MD3-008-score-na-and-missing-data.md
+  - openmdbench/world/geography_v2.py
+  - openmdbench/world/boundary_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/missions/engine_v2.py
+  - openmdbench/scenarios/declarative_v2.py
+  - openmdbench/schemas/core_v2.py
+  - openmdbench/schemas/interface_v2.py
+  - tests/contract/test_mission_scoring_engine_v2.py
+  - tests/contract/test_geography_boundary_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - docs/adr/
+  - catalog/v2/
+  - openmdbench/sdk/
+  - openmdbench/world/
+  - openmdbench/missions/
+  - openmdbench/scenarios/
+  - openmdbench/schemas/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/sdk/intercept_v2.py
+  - openmdbench/sdk/__init__.py
+  - openmdbench/world/interdiction_geometry_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/missions/engine_v2.py
+  - openmdbench/scenarios/declarative_v2.py
+  - openmdbench/schemas/core_v2.py
+  - tests/contract/test_md_int_003_mission_geometry.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_05_execution_record.yaml
+  - reports/md-int-003/mission_scoring.md
+PROHIBITED:
+  - Scenario/faction/platform/entity-ID branches in production Python.
+  - An engine action named interdict_to, direct WorldState mutation by SDK/helper,
+    implicit health changes from occupancy, or a second mission/scoring authority.
+  - Hard-coded benchmark geometry, durations, mission names, score weights, or
+    real-world parameter claims.
+  - ScenarioPackage/registry/interface expansion beyond the generic data contract;
+    T4/T5, full-suite, performance/soak/security tests, commit, push, merge, or cleanup.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused geometry, mission/scoring, declarative/checkpoint, navigation and
+    renamed-synthetic contract tests; syntax/import and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 120
+ACCEPTANCE:
+  - Public contact-only intercept helper emits an ordinary navigation proposal
+    and has no WorldState import or write path.
+  - Continuous, parameterized geometry facts cover radial crossing, annular
+    sector occupancy, front-of-track occupancy, path conflict debounce,
+    blocked/slow duration and replanning latency without changing health.
+  - Mission and score consumers use authoritative facts, preserve terminal
+    priority/latch and checkpoint equivalence, and distinguish structural N/A
+    from expected-but-missing data with explicit metric_data_missing evidence.
+  - A fully renamed synthetic scenario can exercise the reusable mechanisms.
+OUTPUTS:
+  - Public SDK helper, generic geometry/mission/scoring/checkpoint path,
+    failure-oriented contract tests, execution evidence and report.
+STOP_CONDITIONS:
+  - The feature requires a scenario ID, faction or fixed entity ID branch; a
+    helper needs truth WorldState; geometry directly changes health; or the
+    current resolved/checkpoint model cannot represent authoritative evidence.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - "66 passed in 1.30s: MD3-05 geometry/SDK/score audit + mission scoring contracts"
+    - "302 passed in 8.85s: MD3-05 focused geometry, mission/scoring, declarative, boundary, checkpoint, action and schema contracts"
+    - "py_compile, scoped git diff --check and production scenario-branch scan passed"
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Frozen-scope review covered public-contact-only SDK boundaries, continuous
+      local-metre geometry, duration/debounce/replan checkpoint state, no health
+      mutation, score missing-versus-N/A semantics, operation receipt restore,
+      terminal priority/latch compatibility, and failure-oriented tests. No P0/P1
+      was found. This is not an independent third-party review.
+  COMPATIBILITY: >-
+    Existing action types and World authority are unchanged: the helper emits a
+    navigation proposal only. Existing mission/scoring/checkpoint contracts pass;
+    the new score-audit fields have backward-compatible defaults on restore.
+  DETERMINISM: >-
+    Geometry is pure over caller-supplied continuous paths. The accumulator has
+    canonical sorted checkpoint maps; scoring missing evidence is anchored to a
+    deterministic plugin-output hash when produced by MissionEngine.
+  DOMAIN_IMPACT: >-
+    Geometry produces facts only and cannot alter health. Scenario parameters and
+    rule use remain data-only work for MD3-07; runtime log/frame presentation is
+    assigned to MD3-09.
+  RISKS: >-
+    U10/U11/U13 values remain UNVALIDATED_BENCHMARK. No concrete scenario has
+    been authored in this phase, so mission geometry will be exercised by the
+    MD3-07 data-only packages and their rule agents.
+  NEXT_GATE: "MD3-05 DONE; create and execute the MD3-06 record before modifying MD3-06 scope."

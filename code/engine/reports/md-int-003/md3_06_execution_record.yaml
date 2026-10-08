@@ -1,0 +1,127 @@
+TASK_ID: MD3-06-001
+PHASE: MD3-06
+OBJECTIVE: >-
+  Add a generic, deterministic capability-modifier and tick-quantized
+  communication path for environment, suppression, sensing and energy effects.
+REQUIREMENTS:
+  - REQ-ENV-001
+  - REQ-ENV-002
+  - REQ-ENV-003
+  - REQ-SEN-001
+  - REQ-SEN-002
+  - REQ-COM-001
+  - REQ-COM-002
+  - REQ-ENE-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/mission_scoring.md
+  - reports/md-int-003/md3_05_execution_record.yaml
+  - docs/adr/ADR-MD3-005-environment-modifier-order.md
+  - docs/adr/ADR-MD3-006-communication-tick-quantization.md
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/combat/system_v2.py
+  - openmdbench/scenarios/declarative_v2.py
+  - openmdbench/schemas/core_v2.py
+  - tests/contract/test_geography_boundary_v2.py
+  - tests/contract/test_world_checkpoint_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - docs/adr/
+  - catalog/v2/
+  - openmdbench/world/
+  - openmdbench/combat/
+  - openmdbench/scenarios/
+  - openmdbench/schemas/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/world/capability_modifier_v2.py
+  - openmdbench/world/communication_transport_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/combat/system_v2.py
+  - tests/contract/test_md_int_003_environment_communication.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_06_execution_record.yaml
+  - reports/md-int-003/environment_communication.md
+PROHIBITED:
+  - Scenario/faction/platform/entity-ID branches, new scenario data, or direct
+    health/lifecycle mutation by weather, communication or suppression.
+  - Global RNG, sub-tick simulation, truth contact injection, external writes,
+    T4/T5, full-suite, performance/soak/security tests, commit, push or cleanup.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused modifier/transport, checkpoint, subsystem, observation and existing
+    contract tests; syntax/import and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 120
+ACCEPTANCE:
+  - Stable base→modifier→suppression→lifecycle/energy capability order is pure,
+    data-parameterized and checkpointable.
+  - Communication uses deterministic tick quantization, TTL, range/lifecycle
+    gating, loss substreams and no stale-contact replay.
+  - Existing observation, subsystem, checkpoint and action contracts remain
+    compatible; no scenario branches or truth leaks are introduced.
+OUTPUTS:
+  - Generic modifier/transport primitives, focused failure-oriented tests and
+    execution/report evidence.
+STOP_CONDITIONS:
+  - Required state cannot be checkpointed through the canonical World path, a
+    feature needs scenario identity, or it bypasses normal observation/commands.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      5 passed in 0.95s: MD3-06 modifier ordering, suppression,
+      transport quantization/TTL, checkpointed delayed delivery, jamming
+      revalidation, and World-to-combat capability wiring.
+    - >-
+      371 passed in 27.57s: focused MD3-03/04/05/06, combat, checkpoint,
+      action and declarative-event compatibility contracts.
+    - >-
+      py_compile passed for modifier/transport/World/combat modules; scoped
+      diff check and generic-module scenario-branch scan passed.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reviewed modifier order and expiry, tick-zero activation, exact
+      component-ref suppression, energy/lifecycle clamps, native-command
+      scaling, World-owned combat resolver, named loss sampling, TTL boundary,
+      stable same-faction route selection, pre-delivery route revalidation,
+      checkpoint event-state persistence, and observation non-injection. No
+      P0/P1 was found. This is a single-Codex structural self-review, not an
+      independent third-party review.
+  COMPATIBILITY: >-
+    Existing resources with no modifier or communication timing fields retain
+    their base profiles and zero-delay/zero-TTL same-tick semantics. Existing
+    ActionBatch, World event, combat, checkpoint, declarative-event and
+    observation contracts passed focused regression. The CombatSystem callback
+    is session-local and is installed only by its authoritative World.
+  DETERMINISM: >-
+    Modifiers sort by (priority, modifier_id). Loss samples derive from
+    session_seed, resolved_hash, tick and message_id substream, never from
+    global RNG or session ID. Route exploration sorts endpoint IDs; all mutable
+    environment, suppression and transport state is canonical checkpoint data.
+  DOMAIN_IMPACT: >-
+    Environment uses generic capability names for dynamics, sensor, weapon,
+    communication and energy. Transport is message/audit only and never
+    forwards contacts into observation; jamming/route failure blocks delivery
+    without changing health or lifecycle directly.
+  RISKS: >-
+    U3/U4/U5/U8 remain UNVALIDATED_BENCHMARK. No map-derived RF line-of-sight
+    model was invented: the generic route accepts an explicit terrain predicate
+    and MD3-07 must supply validated map/data evidence. Concrete forecast,
+    high-sea and failure schedules also remain data-only MD3-07 work.
+  NEXT_GATE: >-
+    MD3-06 DONE; create and execute the MD3-07 record before adding the
+    data-only three-level scenario packages.

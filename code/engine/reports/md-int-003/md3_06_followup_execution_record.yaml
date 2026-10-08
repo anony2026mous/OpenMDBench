@@ -1,0 +1,143 @@
+TASK_ID: MD3-06-002
+PHASE: MD3-06
+OBJECTIVE: >-
+  Make the generic fixed-tick sensing path consume versioned sensor detection,
+  measurement-noise and report-period data through deterministic named
+  substreams, without a scenario/faction/entity identity branch.
+REQUIREMENTS:
+  - REQ-SEN-001
+  - REQ-SEN-002
+  - REQ-OBS-001
+  - REQ-LVL-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_02_followup_execution_record.yaml
+  - reports/md-int-003/md3_06_execution_record.yaml
+  - catalog/v2/md_int_003.yaml
+  - openmdbench/systems/generic_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/combat_evidence_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - tests/contract/test_md_int_003_environment_communication.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - openmdbench/systems/
+  - openmdbench/world/
+  - openmdbench/scenarios/
+  - openmdbench/schemas/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/systems/generic_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/combat_evidence_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - tests/contract/test_md_int_003_environment_communication.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_06_followup_execution_record.yaml
+PROHIBITED:
+  - Catalog/scenario/rule-agent changes, scenario/faction/platform/entity-ID
+    branches, truth contact injection, global RNG, sub-tick simulation, direct
+    mutable-state writes outside the canonical World path, T4/T5, full suite,
+    dependency changes, commit, push, cleanup, or generated-artifact write.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused generic subsystem, World observation/contact, checkpoint and
+    MD-INT-003 environment/communication contract tests; syntax/import and
+    scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 90
+ACCEPTANCE:
+  - Sensor profile fields use generic `detection_probability`, `update_ticks`,
+    `range_noise_fraction`, and `bearing_noise_deg` semantics at fixed ticks.
+  - Noise derives from a stable named substream anchored by seed/tick/owner/
+    sensor/target; entity registration order and session ID do not change it.
+  - Generic World-owned contact fusion consumes profile confirmation/stale/
+    confidence/age data; public contacts retain no truth-only fields and
+    checkpoint restoration is event/contact equivalent across an update-period
+    boundary.
+OUTPUTS:
+  - Generic sensing implementation, failure-oriented contract tests and updated
+    MD3-06 evidence.
+STOP_CONDITIONS:
+  - Required behavior needs a scenario identity branch, non-canonical state, or
+    breaks a public observation/checkpoint contract.
+RESULT:
+  STATUS: DONE
+  INITIAL_BLOCKER: >-
+    Audit found that confirmation/stale/engagement age thresholds must be
+    versioned profile data, not generic MD-INT-003 constants. Per AGENTS.md,
+    return to MD3-02 to add the data fields before implementing consumption.
+  REMEDIATION: >-
+    MD3-02-003 and MD3-02-004 completed the required sensor-fusion and
+    high-sea profile data closure; execution resumed under this record.
+  MODIFIED_FILES:
+    - openmdbench/systems/generic_v2.py
+    - openmdbench/world/combat_evidence_v2.py
+    - openmdbench/world/checkpoint_v2.py
+    - openmdbench/world/factory_v2.py
+    - tests/contract/test_md_int_003_environment_communication.py
+    - reports/md-int-003/requirements_traceability.md
+    - reports/md-int-003/environment_communication.md
+    - reports/md-int-003/md3_06_followup_execution_record.yaml
+  COMMANDS:
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -m pytest -q
+      tests/contract/test_md_int_003_environment_communication.py
+      tests/contract/test_generic_subsystems_v2.py
+      tests/contract/test_world_checkpoint_v2.py
+      tests/contract/test_combat_damage_v2.py
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -m pytest -q tests/system/test_md_int_003_scenarios.py
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -m py_compile generic_v2.py combat_evidence_v2.py
+      checkpoint_v2.py factory_v2.py test_md_int_003_environment_communication.py
+    - git diff --check -- scoped files
+  TEST_RESULT: >-
+    239 passed in 24.16s for focused generic/World/checkpoint/combat contracts;
+    4 passed in 17.95s for MD-INT-003 package regression; py_compile and scoped
+    diff check passed.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reviewed profile-field validation, exact update cadence, target-domain
+      filtering, named seed/tick/owner/sensor/target measurement substreams,
+      bounded range/bearing measurement construction, one fused public track per
+      owner/target, confirmation/stale behavior, measurement-only observation,
+      checkpoint serialization/restoration, legacy probability compatibility,
+      profile-key range and capability-additive consumption. No P0/P1 found in
+      this scoped review; this is not an independent review.
+  COMPATIBILITY: >-
+    Profiles without new fields retain zero-noise, each-tick, one-frame behavior;
+    legacy `probability` is normalized to the generic detection field before
+    capability modifiers. Existing checkpoint and combat tests pass.
+  DETERMINISM: >-
+    Detection and measurement samples derive only from seed/tick and stable
+    owner/sensor/target strings; entity ordering and session ID do not affect
+    them. Fused selection uses a stable tuple order and all retained track state
+    is canonical checkpoint data.
+  DOMAIN_IMPACT: >-
+    Public observation receives only confirmed measurement positions, never the
+    target identity or sensor RNG evidence. Generic environment data can select
+    a per-profile capability multiplier and an additive loss adjustment.
+  RISKS: >-
+    All V4 numerical values remain UNVALIDATED_BENCHMARK. The subsequent
+    data-only stage must switch the packages to new sensor/communication/high-sea
+    exact refs and demonstrate the three-level resolved differences.
+  NEXT_GATE: Resume MD3-07-001 data-only scenario integration.

@@ -1,0 +1,68 @@
+TASK_ID: MD3-11-007
+PHASE: MD3-11
+OBJECTIVE: >-
+  Restore the ten accepted baseline architecture-decision records required by
+  the historical core-contract acceptance test without changing runtime,
+  scenario, Catalog, parameter, or test behavior.
+REQUIREMENTS:
+  - REQ-ARCH-001
+  - REQ-DET-001
+  - REQ-RPL-001
+INPUTS:
+  - AGENTS.md
+  - reports/phase1_core_contract.md
+  - reports/md_ad_002_requirements_traceability.md
+  - docs/adr/RF-ADR-001-platform-foundation-decisions.md
+  - tests/unit/test_adrs.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/
+  - tests/unit/test_adrs.py
+ALLOWED_WRITE:
+  - docs/decisions/ADR-001-scenario-identity-and-hash.md
+  - docs/decisions/ADR-002-ammunition-and-damage.md
+  - docs/decisions/ADR-003-ciws-envelope-and-cooldown.md
+  - docs/decisions/ADR-004-roe-after-breach.md
+  - docs/decisions/ADR-005-breach-threshold-and-latch.md
+  - docs/decisions/ADR-006-energy-accounting.md
+  - docs/decisions/ADR-007-probabilistic-weapon-resolution.md
+  - docs/decisions/ADR-008-lifecycle-tombstones.md
+  - docs/decisions/ADR-009-weather-profiles.md
+  - docs/decisions/ADR-010-communication-delivery-order.md
+  - reports/md-int-003/
+PROHIBITED:
+  - Production/schema/Catalog/scenario/test/configuration changes, new
+    parameter choices, fidelity claims, dependencies, commits, pushes, and
+    cleanup.
+TEST_LEVEL: T1
+ALLOWED_COMMANDS:
+  - Markdown structural validation and focused ADR pytest.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 45
+ACCEPTANCE:
+  - ADR-001 through ADR-010 exist and state Accepted status.
+  - Each documents an already frozen benchmark decision without altering it.
+OUTPUTS:
+  - Ten Accepted decision records and focused contract evidence.
+STOP_CONDITIONS:
+  - Restoring a record requires selecting an unrecorded parameter or changing
+    current behavior.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      2 passed in 0.03s: tests/unit/test_adrs.py and
+      tests/contract/test_md_int_001_adrs.py validate the ten baseline and
+      eight MD-INT-001 Accepted decision-record contracts.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Compared the restored records with the Phase-1 report, historical
+      requirement traceability and the accepted platform foundation ADR. No
+      runtime, Catalog, scenario, schema or parameter was modified.
+  COMPATIBILITY: Documentation-only recovery; existing interfaces are unchanged.
+  DETERMINISM: The records describe existing seed and tick contracts only.
+  DOMAIN_IMPACT: No new real-world calibration or capability claim is made.
+  RISKS: None identified within the documentation-only scope.
+  NEXT_GATE: Re-run the remaining full-quality test segment after this repair.

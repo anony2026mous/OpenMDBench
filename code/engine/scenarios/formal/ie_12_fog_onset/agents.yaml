@@ -1,0 +1,84 @@
+schema_version: rule-agent-team@2.0
+set:
+  name: IE 拦截交战场景集
+  member_index: 12
+  zh_name: 雾中多向渗透
+  notes: 雾**提前到 150 tick**（早于 IE-06 的 600 与 IE-07 的 400），三向同时进入同一水上目标。难度取 IE-05 与 IE-06 之间（红 5+4、我 5+5、ingress 0.80）。
+objective_m:
+- 700.0
+- -1000.0
+protected_zone_bounds_m:
+- 400.0
+- -1300.0
+- 1000.0
+- -700.0
+decision_interval_ticks: 5
+facility_weights:
+  facility.pier: 1.0
+defence:
+  faction_id: coalition.defender
+  contact_confidence: 0.0
+  maximum_contact_age_ticks: 8
+  intercept_speed_mps: 43.0
+  weapon_policies:
+  - selector_tags:
+    - interceptor
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    minimum_range_m: 500.0
+    maximum_range_m: 8000.0
+    cooldown_ticks: 5
+  - selector_tags:
+    - usv
+    weapon_ref: weapon.surface-missile@2.0.0
+    minimum_range_m: 0.0
+    maximum_range_m: 3000.0
+    cooldown_ticks: 3
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 43.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  routes:
+  - match_tag: uav
+    objective_m:
+    - 700.0
+    - -1000.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: boat
+    objective_m:
+    - 700.0
+    - -1000.0
+    pattern: direct
+    speed_mps: 10.0
+  timeline:
+  - label: northern group
+    spawn_tick: 0
+    count: 3
+    axis: bearing about 045
+    behavior: two UAVs and one suicide boat converge on the submarine pier
+  - label: southern group
+    spawn_tick: 0
+    count: 3
+    axis: bearing about 135
+    behavior: two UAVs and one suicide boat converge on the pier from the other side; fog arrives at tick 150, before either group is in weapon range
+  - label: central probe
+    spawn_tick: 0
+    count: 3
+    axis: due east, low altitude
+    behavior: one UAV and two suicide boats run straight down the reference bearing to split attention three ways
+  weapon_policies:
+  - match_tag: boat
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    min_range_m: 0.0
+    max_range_m: 150.0
+    shots: 1
+    reserve_for_assigned: 0
+  - match_tag: uav
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 1
+    reserve_for_assigned: 1

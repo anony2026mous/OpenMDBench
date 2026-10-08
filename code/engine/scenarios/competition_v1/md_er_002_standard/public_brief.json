@@ -1,0 +1,107 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-ER-002",
+  "difficulty": "standard",
+  "name": "Equipment Failure",
+  "evaluated_side": "red",
+  "status": "candidate_not_competition_accepted",
+  "duration_seconds": 180,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 180,
+  "adjudication_tick": 181,
+  "task": "Dispatch to confirmed requests, dwell for three ticks, avoid published risk regions. Arrival is not rescue. Published standing surveillance remains mandatory; incident arrival does not replace it.",
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "responders": [
+    "unit.r01",
+    "unit.r02"
+  ],
+  "initial_requests": [
+    {
+      "request_id": "request.01",
+      "destination": {
+        "schema_version": "2.0",
+        "id": "zone.request01",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            1100.0,
+            -100.0
+          ],
+          [
+            1300.0,
+            -100.0
+          ],
+          [
+            1300.0,
+            100.0
+          ],
+          [
+            1100.0,
+            100.0
+          ]
+        ]
+      },
+      "priority": 1
+    }
+  ],
+  "risk_regions": [],
+  "difficulty_rationale": "One standard event-mechanism candidate; three levels require measured policy separation first.",
+  "fidelity": "UNVALIDATED synthetic 180-second microbenchmark, not paper-duration reproduction",
+  "standing_missions": [
+    {
+      "mission_id": "watch.initial",
+      "kind": "maintain_physical_contact",
+      "target_count": 1,
+      "description": "Maintain a fresh physical sensor contact on the initial watch contact while servicing incident requests.",
+      "search_region": {
+        "schema_version": "2.0",
+        "id": "public.watch-sector",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            250.0,
+            -600.0
+          ],
+          [
+            1450.0,
+            -600.0
+          ],
+          [
+            1450.0,
+            600.0
+          ],
+          [
+            250.0,
+            600.0
+          ]
+        ]
+      },
+      "controlled_observers": [
+        "unit.r01",
+        "unit.r02"
+      ],
+      "initial_support_station": {
+        "entity_id": "unit.r03",
+        "position_m": [
+          850.0,
+          0.0,
+          0.0
+        ]
+      },
+      "metric_id": "metric.continuity",
+      "comparison": ">=",
+      "threshold": 0.65,
+      "unit": "fraction_of_eligible_ticks",
+      "maximum_contact_age_ticks": 1,
+      "measurement_window": {
+        "starts_after": "station_service_loss",
+        "start_time_is_private": true,
+        "end_tick_exclusive": 181
+      }
+    }
+  ]
+}

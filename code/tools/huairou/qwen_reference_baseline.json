@@ -1,0 +1,110 @@
+{
+  "schema": "huairou-qwen-reference-baseline-v1",
+  "observed_on": "2026-09-30",
+  "deployment_status": "two_replicas_running_bounded_validation_passed",
+  "validation": {
+    "cpu_cases_passed": 9,
+    "cpu_ticks_per_case": 12,
+    "llm_cases_passed": 12,
+    "llm_ticks_per_case": 6,
+    "formal_experiment_completed": false,
+    "full_context_saturation_tested": false,
+    "report": "/mnt/QTJC/chenyi-codex/validation/readiness-audit-20260930.json",
+    "local_report": ".huairou/logs/readiness-audit-20260930.json"
+  },
+  "reference_base_url": "http://172.18.116.170:8000/v1",
+  "sources": {
+    "runtime": "http://172.18.116.170:8000/version",
+    "model": "http://172.18.116.170:8000/v1/models",
+    "cache": "http://172.18.116.170:8000/metrics: vllm:cache_config_info engine=0",
+    "ablation_request": [
+      "role_c_toolkit/p0_6_audit.py: freeze llm_configuration",
+      "role_c_toolkit/toolkit_hifi_lock.py: llm_max_tokens"
+    ]
+  },
+  "reference_observed": {
+    "served_model_name": "Qwen3.8-27B",
+    "model_root": "/model",
+    "vllm_version": "0.27.1",
+    "max_model_len": 131072,
+    "cache": {
+      "cache_dtype": "fp8",
+      "calculate_kv_scales": false,
+      "enable_prefix_caching": false,
+      "gpu_memory_utilization": 0.92,
+      "kv_cache_memory_bytes": null,
+      "kv_cache_size_tokens": 445946,
+      "kv_cache_max_concurrency": 3.4022988505747125,
+      "block_size": 1568,
+      "user_specified_block_size": false,
+      "num_gpu_blocks": 296,
+      "num_gpu_blocks_override": null,
+      "mamba_block_size": 131072,
+      "user_specified_mamba_block_size": false,
+      "mamba_cache_dtype": "auto",
+      "mamba_ssm_cache_dtype": "float32",
+      "mamba_cache_mode": "none",
+      "sliding_window": null,
+      "kv_offloading_size": null,
+      "kv_offloading_backend": "native",
+      "use_replayssm": false
+    }
+  },
+  "reference_reported_by_user": {
+    "source": "User-provided original deployment details; not independently inspected on source host",
+    "host_model_path": "/home/taizun/.cache/modelscope/models/Qwen--Qwen3.8-27B",
+    "weight_dtype": "bfloat16",
+    "weight_quantization": null,
+    "weight_size_reported": "54 GB (approximate; exact bytes not verified)",
+    "weight_shards": 18,
+    "gpus": "2 x NVIDIA A100-PCIE-40GB",
+    "tensor_parallel_size": 2
+  },
+  "project_ablation_request": {
+    "model": "Qwen3.8-27B",
+    "max_tokens": 1024,
+    "temperature": 0.1,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "target": {
+    "status": "running",
+    "inference_only": true,
+    "independent_replicas": 2,
+    "gpu_groups": [[0, 1], [2, 3]],
+    "tensor_parallel_size_per_replica": 2,
+    "server_local_endpoints": ["http://127.0.0.1:8001/v1", "http://127.0.0.1:8002/v1"],
+    "explicit_reference_kv_block_cap": 296,
+    "user_requested_weight_dtype": "bfloat16",
+    "weight_quantization_allowed_without_explicit_change": false,
+    "share_read_only_weight_files_on_disk": true,
+    "shared_model_path": "/mnt/QTJC/chenyi-codex/models/Qwen3.8-27B-BF16",
+    "runtime_python": "/mnt/QTJC/chenyi-codex/envs/qwen-vllm0271-py312/bin/python",
+    "cuda_compiler_home": "/mnt/QTJC/chenyi-codex/tools/cuda-12.9",
+    "runtime_preflight_receipt": "/mnt/QTJC/chenyi-codex/services/qwen/flashinfer-preflight.json",
+    "runtime_wheel": "vllm-0.27.1+cu129-cp38-abi3-manylinux_2_28_x86_64.whl",
+    "runtime_wheel_sha256": "bf0d52faa2a51e7a01c6856a7a8a2d1307fd0ff711415d34168a67ffac0fa47b",
+    "requires_reference_equivalence_verification": true
+  },
+  "unknown_reference_fields": [
+    "weight_revision_and_hashes",
+    "tokenizer_revision_and_chat_template_hash",
+    "effective_generation_config_and_unspecified_sampling_defaults",
+    "model_sampling_seed_not_simulation_seed",
+    "pipeline_parallelism",
+    "max_num_seqs_and_max_num_batched_tokens",
+    "effective_fp8_format_and_kv_scale_values_or_source",
+    "effective_mamba_cache_dtype_when_auto",
+    "attention_backend_and_runtime_build"
+  ],
+  "interpretation": [
+    "This is a read-only evidence snapshot, not a launch configuration or a passing deployment check.",
+    "Null cache fields represent the literal None reported by the reference metric.",
+    "Reported cache capacity and max concurrency are runtime-derived values, not measured throughput or an allowed request limit.",
+    "Resolved block counts and sizes are observations; do not blindly turn them into launch overrides.",
+    "The same gpu_memory_utilization on different hardware does not imply the same KV capacity.",
+    "Target BF16 supersedes the earlier FP16 request to match the original deployment details supplied by the user. Weight hashes and actual runtime equivalence still require verification.",
+    "Two replicas may share immutable disk files but still need separate GPU weight allocations."
+  ]
+}

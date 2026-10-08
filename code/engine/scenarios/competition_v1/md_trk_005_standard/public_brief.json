@@ -1,0 +1,109 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-TRK-005",
+  "difficulty": "standard",
+  "name": "Weather Degradation",
+  "status": "candidate_not_competition_accepted",
+  "evaluated_side": "red",
+  "duration_seconds": 240,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 240,
+  "adjudication_tick": 241,
+  "scoring_start_tick": 20,
+  "observers": [
+    "unit.r01",
+    "unit.r02",
+    "unit.r03",
+    "unit.r04"
+  ],
+  "observer_domains": {
+    "unit.r01": "air",
+    "unit.r02": "air",
+    "unit.r03": "surface",
+    "unit.r04": "shore"
+  },
+  "mobile_observers": [
+    "unit.r01",
+    "unit.r02",
+    "unit.r03"
+  ],
+  "initial_designation_regions": [
+    {
+      "schema_version": "2.0",
+      "id": "cue.01",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          235.0,
+          -245.0
+        ],
+        [
+          365.0,
+          -245.0
+        ],
+        [
+          365.0,
+          -115.0
+        ],
+        [
+          235.0,
+          -115.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.02",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          285.0,
+          115.0
+        ],
+        [
+          415.0,
+          115.0
+        ],
+        [
+          415.0,
+          245.0
+        ],
+        [
+          285.0,
+          245.0
+        ]
+      ]
+    },
+    {
+      "schema_version": "2.0",
+      "id": "cue.03",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          235.0,
+          -65.0
+        ],
+        [
+          365.0,
+          -65.0
+        ],
+        [
+          365.0,
+          65.0
+        ],
+        [
+          235.0,
+          65.0
+        ]
+      ]
+    }
+  ],
+  "task": "Maintain the initially designated observable contacts until the deadline; one detection is not completion.",
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "difficulty_rationale": "One mechanism-specific standard candidate; three levels require measured separation and calibration.",
+  "fidelity": "UNVALIDATED synthetic 240-second microbenchmark, not paper-duration reproduction"
+}

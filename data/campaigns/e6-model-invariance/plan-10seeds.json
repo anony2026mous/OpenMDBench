@@ -1,0 +1,88 @@
+{
+  "schema": "E6-model-invariance-plan@1",
+  "scope": "E6 model-invariance: grid medium/continuous llm-rl, strong vs hold",
+  "created_utc": "2026-10-02T14:35:25.049165+00:00",
+  "snapshot": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T143406Z-06afc318",
+  "checkpoint": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T143406Z-06afc318/role_c_toolkit/assets/mappo_medium_s42_best.pt",
+  "difficulty": "medium",
+  "task_mode": "continuous",
+  "stack": "llm-rl",
+  "plan_interval": 10,
+  "conditions": [
+    "strong",
+    "hold"
+  ],
+  "seeds": [
+    2026100301,
+    2026100302,
+    2026100303,
+    2026100304,
+    2026100305,
+    2026100306,
+    2026100307,
+    2026100308,
+    2026100309,
+    2026100310
+  ],
+  "reference_seeds": [
+    2026100301,
+    2026100302,
+    2026100303
+  ],
+  "smoke_seeds": [
+    2026100391
+  ],
+  "max_tokens": 1024,
+  "temperature": 0.1,
+  "enable_thinking": false,
+  "llm_retries": 0,
+  "llm_timeout_seconds": 120,
+  "case_wall_budget_seconds": 5400,
+  "jobs_per_replica": 1,
+  "models": {
+    "27b": {
+      "served_name": "Qwen3.8-27B",
+      "directory": "models/Qwen3.8-27B-BF16",
+      "max_model_len": 131072,
+      "manifest_sha256": "2b12189920779a0b6fb52d9dfc2ca394f3ebe74d4cbe6f849eaddf4c8a582bd9",
+      "repository": "Qwen/Qwen3.8-27B",
+      "replica_names": {
+        "0": "a"
+      },
+      "ports": [
+        8001
+      ],
+      "endpoints": [
+        "http://127.0.0.1:8001/v1"
+      ]
+    },
+    "8b": {
+      "served_name": "Qwen3-8B",
+      "directory": "models/Qwen3-8B-BF16",
+      "max_model_len": 40960,
+      "manifest_sha256": "d1c730aeb19dc34576307a7b2f82b2216037cdb10fe61ba3d4e5e82dc65b675b",
+      "repository": "Qwen/Qwen3-8B",
+      "replica_names": {
+        "0": "c"
+      },
+      "ports": [
+        8003
+      ],
+      "endpoints": [
+        "http://127.0.0.1:8003/v1"
+      ]
+    }
+  },
+  "runner_sha256": "8b5373e4ac9438c2d3eac5ef996fa532e42623bd986ea9d629af29f85b5abf52",
+  "frozen_files": {
+    "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T143406Z-06afc318/role_c_toolkit/grid_rolec6.py": "e8c09c9134f94a67ce6ff61281f37a10a90cbd992ab5330bfb68f675063c3411",
+    "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T143406Z-06afc318/role_c_toolkit/assets/mappo_medium_s42_best.pt": "223dbf740163b652f221a6ef0885d69b8c975c53378a7e63c05388e1df8cd0a8"
+  },
+  "success_criteria": {
+    "interface_causal_necessity": "per model: mean(V_strong - V_hold) > 0 with the seed-bootstrap 95% CI lower bound > 0",
+    "deployment_behind_baseline": "per model: mean(V_strong - V_pure_rl_same_seed) < 0",
+    "honest_failure": "any model failing either criterion is reported as a law boundary, never re-labelled"
+  },
+  "no_cross_batch_merge": true,
+  "note": "masked/goal-dose conditions do not exist in this pipeline; only strong and hold are run"
+}

@@ -1,0 +1,67 @@
+schema_version: package@2.0
+scenario:
+  schema_version: "2.0"
+  scenario_id: md-int-003.easy.v2
+  display_name: MD-INT-003 L1 水面突袭
+  factions:
+    - {schema_version: "2.0", id: faction.defender, display_name: 防守方}
+    - {schema_version: "2.0", id: faction.attacker, display_name: 突袭方}
+  relationships:
+    - {schema_version: "2.0", source_faction_id: faction.defender, target_faction_id: faction.attacker, relation: hostile}
+    - {schema_version: "2.0", source_faction_id: faction.attacker, target_faction_id: faction.defender, relation: hostile}
+  entities:
+    - {schema_version: "2.0", id: unit.guard.usv.01, faction_id: faction.defender, platform_ref: platform.defender-interdictor-usv@2.0.0, dynamics_ref: dynamics.defender-interdictor-usv@2.0.0, loadout_ref: loadout.defender-surface-interdictor@2.0.0, component_refs: [sensor.defender-usv-surface-radar@2.1.0, sensor.defender-usv-eo-ir@2.1.0, communication.defender-surface-tactical@2.1.0], ammunition: {ammunition.usv-surface-interdictor@2.0.0: 10}, target_domains: [surface], initial_state: {schema_version: "2.0", position_m: [7048.0, 3330.0, 0.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 90.0, energy: 1.0}, tags: [interceptor, surface]}
+    - {schema_version: "2.0", id: unit.guard.usv.02, faction_id: faction.defender, platform_ref: platform.defender-interdictor-usv@2.0.0, dynamics_ref: dynamics.defender-interdictor-usv@2.0.0, loadout_ref: loadout.defender-surface-interdictor@2.0.0, component_refs: [sensor.defender-usv-surface-radar@2.1.0, sensor.defender-usv-eo-ir@2.1.0, communication.defender-surface-tactical@2.1.0], ammunition: {ammunition.usv-surface-interdictor@2.0.0: 10}, target_domains: [surface], initial_state: {schema_version: "2.0", position_m: [17620.0, -1110.0, 0.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 270.0, energy: 1.0}, tags: [interceptor, surface]}
+    - {schema_version: "2.0", id: unit.guard.usv.03, faction_id: faction.defender, platform_ref: platform.defender-interdictor-usv@2.0.0, dynamics_ref: dynamics.defender-interdictor-usv@2.0.0, loadout_ref: loadout.defender-surface-interdictor@2.0.0, component_refs: [sensor.defender-usv-surface-radar@2.1.0, sensor.defender-usv-eo-ir@2.1.0, communication.defender-surface-tactical@2.1.0], ammunition: {ammunition.usv-surface-interdictor@2.0.0: 10}, target_domains: [surface], initial_state: {schema_version: "2.0", position_m: [12334.0, 4995.0, 0.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 225.0, energy: 1.0}, tags: [interceptor, surface]}
+    - {schema_version: "2.0", id: unit.guard.uav.01, faction_id: faction.defender, platform_ref: platform.surface-isuav@2.0.0, dynamics_ref: dynamics.surface-isuav@2.0.0, component_refs: [sensor.isuav-surface-radar@2.1.0, sensor.isuav-eo-ir@2.1.0, communication.defender-uav-surface-tactical@2.1.0], target_domains: [surface], initial_state: {schema_version: "2.0", position_m: [9000.0, -1000.0, 500.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 270.0, energy: 1.0}, tags: [airborne, scout]}
+    - {schema_version: "2.0", id: unit.guard.uav.02, faction_id: faction.defender, platform_ref: platform.surface-isuav@2.0.0, dynamics_ref: dynamics.surface-isuav@2.0.0, component_refs: [sensor.isuav-surface-radar@2.1.0, sensor.isuav-eo-ir@2.1.0, communication.defender-uav-surface-tactical@2.1.0], target_domains: [surface], initial_state: {schema_version: "2.0", position_m: [9000.0, 1000.0, 500.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 270.0, energy: 1.0}, tags: [airborne, scout]}
+    - {schema_version: "2.0", id: unit.guard.shore.01, faction_id: faction.defender, platform_ref: platform.shore-surface-radar@2.0.0, dynamics_ref: dynamics.shore-surface-radar@2.0.0, component_refs: [sensor.shore-surface-radar@2.1.0, communication.defender-surface-tactical@2.1.0], target_domains: [surface], initial_state: {schema_version: "2.0", position_m: [-1057.0, 222.0, 10.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 0.0, energy: 1.0}, tags: [shore, sensor]}
+    - {schema_version: "2.0", id: unit.raid.usv.01, faction_id: faction.attacker, platform_ref: platform.attacker-suicide-usv@2.0.0, dynamics_ref: dynamics.attacker-suicide-usv@2.0.0, loadout_ref: loadout.attacker-suicide-usv@2.0.0, component_refs: [sensor.attacker-navigation-radar@2.1.0, communication.attacker-surface-tactical@2.0.0], ammunition: {ammunition.suicide-usv-warhead@2.0.0: 1}, target_domains: [surface, land], initial_state: {schema_version: "2.0", position_m: [22000.0, -1200.0, 0.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 270.0, energy: 1.0}, destroyed_lifecycle: wreck, tags: [raider, surface]}
+    - {schema_version: "2.0", id: unit.raid.usv.02, faction_id: faction.attacker, platform_ref: platform.attacker-suicide-usv@2.0.0, dynamics_ref: dynamics.attacker-suicide-usv@2.0.0, loadout_ref: loadout.attacker-suicide-usv@2.0.0, component_refs: [sensor.attacker-navigation-radar@2.1.0, communication.attacker-surface-tactical@2.0.0], ammunition: {ammunition.suicide-usv-warhead@2.0.0: 1}, target_domains: [surface, land], initial_state: {schema_version: "2.0", position_m: [22000.0, 0.0, 0.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 270.0, energy: 1.0}, destroyed_lifecycle: wreck, tags: [raider, surface]}
+    - {schema_version: "2.0", id: unit.raid.usv.03, faction_id: faction.attacker, platform_ref: platform.attacker-suicide-usv@2.0.0, dynamics_ref: dynamics.attacker-suicide-usv@2.0.0, loadout_ref: loadout.attacker-suicide-usv@2.0.0, component_refs: [sensor.attacker-navigation-radar@2.1.0, communication.attacker-surface-tactical@2.0.0], ammunition: {ammunition.suicide-usv-warhead@2.0.0: 1}, target_domains: [surface, land], initial_state: {schema_version: "2.0", position_m: [22000.0, 1200.0, 0.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 270.0, energy: 1.0}, destroyed_lifecycle: wreck, tags: [raider, surface]}
+  formations: []
+  world:
+    schema_version: "2.0"
+    coordinate_system: local_m
+    map_ref: map.weihai-local@2.0.0
+    duration_ticks: 1500
+    tick_seconds: 1.0
+    boundary_policy: constrain_motion
+    spatial_damage_policy: {schema_version: "2.0", collision_effect_ref: effect.surface-interdict-hit@2.0.0, magnitude_model: scaled_relative_speed, magnitude_parameters: {scale: 0.01}, output_unit: "1"}
+    roe_rules:
+      - {schema_version: "2.0", id: roe.defender-engage-raider, source_faction_id: faction.defender, target_faction_id: faction.attacker, relationship: hostile, engagement_permitted: true}
+    zones:
+      - {schema_version: "2.0", id: zone.core, geometry_type: polygon, coordinates_m: [[2118.127, 0.0], [2003.946, 574.025], [1678.788, 1060.660], [1192.152, 1385.819], [618.127, 1500.0], [44.102, 1385.819], [-442.534, 1060.660], [-767.692, 574.025], [-881.873, 0.0], [-767.692, -574.025], [-442.534, -1060.660], [44.102, -1385.819], [618.127, -1500.0], [1192.152, -1385.819], [1678.788, -1060.660], [2003.946, -574.025]], tags: [objective, protected, core]}
+      - {schema_version: "2.0", id: zone.blockade-arc, geometry_type: polygon, coordinates_m: [[1833.665, 5908.847], [4126.352, 5311.540], [6118.127, 3000.0], [7524.257, 1045.285], [7545.198, -974.264], [6680.305, -3500.0], [4948.254, -2500.0], [5565.750, -695.920], [5550.792, 1035.917], [4346.690, 2714.182], [2630.979, 4243.886], [1631.778, 4924.039]], tags: [blockade, annular-sector]}
+      - {schema_version: "2.0", id: zone.patrol-arc, geometry_type: polygon, coordinates_m: [[1486.368, 6893.654], [4155.442, 6193.463], [6474.477, 3500.0], [8110.663, 1220.981], [8135.093, -1136.262], [7545.198, -3500.0], [6680.305, -2500.0], [6904.995, -1065.903], [6890.041, 1077.981], [5405.106, 3146.546], [3344.351, 4986.426], [1422.229, 5913.182]], tags: [patrol, annular-sector]}
+      - {schema_version: "2.0", id: zone.ingress-corridor, geometry_type: polygon, coordinates_m: [[2118.127, -400.0], [24000.0, -400.0], [24000.0, 400.0], [2118.127, 400.0]], tags: [route, ingress]}
+      - {schema_version: "2.0", id: zone.early-warning, geometry_type: polygon, coordinates_m: [[3536.0, -557.0], [23000.0, -557.0], [23000.0, 7120.0], [3536.0, 7120.0]], tags: [warning]}
+      - {schema_version: "2.0", id: zone.raider-spawn, geometry_type: polygon, coordinates_m: [[5303.0, -557.0], [23000.0, -557.0], [23000.0, 7120.0], [5303.0, 7120.0]], tags: [spawn]}
+  events:
+    - {schema_version: "2.0", id: event.weather.clear, event_type: weather_change, trigger: {kind: tick, tick: 0}, priority: 1000, depends_on: [], payload: {environment_ref: environment.md3-clear@2.0.0}}
+    - {schema_version: "2.0", id: event.core.suicide-detonation, event_type: spatial_effect_trigger, trigger: {kind: tick, tick: 0}, priority: 900, depends_on: [], payload: {source_kind: zone_entry, source_entity_ids: [unit.raid.usv.01, unit.raid.usv.02, unit.raid.usv.03], zone_id: zone.core, effect_ref: effect.suicide-detonation@2.0.0, target_selector: {entity_ids: [unit.guard.usv.01, unit.guard.usv.02, unit.guard.usv.03, unit.guard.uav.01, unit.guard.uav.02, unit.guard.shore.01]}, source_lifecycle: wreck, secondary_effect_ref: effect.secondary-explosion@2.0.0, secondary_probability: 0.2, secondary_target_selector: {entity_ids: [unit.guard.usv.01, unit.guard.usv.02, unit.guard.usv.03, unit.guard.uav.01, unit.guard.uav.02, unit.guard.shore.01]}}}
+    - {schema_version: "2.0", id: event.timeout, event_type: mission_marker, trigger: {kind: tick, tick: 1499}, priority: 10, depends_on: [], payload: {marker_id: marker.timeout}}
+  mission_states: [state.active, state.breach-failure, state.raiders-neutralized, state.timeout]
+  mission_rules:
+    - {schema_version: "2.0", id: rule.core-breach, priority: 100, depends_on: [], condition: {schema_version: "2.0", operator: event, selector: {schema_version: "2.0", factions: [faction.attacker], tags: [raider]}, parameters: {event_id: event.core.suicide-detonation}}, outcome: {set_state: state.breach-failure, emit_event: event.core.suicide-detonation, terminal: true, result: attacker_success, ranking: {faction.attacker: 1, faction.defender: 2}}}
+    - {schema_version: "2.0", id: rule.raiders-neutralized, priority: 80, depends_on: [], condition: {schema_version: "2.0", operator: survival, selector: {schema_version: "2.0", factions: [faction.attacker], tags: [raider]}, parameters: {comparison: "<=", value: 0}}, outcome: {set_state: state.raiders-neutralized, emit_event: event.timeout, terminal: true, result: defender_success, ranking: {faction.defender: 1, faction.attacker: 2}}}
+    - {schema_version: "2.0", id: rule.timeout, priority: 10, depends_on: [], condition: {schema_version: "2.0", operator: time, selector: {schema_version: "2.0", factions: [faction.defender]}, parameters: {comparison: ">=", tick: 1500}}, outcome: {set_state: state.timeout, emit_event: event.timeout, terminal: true, result: timeout, ranking: {faction.defender: 1, faction.attacker: 2}}}
+  scoring:
+    aggregation: sum
+    direction: maximize
+    weight_policy: normalized_sum_one
+    metrics:
+      - {id: score.defender-survival, selector: {schema_version: "2.0", factions: [faction.defender]}, aggregation: mean, unit: "1", direction: maximize, weight: 0.5, available: true, value: 1.0}
+      - {id: score.raider-presence, selector: {schema_version: "2.0", factions: [faction.attacker], tags: [raider]}, aggregation: count, unit: "1", direction: minimize, weight: 0.5, available: true, value: 0.0}
+  score_metrics: []
+  controller_policy: explicit_uncontrolled
+  controller_slots:
+    - {id: controller.defence, controller_id: agent.defence, faction_id: faction.defender, controller_endpoint_ref: unit.guard.usv.01, selector: {schema_version: "2.0", factions: [faction.defender]}, required_capabilities: [], action_schema_ref: action-batch@2.0, observation_schema_ref: observation@2.0, exclusive: true}
+    - {id: controller.attack, controller_id: agent.attack, faction_id: faction.attacker, controller_endpoint_ref: unit.raid.usv.01, selector: {schema_version: "2.0", factions: [faction.attacker]}, required_capabilities: [], action_schema_ref: action-batch@2.0, observation_schema_ref: observation@2.0, exclusive: true}
+  visibility:
+    - {view: referee, scope: truth, allow: true}
+    - {view: public, scope: public, allow: true}
+    - {view: faction, faction_id: faction.defender, scope: own_and_contacts, allow: true}
+    - {view: faction, faction_id: faction.attacker, scope: own_and_contacts, allow: true}
+    - {view: controller, controller_id: agent.defence, scope: claimed_entities, allow: true}
+    - {view: controller, controller_id: agent.attack, scope: claimed_entities, allow: true}

@@ -1,0 +1,122 @@
+{
+  "schema": "hifi-record-episode@1",
+  "case": {
+    "id": "ie-08-island-strike__llm-rl__s5101",
+    "scenario": "IE-08-ISLAND-STRIKE",
+    "seed": 5101,
+    "planner": "llm-rl"
+  },
+  "planner": "llm",
+  "status": "complete",
+  "started_utc": "2026-10-02T08:51:55.838132+00:00",
+  "snapshot": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T070659Z-d1d0a213",
+  "endpoint": null,
+  "source_pin_commit": "ccabad00154e9c6209e227859470f96449dec498",
+  "recorder_sha256": "f5e0a15d436293c2055d02fe299f87211ee9b2ecee20f7bd851e8288653fb905",
+  "cli_argv": [
+    "--scenario",
+    "IE-08-ISLAND-STRIKE",
+    "--seed",
+    "5101",
+    "--planner",
+    "llm",
+    "--max-ticks",
+    "1800",
+    "--pure-llm-envelope",
+    "executor",
+    "--frontend",
+    "graph",
+    "--llm-briefing",
+    "withheld",
+    "--llm-backend",
+    "vllm",
+    "--llm-base-url",
+    "http://127.0.0.1:8001/v1",
+    "--llm-model",
+    "Qwen3.8-27B",
+    "--llm-max-tokens",
+    "1024",
+    "--plan-interval",
+    "10",
+    "--decision-interval",
+    "5",
+    "--rl-speed-source",
+    "legacy_tags",
+    "--step-timeout",
+    "300.0",
+    "--checkpoint-dir",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z/attribution/ie-08-island-strike__llm-rl__s5101/reference_executor/checkpoints",
+    "--log",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z/attribution/ie-08-island-strike__llm-rl__s5101/reference_executor/events.jsonl",
+    "--output",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z/attribution/ie-08-island-strike__llm-rl__s5101/reference_executor/report.json",
+    "--goal-granularity",
+    "strong"
+  ],
+  "smoke_only": false,
+  "replay": {
+    "from": "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-natural-failures-r2-20261002T0220Z/episodes/ie-08-island-strike__llm-rl__s5101",
+    "mode": "frozen-planner",
+    "requests_sha256": "fd9b9bcf778f3ba4671ff5008473010286006cfeba773f60bbb23fc6682c4b37",
+    "recorded_calls": 105,
+    "ticks_derived": false
+  },
+  "compiled_hashes": {
+    "resolved_hash": "sha256:d5e05259e7730080a2b231298525425b0558b03095c244847eb7bdd69ff3e108",
+    "catalog_hash": "sha256:7dbf89ec664bdf3169975ed07cbd1be9096a615dd6980507c32e4c35fbba977f",
+    "model_registry_hash": "sha256:5a5bf3b3bdd83d28f7cc57a52f77f4a40f0cc3bb67da444ef6b8ea1113dec9c6"
+  },
+  "weights_sha256": {
+    "openmd/code/eval/_w1_runs/rl/theta_rl_legacy2.npz": "da7e6426f0035030d8a557dfe5a90d65fc18a704dc955d49ef34e66b5008435a",
+    "openmd/code/eval/_w1_runs/rl/theta_arm5_llm_reward_v9.npz": "b87e302046128682055ff958a7c094f2b28c691ce6201ebfbb2bd7ac42e060d0"
+  },
+  "engine_module_origin": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T070659Z-d1d0a213/openmd/source-code/source_codes/openmdbench/__init__.py",
+  "runtime_packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "taichi": "1.7.3",
+    "torch": "2.14.0+cpu",
+    "pydantic": "2.13.5",
+    "PyYAML": "6.0.3"
+  },
+  "frozen_plan_horizon": {
+    "last_recorded_decision_tick": 1040,
+    "held_last_plan_calls_after_horizon": 14
+  },
+  "finished_utc": "2026-10-02T09:33:42.435266+00:00",
+  "llm_calls": 119,
+  "replay_divergence": [],
+  "trajectory_frames": 1187,
+  "decision_frames": 1186,
+  "trajectory_last_tick": 1186,
+  "trajectory_complete": true,
+  "trajectory_error": null,
+  "ticks_run": 1186,
+  "eligible_for_main_score": true,
+  "natural_terminal": true,
+  "terminal_result": {
+    "rule_id": "rule.facilities-lost",
+    "outcome": "intruder_success",
+    "priority": 100,
+    "tick": 1186,
+    "latched": true,
+    "trigger_evidence": {
+      "event_id": "event.facilities-lost",
+      "candidate_hash": "sha256:d185b5047fa4fae4b27a1755838b773a2ad16bb73c0ab0fb1099eeb25959c174",
+      "selection_policy": "priority_desc_rule_id_asc_event_id_asc"
+    },
+    "ranking": {
+      "coalition.defender": 2,
+      "coalition.intruder": 1
+    },
+    "result": "intruder_success"
+  },
+  "defender_score": 0.266,
+  "artifacts_sha256": {
+    "report.json": "9cd3bba7095291207c2d1ab97fe87e88d9b6e7422ea4f8c2b35f123edecc23bf",
+    "events.jsonl": "cea61b1de2e1dd873eb54db803918e076d01852aae1851a2cd9f23b404ffc366",
+    "trajectory.jsonl": "c5649107178526ee944f1e3e826ed6970b18c271a1e1a1352d7432adf10276ab",
+    "decisions.jsonl": "893e92efdc96dac5de8a7f6c968b88d3744976624dc96da7fae732fbe125ab1d",
+    "requests.jsonl": "330d227436ed80946be0b0f5646a0070207799cefd6c71331a516a26e59ec1a6"
+  }
+}

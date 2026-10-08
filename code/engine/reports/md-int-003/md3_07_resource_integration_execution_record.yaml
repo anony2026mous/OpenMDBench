@@ -1,0 +1,103 @@
+TASK_ID: MD3-07-002
+PHASE: MD3-07
+OBJECTIVE: >-
+  Integrate the completed data-only L1/L2/L3 sensor, communication and high-sea
+  Catalog references into the three formal packages, then revalidate compilation
+  and public rule-agent execution.
+REQUIREMENTS:
+  - REQ-SCN-001
+  - REQ-SCN-002
+  - REQ-SCN-003
+  - REQ-SEN-001
+  - REQ-SEN-002
+  - REQ-COM-001
+  - REQ-ENV-002
+  - REQ-LVL-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_02_environment_profile_execution_record.yaml
+  - reports/md-int-003/md3_06_followup_execution_record.yaml
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - catalog/v2/md_int_003.yaml
+  - scenarios/formal/md_int_003_easy/scenario.yaml
+  - scenarios/formal/md_int_003_medium/scenario.yaml
+  - scenarios/formal/md_int_003_hard/scenario.yaml
+  - tests/system/test_md_int_003_scenarios.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - scenarios/formal/
+  - openmdbench/scenarios/
+  - openmdbench/policies/
+  - openmdbench/sessions/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - scenarios/formal/md_int_003_easy/scenario.yaml
+  - scenarios/formal/md_int_003_medium/scenario.yaml
+  - scenarios/formal/md_int_003_hard/scenario.yaml
+  - tests/system/test_md_int_003_scenarios.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/scenarios.md
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - reports/md-int-003/md3_07_resource_integration_execution_record.yaml
+PROHIBITED:
+  - Runtime/schema/Catalog/rule-agent changes, scenario/faction/entity-ID
+    production branches, hidden WorldState agent reads, real-world calibration
+    claims, T4/T5, full-suite, dependency changes, commit, push, cleanup, or
+    generated-artifact write.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Focused formal compile/resolved-hash, catalog closure, public-agent,
+    checkpoint and scenario regression tests; syntax/import and scoped diff.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 90
+ACCEPTANCE:
+  - Each package selects only its difficulty's immutable sensor profile refs;
+    defender surface/UAV links select their distinct resources, and L3 selects
+    the new high-sea reference.
+  - Each package compiles; public rule-agent execution and renamed/data-only
+    scenario tests remain valid without a core modification.
+OUTPUTS:
+  - Three data-only resource-reference updates, failure-oriented system tests
+    and MD3-07 evidence.
+STOP_CONDITIONS:
+  - A package requires a core/schema/catalog/rule-agent change or hidden truth.
+RESULT:
+  STATUS: DONE
+  CHANGES:
+    - >-
+      L1/L2/L3 static and spawned entities now select only their matching
+      immutable sensor profile versions (2.1.0/2.2.0/2.3.0).
+    - >-
+      Defender surface/shore and UAV entities select distinct communication
+      resources; L3 high-sea and radar-suppression events select exact 2.1.0
+      and 2.3.0 resources.
+    - >-
+      Added failure-oriented exact-reference assertions and one-tick public
+      rule-agent execution for every public package.
+  EVIDENCE:
+    - >-
+      2026-09-02: 50 passed in 62.04s:
+      tests/system/test_md_int_003_scenarios.py,
+      tests/contract/test_md_int_003_catalog_closure.py,
+      tests/contract/test_md_int_003_environment_communication.py,
+      tests/contract/test_world_checkpoint_v2.py.
+    - >-
+      Catalog sha256:c070a2cc0540b1deb37db6375149acbc7304b929927708dbc0cf8d6f0bb7caf9;
+      resolved hashes recorded in reports/md-int-003/scenarios.md.
+  LIMITS:
+    - >-
+      Values remain UNVALIDATED_BENCHMARK. Thirty-seed statistical evaluation
+      and external-interface equivalence are later-stage work.

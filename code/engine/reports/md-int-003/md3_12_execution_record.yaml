@@ -1,0 +1,89 @@
+TASK_ID: MD3-12-001
+PHASE: MD3-12
+OBJECTIVE: >-
+  Perform the frozen-worktree, read-only structural self-review and completion
+  audit for MD-INT-003 after the fresh MD3-11 T4/T5 gate.
+REQUIREMENTS:
+  - REQ-ARCH-004
+  - REQ-DET-001
+  - REQ-RPL-001
+  - REQ-CHK-001
+  - REQ-PERF-001
+  - REQ-SEC-001
+INPUTS:
+  - AGENTS.md
+  - reports/md-int-003/md3_11_execution_record.yaml
+  - reports/md-int-003/full_test_report.md
+  - reports/md-int-003/performance_concurrency.md
+  - reports/md-int-003/security_report.md
+  - reports/md-int-003/requirements_traceability.md
+  - openmdbench/world/factory_v2.py
+  - openmdbench/missions/engine_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/
+  - scenarios/formal/
+  - catalog/v2/
+  - tests/
+  - artifacts/md-int-003/
+ALLOWED_WRITE:
+  - reports/md-int-003/
+PROHIBITED:
+  - Production, schema, Catalog, scenario, test, dependency, or generated
+    artifact changes; commits, pushes, cleanup, and rerunning tests merely to
+    hide a review finding.
+TEST_LEVEL: T0
+ALLOWED_COMMANDS:
+  - Read-only source/diff/search/audit commands and report consistency checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 120
+ACCEPTANCE:
+  - The frozen implementation has no identified P0 or P1 issue.
+  - Generic runtime layers contain no MD-INT-003/scenario-ID special case.
+  - Determinism, audit-ledger, checkpoint, replay, resource and test evidence
+    are consistent with the completed MD3-11 records.
+OUTPUTS:
+  - Structured self-review conclusion and release-boundary statement.
+STOP_CONDITIONS:
+  - A P0/P1 finding requires an implementation change; exit review, fix,
+    retest, and restart the review cycle.
+RESULT:
+  STATUS: DONE
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    SCOPE: >-
+      Frozen read-only inspection of generic runtime layers, latest history
+      hot-path changes, evidence records and completed gate results.
+    CHECKS:
+      - >-
+        No MD-INT-003/scenario-ID branch was found in World, Mission,
+        Dynamics, Surface, System, Session, Environment, Replay or
+        Visualization runtime layers.
+      - >-
+        The typed-event lookup index is derived exclusively from the ordered
+        World ledger, rebuilt during checkpoint restore, and is not serialized
+        as an authority source; public/audit snapshots retain complete receipt
+        history and checkpoint anchors use that complete view.
+      - >-
+        The event-score fact anchor omits historical payload materialisation
+        only for built-in rule evaluation; plugins and checkpoint snapshots
+        retain the full audit boundary.
+      - >-
+        Fresh T4/T5 evidence records 2,111 passing pytest items, 85% staged
+        branch coverage, zero static-tool findings, 16/32 isolated sessions,
+        and 100 completed 1,500-tick matches.
+    FINDINGS:
+      P0: 0
+      P1: 0
+      P2:
+        - >-
+          A multiprocessing resource-tracker child remains after an individual
+          process closes native sessions. It is infrastructure-owned and did
+          not grow across the 100-match sequential evidence; retain it as a
+          documented monitoring point rather than a simulation leak.
+    RELEASE_BOUNDARY: >-
+      MD-INT-003 completion does not change the platform-wide RF-15
+      NOT_RELEASABLE status. Scenario parameters remain UNVALIDATED_BENCHMARK
+      unless separately frozen and calibrated.

@@ -1,0 +1,92 @@
+TASK_ID: MD3-07-001
+PHASE: MD3-07
+OBJECTIVE: >-
+  Author three independent, data-only MD-INT-003 ScenarioPackages and public-
+  observation rule agents without modifying generic runtime mechanisms.
+REQUIREMENTS:
+  - REQ-SCN-001
+  - REQ-SCN-002
+  - REQ-SCN-003
+  - REQ-SCN-004
+  - REQ-L1-001
+  - REQ-L2-001
+  - REQ-L3-001
+  - REQ-ACT-001
+  - REQ-ACT-002
+  - REQ-OBS-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - catalog/v2/md_int_003.yaml
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_06_execution_record.yaml
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - scenarios/
+  - openmdbench/scenarios/
+  - openmdbench/sessions/
+  - openmdbench/schemas/
+  - openmdbench/sdk/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - scenarios/formal/registry.yaml
+  - scenarios/formal/md_int_003_easy/scenario.yaml
+  - scenarios/formal/md_int_003_easy/agents.yaml
+  - scenarios/formal/md_int_003_medium/scenario.yaml
+  - scenarios/formal/md_int_003_medium/agents.yaml
+  - scenarios/formal/md_int_003_hard/scenario.yaml
+  - scenarios/formal/md_int_003_hard/agents.yaml
+  - openmdbench/policies/rule_v2.py
+  - tests/system/test_md_int_003_scenarios.py
+  - tests/system/test_md_ad_002_v2_migration.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - reports/md-int-003/scenarios.md
+PROHIBITED:
+  - Any generic runtime/schema/catalog/action/observation core code change,
+    scenario/faction/platform/entity-ID production branch, hidden WorldState
+    read by agents, real-world parameter claim, T4/T5, full suite, dependency
+    change, commit, push, cleanup, or generated artifact write.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Focused compile, data-only diff, public-agent import/observation, fixed-
+    seed and renamed-synthetic scenario contract tests; syntax/import and
+    scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 180
+ACCEPTANCE:
+  - Three independently compilable formal scenario packages differ only by
+    resolved data and use the frozen generic mechanisms.
+  - Both rule agents accept public Observation/action interfaces only and
+    never import or access WorldState.
+  - Fixed-seed compile/run evidence, renamed-synthetic equivalence, level
+    distinction, Catalog closure and no-core-change checks pass.
+OUTPUTS:
+  - Three scenario YAML files, a backward-compatible public rule-agent profile
+    extension for contact-triggered steering and deterministic speed schedules,
+    failure-oriented system tests, scenario report and execution evidence.
+STOP_CONDITIONS:
+  - A scenario needs a new core mechanism/schema, a required resource is
+    absent from the resolved Catalog, or a rule agent needs hidden truth.
+RESULT:
+  STATUS: DONE
+  INITIAL_BLOCKER: >-
+    The original MD3-07 audit found one identical sensor profile set and no
+    distinct defender-UAV relay resource; per AGENTS.md the work returned to
+    MD3-02/MD3-06 rather than adding a scenario or rule-agent branch.
+  REMEDIATION: >-
+    MD3-02-002/003/004 added immutable L1/L2/L3 sensor, communication and
+    high-sea resources; MD3-06-002 consumed their generic measurement and
+    modifier fields; MD3-07-002 attached exact refs to all static/spawned
+    entities and L3 events without a core or rule-agent change.
+  EVIDENCE: >-
+    MD3-07-002: 50 focused T3 tests passed in 62.04s. See
+    md3_07_resource_integration_execution_record.yaml and scenarios.md.

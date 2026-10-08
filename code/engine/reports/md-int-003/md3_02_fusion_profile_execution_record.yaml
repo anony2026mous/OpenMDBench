@@ -1,0 +1,94 @@
+TASK_ID: MD3-02-003
+PHASE: MD3-02
+OBJECTIVE: >-
+  Complete the versioned sensor-profile closure with generic fusion confirmation,
+  staleness and engagement-age thresholds before MD3-06 consumes those fields.
+REQUIREMENTS:
+  - REQ-SEN-001
+  - REQ-SEN-002
+  - REQ-OBS-001
+  - REQ-ARCH-002
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_followup_execution_record.yaml
+  - reports/md-int-003/md3_06_followup_execution_record.yaml
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - openmdbench/catalog/
+  - openmdbench/scenarios/
+  - tests/contract/
+ALLOWED_WRITE:
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_fusion_profile_execution_record.yaml
+PROHIBITED:
+  - Runtime/schema/agent/scenario changes, scenario/faction/entity-ID branches,
+    global RNG, real-world calibration claims, T4/T5, full-suite, dependency
+    change, commit, push, cleanup, or generated-artifact write.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused Catalog closure/compiler/version/hash tests, syntax/import and
+    scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 40
+ACCEPTANCE:
+  - Every L1/L2/L3 sensor profile supplies confirmation, stale and maximum
+    engagement-age values with source and fidelity metadata.
+  - Existing exact resource references still resolve; no runtime state enters
+    Catalog and no core constant is introduced.
+OUTPUTS:
+  - Updated immutable profile data, failure-oriented closure tests and MD3-02
+    evidence.
+STOP_CONDITIONS:
+  - A threshold needs a scenario identity branch or mutable session state.
+RESULT:
+  STATUS: DONE
+  MODIFIED_FILES:
+    - catalog/v2/md_int_003.yaml
+    - tests/contract/test_md_int_003_catalog_closure.py
+    - reports/md-int-003/requirements_traceability.md
+    - reports/md-int-003/catalog_closure.md
+    - reports/md-int-003/md3_02_fusion_profile_execution_record.yaml
+  COMMANDS:
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -m pytest -q
+      tests/contract/test_md_int_003_catalog_closure.py
+      tests/contract/test_catalog_registry_v2.py
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -c "load_catalog_bundle_v2(...); print(resource-count/content-hash/file-sha256)"
+    - git diff --check -- catalog/v2/md_int_003.yaml tests/contract/test_md_int_003_catalog_closure.py reports/md-int-003
+  TEST_RESULT: "56 passed in 1.95s; direct Catalog load: 71 resources; diff check clean."
+  CATALOG_HASH: sha256:18ec40f5e3c9f05e990f677f68f467bf76cf39e56da3786f71f9d635592cc723
+  CATALOG_FILE_SHA256: fc83a172aa32f579a67865cff33498d732f7e993e07b0ea4bd73284bc1959d31
+  REVIEW: SELF_REVIEWED
+  COMPATIBILITY: >-
+    Existing @2.0.0 resources and all previously valid exact references remain
+    unchanged; the new unpublished @2.1.0/@2.2.0/@2.3.0 profile definitions
+    now carry the complete fusion contract used by MD3-06.
+  DETERMINISM: >-
+    All thresholds are immutable content covered by exact refs and Catalog hash;
+    the change adds no RNG or scenario/faction/entity identity branch.
+  DOMAIN_IMPACT: >-
+    Each L1/L2/L3 sensor profile now declares two-frame confirmation, 3-tick
+    staleness, 10-tick engagement-age and 0.70 confidence thresholds alongside
+    its range/Pd/noise/period definition.
+  RISKS: >-
+    These are still UNVALIDATED_BENCHMARK data and are not evidence of runtime
+    consumption until the pending MD3-06 generic path is implemented and tested.
+  NEXT: Resume MD3-06-002 generic sensor-profile consumption.

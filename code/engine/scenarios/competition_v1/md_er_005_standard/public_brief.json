@@ -1,0 +1,104 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-ER-005",
+  "difficulty": "standard",
+  "name": "Conflicting Alert Triage",
+  "evaluated_side": "red",
+  "status": "candidate_not_competition_accepted",
+  "duration_seconds": 180,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 180,
+  "adjudication_tick": 181,
+  "task": "Complete the public initial station duties. Dispatch only on authentic delivered confirmed tasks, dwell as specified, and avoid entering published caution regions for unverified or cancelled alerts. Arrival is not physical rescue.",
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "responders": [
+    "unit.r01",
+    "unit.r02"
+  ],
+  "initial_requests": [
+    {
+      "schema_version": "dispatch-task@1.0",
+      "request_id": "duty.01",
+      "status": "confirmed",
+      "destination": {
+        "schema_version": "2.0",
+        "id": "zone.duty.01",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            -165.0,
+            -165.0
+          ],
+          [
+            -35.0,
+            -165.0
+          ],
+          [
+            -35.0,
+            -35.0
+          ],
+          [
+            -165.0,
+            -35.0
+          ]
+        ]
+      },
+      "caution_regions": [],
+      "observer_ids": [
+        "unit.r01"
+      ],
+      "deadline_tick": 12,
+      "dwell_ticks": 3,
+      "priority": 1
+    },
+    {
+      "schema_version": "dispatch-task@1.0",
+      "request_id": "duty.02",
+      "status": "confirmed",
+      "destination": {
+        "schema_version": "2.0",
+        "id": "zone.duty.02",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            -165.0,
+            235.0
+          ],
+          [
+            -35.0,
+            235.0
+          ],
+          [
+            -35.0,
+            365.0
+          ],
+          [
+            -165.0,
+            365.0
+          ]
+        ]
+      },
+      "caution_regions": [],
+      "observer_ids": [
+        "unit.r02"
+      ],
+      "deadline_tick": 12,
+      "dwell_ticks": 3,
+      "priority": 1
+    }
+  ],
+  "risk_regions": [],
+  "difficulty_rationale": "One standard event-mechanism candidate; three levels require measured policy separation first.",
+  "fidelity": "UNVALIDATED synthetic 180-second microbenchmark, not paper-duration reproduction",
+  "response_protocol": "dispatch-task@1.0",
+  "validation_entrypoint": "tools.competition_four_categories.validate_response",
+  "trusted_dispatch_sources": [
+    "unit.r03"
+  ],
+  "source_actor_control": "environment_only",
+  "notice_timing_variation_ticks": 3
+}

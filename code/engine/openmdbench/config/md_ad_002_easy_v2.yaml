@@ -1,0 +1,42 @@
+schema_version: "1.0"
+config_version: "2.0.0"
+scenario_id: MD-AD-002-EASY
+difficulty: easy
+map: {map_id: weihai_v1, raw_sha256: "sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675", geographic_crs: "EPSG:4326"}
+island: {lon_deg: 122.200, lat_deg: 37.510}
+denial_zone: {lon_deg: 122.200, lat_deg: 37.510, radius: 8000, radius_unit: metre}
+spawn_zones: [east_sea, northeast_sea]
+spawn_zone_geometry:
+  east_sea: {lon_deg: 122.55, lat_deg: 37.50, half_width_m: 1500}
+  northeast_sea: {lon_deg: 122.48, lat_deg: 37.54, half_width_m: 1500}
+deployments:
+  - {id: red-island-radar-1, side: red, platform: shore_radar, terrain: land, lon_deg: 122.188, lat_deg: 37.512, altitude_m: 0, inventory: 12}
+  - {id: red-island-radar-2, side: red, platform: shore_radar, terrain: land, lon_deg: 122.212, lat_deg: 37.508, altitude_m: 0, inventory: 12}
+  - {id: red-interceptor-uav-1, side: red, platform: interceptor_uav, terrain: air, lon_deg: 122.280, lat_deg: 37.540, altitude_m: 800, inventory: 12, heading_deg: 90, speed_mps: 25}
+  - {id: red-interceptor-uav-2, side: red, platform: interceptor_uav, terrain: air, lon_deg: 122.290, lat_deg: 37.510, altitude_m: 800, inventory: 12, heading_deg: 270, speed_mps: 25}
+  - {id: red-interceptor-uav-3, side: red, platform: interceptor_uav, terrain: air, lon_deg: 122.210, lat_deg: 37.510, altitude_m: 1000, inventory: 12}
+  - {id: red-picket-usv-1, side: red, platform: picket_usv, terrain: water, lon_deg: 122.340, lat_deg: 37.555, altitude_m: 0, inventory: 0, heading_deg: 45, speed_mps: 6}
+  - {id: red-picket-usv-2, side: red, platform: picket_usv, terrain: water, lon_deg: 122.400, lat_deg: 37.500, altitude_m: 0, inventory: 0, heading_deg: 90, speed_mps: 6}
+waves:
+  - {id: wave-1, count: 4, time_seconds: 0, behavior: direct, altitude_min_m: 100, altitude_max_m: 100}
+  - {id: wave-2, count: 5, time_seconds: 600, behavior: direct, altitude_min_m: 100, altitude_max_m: 100}
+  - {id: wave-3, count: 6, time_seconds: 1200, behavior: direct, altitude_min_m: 100, altitude_max_m: 100}
+difficulty_events: []
+weather_profile: clear_v1
+sensors:
+  - {sensor_id: radar_ew, assigned_entities: [red-island-radar-1], kind: radar, range_m: 40000, low_altitude_range_m: 15000, report_interval_ticks: 5, base_detection_probability: 0.85, field_of_view_deg: 360}
+  - {sensor_id: radar_gap, assigned_entities: [red-island-radar-2], kind: radar, range_m: 15000, low_altitude_range_m: 15000, report_interval_ticks: 2, base_detection_probability: 0.90, field_of_view_deg: 360}
+  - {sensor_id: radar_usv, assigned_entities: [red-picket-usv-1, red-picket-usv-2], kind: radar, range_m: 30000, low_altitude_range_m: 20000, report_interval_ticks: 3, base_detection_probability: 0.80, field_of_view_deg: 360}
+  - {sensor_id: radar_uav, assigned_entities: [red-interceptor-uav-1, red-interceptor-uav-2, red-interceptor-uav-3], kind: radar, range_m: 15000, low_altitude_range_m: 15000, report_interval_ticks: 2, base_detection_probability: 0.75, field_of_view_deg: 360}
+  - {sensor_id: eo_uav, assigned_entities: [red-interceptor-uav-1, red-interceptor-uav-2, red-interceptor-uav-3], kind: eo_ir, range_m: 10000, low_altitude_range_m: 10000, report_interval_ticks: 1, base_detection_probability: 0.90, field_of_view_deg: 20}
+tracking: {confirmation_frames: 3, deletion_frames: 5, fusion_interval_ticks: 2, range_noise_fraction: 0.05, bearing_noise_deg: 1, false_alarm_interval_ticks: null, false_alarm_lifetime_frames: 5, target_rcs_m2: 0.1}
+communications:
+  - {component: shore_uav_los, range_m: 50000, bandwidth_bps: 10000000, delay_ticks: 1}
+  - {component: usv_relay, range_m: 30000, bandwidth_bps: 100000000, delay_ticks: 1}
+  - {component: wired_shore, range_m: 0, bandwidth_bps: 100000000, delay_ticks: 0}
+weapons:
+  - {component: uav_interceptor_missile, inventory: 36, minimum_range_m: 500, maximum_range_m: 8000, hit_probability: 0.7, damage: 1.0, cooldown_ticks: 5, range_unit: metre}
+  - {component: shore_ciws, inventory: 24, minimum_range_m: 300, maximum_range_m: 2000, hit_probability: 0.8, damage: 0.5, cooldown_ticks: 1, range_unit: metre}
+adjudication: {mode: breach_count_v1, breach_threshold: 3, time_limit_seconds: 1800}
+scoring: {mode: md_ad_002_v1, weights: {denial: 0.6, survival: 0.2, efficiency: 0.2}}
+visualization: {layers: [island, denial_zone, spawn_zones, entities, waves, links, score]}

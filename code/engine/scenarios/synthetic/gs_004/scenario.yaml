@@ -1,0 +1,101 @@
+schema_version: package@2.0
+scenario:
+  schema_version: "2.0"
+  scenario_id: gs.dynamic-mission
+  factions:
+    - {schema_version: "2.0", id: faction.alpha}
+    - {schema_version: "2.0", id: faction.beta}
+  relationships: []
+  entities:
+    - schema_version: "2.0"
+      id: asset.000
+      faction_id: faction.alpha
+      platform_ref: platform.arbitrary@2.0.0
+      dynamics_ref: motion.arbitrary@2.0.0
+      component_refs: [sensor.arbitrary@2.0.0]
+      initial_state:
+        schema_version: "2.0"
+        position_m: [1.0, 2.0, 3.0]
+        velocity_mps: [0.0, 0.0, 0.0]
+        heading_deg: 0.0
+      tags: [recon]
+  formations: []
+  world:
+    schema_version: "2.0"
+    coordinate_system: local_m
+    zones:
+      - schema_version: "2.0"
+        id: zone.objective
+        geometry_type: polygon
+        coordinates_m: [[0.0, 0.0], [10.0, 0.0], [0.0, 10.0]]
+  events:
+    - schema_version: "2.0"
+      id: event.marker
+      event_type: mission_marker
+      trigger: {tick: 1}
+      payload: {}
+  mission_states: [state.active, state.complete]
+  mission_rules:
+    - schema_version: "2.0"
+      id: rule.objective
+      priority: 10
+      depends_on: []
+      condition:
+        schema_version: "2.0"
+        operator: count
+        selector:
+          schema_version: "2.0"
+          factions: [faction.alpha]
+          entity_ids: [asset.000]
+          platforms: [platform.arbitrary@2.0.0]
+          domains: [synthetic-air]
+          capabilities: [sensor]
+          zones: [zone.objective]
+          events: [event.marker]
+        parameters: {comparison: ">=", value: 1}
+      outcome:
+        set_state: state.complete
+        emit_event: event.marker
+  scoring:
+    weight_policy: normalized_sum_one
+    metrics:
+      - id: metric.objective
+        selector:
+          schema_version: "2.0"
+          factions: [faction.alpha]
+          entity_ids: [asset.000]
+          platforms: [platform.arbitrary@2.0.0]
+          domains: [synthetic-air]
+          capabilities: [sensor]
+          zones: [zone.objective]
+          events: [event.marker]
+        aggregation: count
+        unit: "1"
+        direction: maximize
+        weight: 1.0
+        available: false
+        value: null
+  score_metrics: []
+  controller_policy: explicit_uncontrolled
+  controller_slots:
+    - id: slot.000
+      controller_id: controller.000
+      faction_id: faction.alpha
+      selector:
+        schema_version: "2.0"
+        factions: [faction.alpha]
+        entity_ids: [asset.000]
+        platforms: [platform.arbitrary@2.0.0]
+        domains: [synthetic-air]
+        capabilities: [sensor]
+        zones: [zone.objective]
+        events: [event.marker]
+      required_capabilities: [sensor]
+      action_schema_ref: action-batch@2.0
+      observation_schema_ref: observation@2.0
+      exclusive: true
+  visibility:
+    - {view: referee, scope: truth, allow: true}
+    - {view: public, scope: public, allow: true}
+    - {view: faction, faction_id: faction.alpha, scope: own_and_contacts, allow: true}
+    - {view: controller, controller_id: controller.000, scope: claimed_entities, allow: true}

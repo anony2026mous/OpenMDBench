@@ -1,0 +1,181 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-ER-006",
+  "difficulty": "standard",
+  "name": "Concurrent Incident Dispatch",
+  "evaluated_side": "red",
+  "status": "candidate_not_competition_accepted",
+  "duration_seconds": 240,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 240,
+  "adjudication_tick": 241,
+  "task": "Complete the public initial station duties. Dispatch only on authentic delivered confirmed tasks, dwell as specified, and avoid entering published caution regions for unverified or cancelled alerts. Arrival is not physical rescue. Maintain the published standing watch alongside the delivered incident tasks.",
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "responders": [
+    "unit.r01",
+    "unit.r02"
+  ],
+  "initial_requests": [
+    {
+      "schema_version": "dispatch-task@1.0",
+      "request_id": "duty.01",
+      "status": "confirmed",
+      "destination": {
+        "schema_version": "2.0",
+        "id": "zone.duty.01",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            -165.0,
+            -165.0
+          ],
+          [
+            -35.0,
+            -165.0
+          ],
+          [
+            -35.0,
+            -35.0
+          ],
+          [
+            -165.0,
+            -35.0
+          ]
+        ]
+      },
+      "caution_regions": [],
+      "observer_ids": [
+        "unit.r01"
+      ],
+      "deadline_tick": 12,
+      "dwell_ticks": 3,
+      "priority": 1
+    },
+    {
+      "schema_version": "dispatch-task@1.0",
+      "request_id": "duty.02",
+      "status": "confirmed",
+      "destination": {
+        "schema_version": "2.0",
+        "id": "zone.duty.02",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            -165.0,
+            235.0
+          ],
+          [
+            -35.0,
+            235.0
+          ],
+          [
+            -35.0,
+            365.0
+          ],
+          [
+            -165.0,
+            365.0
+          ]
+        ]
+      },
+      "caution_regions": [],
+      "observer_ids": [
+        "unit.r02"
+      ],
+      "deadline_tick": 12,
+      "dwell_ticks": 3,
+      "priority": 1
+    }
+  ],
+  "risk_regions": [
+    {
+      "schema_version": "2.0",
+      "id": "zone.hazard01",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          420.0,
+          -180.0
+        ],
+        [
+          780.0,
+          -180.0
+        ],
+        [
+          780.0,
+          180.0
+        ],
+        [
+          420.0,
+          180.0
+        ]
+      ]
+    }
+  ],
+  "difficulty_rationale": "One standard event-mechanism candidate; three levels require measured policy separation first.",
+  "fidelity": "UNVALIDATED synthetic 240-second mixed-response candidate, not full rescue",
+  "standing_missions": [
+    {
+      "mission_id": "watch.initial",
+      "kind": "maintain_physical_contact",
+      "target_count": 1,
+      "description": "Maintain a fresh physical sensor contact on the initial watch contact while servicing incident requests.",
+      "search_region": {
+        "schema_version": "2.0",
+        "id": "public.watch-sector",
+        "geometry_type": "polygon",
+        "coordinates_m": [
+          [
+            250.0,
+            -600.0
+          ],
+          [
+            1450.0,
+            -600.0
+          ],
+          [
+            1450.0,
+            600.0
+          ],
+          [
+            250.0,
+            600.0
+          ]
+        ]
+      },
+      "controlled_observers": [
+        "unit.r01",
+        "unit.r02"
+      ],
+      "initial_support_station": {
+        "entity_id": "unit.r03",
+        "position_m": [
+          850.0,
+          0.0,
+          0.0
+        ]
+      },
+      "metric_id": "metric.continuity",
+      "comparison": ">=",
+      "threshold": 0.65,
+      "unit": "fraction_of_eligible_ticks",
+      "maximum_contact_age_ticks": 1,
+      "measurement_window": {
+        "starts_after": "station_service_loss",
+        "start_time_is_private": true,
+        "end_tick_exclusive": 241
+      }
+    }
+  ],
+  "response_protocol": "dispatch-task@1.0",
+  "validation_entrypoint": "tools.competition_four_categories.validate_response",
+  "trusted_dispatch_sources": [
+    "unit.r03"
+  ],
+  "source_actor_control": "environment_only",
+  "notice_timing_variation_ticks": 3
+}

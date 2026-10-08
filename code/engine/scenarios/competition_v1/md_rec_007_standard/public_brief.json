@@ -1,0 +1,132 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-REC-007",
+  "name": "Intermittent Ingress Search",
+  "difficulty": "standard",
+  "status": "candidate_not_competition_accepted",
+  "evaluated_side": "red",
+  "duration_seconds": 240,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 240,
+  "adjudication_tick": 241,
+  "search_sectors": [
+    {
+      "sector_id": "sector.01",
+      "cells": [
+        {
+          "schema_version": "2.0",
+          "id": "zone.s01.c01",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              320.0,
+              -130.0
+            ],
+            [
+              580.0,
+              -130.0
+            ],
+            [
+              580.0,
+              130.0
+            ],
+            [
+              320.0,
+              130.0
+            ]
+          ]
+        },
+        {
+          "schema_version": "2.0",
+          "id": "zone.s01.c02",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              720.0,
+              -130.0
+            ],
+            [
+              980.0,
+              -130.0
+            ],
+            [
+              980.0,
+              130.0
+            ],
+            [
+              720.0,
+              130.0
+            ]
+          ]
+        },
+        {
+          "schema_version": "2.0",
+          "id": "zone.s01.c03",
+          "geometry_type": "polygon",
+          "coordinates_m": [
+            [
+              1020.0,
+              -130.0
+            ],
+            [
+              1280.0,
+              -130.0
+            ],
+            [
+              1280.0,
+              130.0
+            ],
+            [
+              1020.0,
+              130.0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "suggested_sector_assignments": {
+    "unit.r01": [
+      "sector.01"
+    ],
+    "unit.r02": [
+      "sector.01"
+    ]
+  },
+  "own_assets": [
+    {
+      "entity_id": "unit.r01",
+      "domain": "air",
+      "sensor_range_m": 250
+    },
+    {
+      "entity_id": "unit.r02",
+      "domain": "surface",
+      "sensor_range_m": 250
+    },
+    {
+      "entity_id": "unit.r03",
+      "domain": "shore",
+      "sensor_range_m": 250
+    }
+  ],
+  "available_actions": [
+    "navigation",
+    "hold",
+    "send_message"
+  ],
+  "report_protocol": {
+    "recipient_entity_id": "unit.r03",
+    "recipient_controller_slot": "slot.unit.r03",
+    "schema_version": "competition-contact-report@1.0",
+    "fields": [
+      "contact_id",
+      "observed_tick"
+    ],
+    "report_interval_ticks": 3,
+    "maximum_information_age_ticks": 8
+  },
+  "task": "Survey every assigned sector and maintain timely information until the deadline. Report only contacts published in your own observations; no engagement is required.",
+  "difficulty_rationale": "One mechanism-specific standard; held-out policy distributions must justify further tiers.",
+  "fidelity": "UNVALIDATED synthetic 240-second native candidate; not paper-duration or calibrated real-world reproduction"
+}

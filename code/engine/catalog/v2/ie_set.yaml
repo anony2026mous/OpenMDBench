@@ -1,0 +1,940 @@
+schema_version: catalog-bundle@2.0
+resources:
+- schema_version: '2.0'
+  resource_type: maps
+  id: map.weihai-local
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    geographic_crs: EPSG:4326
+    origin_wgs84:
+    - 122.2
+    - 37.51
+    - 0.0
+    bounds_m:
+    - - -20000.0
+      - -20000.0
+      - -100.0
+    - - 40000.0
+      - 20000.0
+      - 4000.0
+    raw_sha256: sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675
+    terrain_source:
+      format: raw-polygon-list-wgs84@1.0
+      path: env/map_data/weihai_raw_lonlat.txt
+      sha256: sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675
+      polygon_indices:
+      - 1
+    visualization_source:
+      format: weihai-raw-lonlat@1.0
+      path: env/map_data/weihai_raw_lonlat.txt
+      sha256: sha256:1f78cfaf98e12d3b50cd595e58e103f4c31ef3ce71b433ba276c3afa1694b675
+      coastline_start: 3
+      coastline_end: 134
+      harbor_end: 137
+      land_polygon_indices:
+      - 1
+- schema_version: '2.0'
+  resource_type: dynamics
+  id: dynamics.fixed-site
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.native-fixed@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - fixed-sensor-site
+    mobile: false
+- schema_version: '2.0'
+  resource_type: dynamics
+  id: dynamics.interceptor-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.native-uav-kinematics@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - interceptor-uav
+    mobile: true
+    max_speed_mps: 80.0
+    max_turn_rate_deg_s: 30.0
+    max_vertical_speed_mps: 20.0
+    max_acceleration_mps2: 8.0
+    max_deceleration_mps2: 10.0
+    min_altitude_m: 0.0
+    max_altitude_m: 3000.0
+- schema_version: '2.0'
+  resource_type: dynamics
+  id: dynamics.armed-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.native-sim2sea-mmg@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - armed-usv
+    mobile: true
+    max_speed_mps: 10.0
+    max_nps: 133.33333333333334
+    max_rudder_rad: 0.3
+    controller_gain: 1.0
+    substeps: 10
+    integration_dt_s: 0.1
+- schema_version: '2.0'
+  resource_type: dynamics
+  id: dynamics.suicide-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.native-sim2sea-mmg@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - suicide-usv
+    mobile: true
+    max_speed_mps: 10.0
+    max_nps: 133.33333333333334
+    max_rudder_rad: 0.3
+    controller_gain: 1.0
+    substeps: 10
+    integration_dt_s: 0.1
+- schema_version: '2.0'
+  resource_type: dynamics
+  id: dynamics.static-structure
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.native-fixed@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - harbor-pier
+    mobile: false
+- schema_version: '2.0'
+  resource_type: collision_shapes
+  id: shape.fixed-site
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - land
+    shape: aabb
+    half_extents_m:
+    - 6.0
+    - 6.0
+    - 4.0
+- schema_version: '2.0'
+  resource_type: collision_shapes
+  id: shape.interceptor-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - air
+    shape: sphere
+    radius_m: 2.5
+- schema_version: '2.0'
+  resource_type: collision_shapes
+  id: shape.picket-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - surface
+    shape: obb
+    half_extents_m:
+    - 5.0
+    - 1.5
+    - 1.5
+- schema_version: '2.0'
+  resource_type: collision_shapes
+  id: shape.harbor-pier
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - surface
+    shape: sphere
+    radius_m: 15.0
+- schema_version: '2.0'
+  resource_type: collision_shapes
+  id: shape.usv-sphere
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - surface
+    shape: sphere
+    radius_m: 3.0
+- schema_version: '2.0'
+  resource_type: visualization_assets
+  id: visual.fixed-site
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - land
+    profile: shore_radar_generic
+    length_m: 12.0
+    width_m: 12.0
+    color_role: faction
+- schema_version: '2.0'
+  resource_type: visualization_assets
+  id: visual.interceptor-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - air
+    profile: uav_generic
+    length_m: 12.0
+    width_m: 18.0
+    color_role: faction
+- schema_version: '2.0'
+  resource_type: visualization_assets
+  id: visual.picket-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - surface
+    profile: usv_generic
+    length_m: 20.0
+    width_m: 6.0
+    color_role: faction
+- schema_version: '2.0'
+  resource_type: visualization_assets
+  id: visual.harbor-pier
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_domains:
+    - surface
+    profile: submarine_pier_generic
+    length_m: 240.0
+    width_m: 36.0
+    color_role: faction
+- schema_version: '2.0'
+  resource_type: energy
+  id: energy.normalized
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - fixed-sensor-site
+    - interceptor-uav
+    - armed-usv
+    - suicide-usv
+    - harbor-pier
+    capacity_j: 1.0
+- schema_version: '2.0'
+  resource_type: communications
+  id: communication.command-network
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - fixed-sensor-site
+    - interceptor-uav
+    - armed-usv
+    - suicide-usv
+    - harbor-pier
+    slot_type: communication
+    range_m: 50000.0
+    bandwidth_bps: 10000000
+    delay_ticks: 1
+- schema_version: '2.0'
+  resource_type: sensors
+  id: sensor.shore-early-warning
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - fixed-sensor-site
+    slot_type: sensor
+    kind: radar
+    range_m: 40000.0
+    low_altitude_range_m: 15000.0
+    probability: 0.85
+    update_ticks: 5
+    confirmation_frames: 1
+    stale_after_ticks: 12
+    engagement_max_age_ticks: 12
+    minimum_contact_confidence: 0.0
+- schema_version: '2.0'
+  resource_type: sensors
+  id: sensor.shore-gap-filler
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - fixed-sensor-site
+    slot_type: sensor
+    kind: radar
+    range_m: 15000.0
+    low_altitude_range_m: 15000.0
+    probability: 0.9
+    update_ticks: 2
+    confirmation_frames: 1
+    stale_after_ticks: 12
+    engagement_max_age_ticks: 12
+    minimum_contact_confidence: 0.0
+- schema_version: '2.0'
+  resource_type: sensors
+  id: sensor.interceptor-radar
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - interceptor-uav
+    slot_type: sensor
+    kind: radar
+    range_m: 15000.0
+    low_altitude_range_m: 15000.0
+    probability: 0.75
+    update_ticks: 2
+    confirmation_frames: 1
+    stale_after_ticks: 12
+    engagement_max_age_ticks: 12
+    minimum_contact_confidence: 0.0
+- schema_version: '2.0'
+  resource_type: sensors
+  id: sensor.interceptor-eo
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - interceptor-uav
+    slot_type: sensor
+    kind: eo_ir
+    range_m: 10000.0
+    probability: 0.9
+    update_ticks: 1
+    confirmation_frames: 1
+    stale_after_ticks: 12
+    engagement_max_age_ticks: 12
+    minimum_contact_confidence: 0.0
+- schema_version: '2.0'
+  resource_type: sensors
+  id: sensor.usv-radar
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    compatible_platform_types:
+    - armed-usv
+    - suicide-usv
+    - harbor-pier
+    slot_type: sensor
+    kind: radar
+    range_m: 30000.0
+    low_altitude_range_m: 20000.0
+    probability: 0.8
+    update_ticks: 3
+    confirmation_frames: 1
+    stale_after_ticks: 12
+    engagement_max_age_ticks: 12
+    minimum_contact_confidence: 0.0
+- schema_version: '2.0'
+  resource_type: platforms
+  id: platform.shore-defence-site
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - energy.normalized@2.0.0
+  - shape.fixed-site@2.0.0
+  - visual.fixed-site@2.0.0
+  content:
+    platform_type: fixed-sensor-site
+    domain: land
+    mobile: false
+    allowed_dynamics:
+    - dynamics.fixed-site@2.0.0
+    component_slots:
+    - shore-weapon
+    - sensor
+    - communication
+    loadout_slots:
+    - shore-weapon
+    payload_capacity_kg: 200.0
+    mass_kg: 5000.0
+    energy_ref: energy.normalized@2.0.0
+    collision_shape_ref: shape.fixed-site@2.0.0
+    visualization_ref: visual.fixed-site@2.0.0
+- schema_version: '2.0'
+  resource_type: platforms
+  id: platform.interceptor-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - energy.normalized@2.0.0
+  - shape.interceptor-uav@2.0.0
+  - visual.interceptor-uav@2.0.0
+  content:
+    platform_type: interceptor-uav
+    domain: air
+    mobile: true
+    allowed_dynamics:
+    - dynamics.interceptor-uav@2.0.0
+    component_slots:
+    - air-weapon
+    - sensor
+    - sensor
+    - communication
+    loadout_slots:
+    - air-weapon
+    payload_capacity_kg: 200.0
+    mass_kg: 250.0
+    energy_ref: energy.normalized@2.0.0
+    collision_shape_ref: shape.interceptor-uav@2.0.0
+    visualization_ref: visual.interceptor-uav@2.0.0
+- schema_version: '2.0'
+  resource_type: platforms
+  id: platform.armed-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    platform_type: armed-usv
+    domain: surface
+    mobile: true
+    allowed_dynamics:
+    - dynamics.armed-usv@2.0.0
+    component_slots:
+    - surface-weapon
+    - sensor
+    - communication
+    loadout_slots:
+    - surface-weapon
+    payload_capacity_kg: 350.0
+    mass_kg: 5200.0
+    energy_ref: energy.normalized@2.0.0
+    collision_shape_ref: shape.usv-sphere@2.0.0
+    visualization_ref: visual.picket-usv@2.0.0
+- schema_version: '2.0'
+  resource_type: platforms
+  id: platform.suicide-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    platform_type: suicide-usv
+    domain: surface
+    mobile: true
+    allowed_dynamics:
+    - dynamics.suicide-usv@2.0.0
+    component_slots:
+    - suicide-warhead
+    - sensor
+    - communication
+    loadout_slots:
+    - suicide-warhead
+    payload_capacity_kg: 300.0
+    mass_kg: 2800.0
+    energy_ref: energy.normalized@2.0.0
+    collision_shape_ref: shape.usv-sphere@2.0.0
+    visualization_ref: visual.picket-usv@2.0.0
+- schema_version: '2.0'
+  resource_type: platforms
+  id: platform.harbor-pier
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    platform_type: harbor-pier
+    domain: surface
+    mobile: false
+    allowed_dynamics:
+    - dynamics.static-structure@2.0.0
+    component_slots:
+    - sensor
+    - communication
+    loadout_slots: []
+    payload_capacity_kg: 0.0
+    mass_kg: 20000.0
+    energy_ref: energy.normalized@2.0.0
+    collision_shape_ref: shape.harbor-pier@2.0.0
+    visualization_ref: visual.harbor-pier@2.0.0
+- schema_version: '2.0'
+  resource_type: damage_models
+  id: damage.kinetic-terminal
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    effect_types:
+    - kinetic
+    health_scale: 1.0
+    disabled_threshold: 0.5
+    destroyed_threshold: 0.0
+- schema_version: '2.0'
+  resource_type: damage_models
+  id: damage.kinetic-partial
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    effect_types:
+    - kinetic
+    health_scale: 0.5
+    disabled_threshold: 0.5
+    destroyed_threshold: 0.0
+- schema_version: '2.0'
+  resource_type: effects
+  id: effect.interceptor-hit
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - damage.kinetic-terminal@2.0.0
+  content:
+    effect_type: kinetic
+    damage_model_ref: damage.kinetic-terminal@2.0.0
+    magnitude: 1.0
+    unit: '1'
+- schema_version: '2.0'
+  resource_type: effects
+  id: effect.surface-missile-hit
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - damage.kinetic-terminal@2.0.0
+  content:
+    effect_type: kinetic
+    damage_model_ref: damage.kinetic-terminal@2.0.0
+    magnitude: 1.0
+    unit: '1'
+- schema_version: '2.0'
+  resource_type: effects
+  id: effect.suicide-detonation
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - damage.kinetic-terminal@2.0.0
+  content:
+    effect_type: kinetic
+    damage_model_ref: damage.kinetic-terminal@2.0.0
+    magnitude: 1.0
+    unit: '1'
+- schema_version: '2.0'
+  resource_type: effects
+  id: effect.collision-impact
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - damage.kinetic-partial@2.0.0
+  content:
+    effect_type: kinetic
+    damage_model_ref: damage.kinetic-partial@2.0.0
+    magnitude: 0.5
+    unit: '1'
+- schema_version: '2.0'
+  resource_type: effects
+  id: effect.loitering-hit
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - damage.kinetic-partial@2.0.0
+  content:
+    effect_type: kinetic
+    damage_model_ref: damage.kinetic-partial@2.0.0
+    magnitude: 0.6
+    unit: '1'
+- schema_version: '2.0'
+  resource_type: weapons
+  id: weapon.interceptor-missile
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - effect.interceptor-hit@2.0.0
+  content:
+    allowed_platform_types:
+    - interceptor-uav
+    target_domains:
+    - air
+    effect_ref: effect.interceptor-hit@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    hit_probability: 0.7
+    delivery_model: guided_missile
+    missile:
+      launch_speed_mps: 180.0
+      cruise_speed_mps: 320.0
+      max_acceleration_mps2: 80.0
+      max_turn_rate_deg_s: 90.0
+      max_vertical_speed_mps: 180.0
+      seeker_range_m: 6000.0
+      seeker_fov_deg: 140.0
+      seeker_detection_probability: 0.95
+      fuse_radius_m: 25.0
+      max_flight_ticks: 40
+    cooldown_ticks: 5
+    energy_per_shot: 0.0002
+    rounds_per_action: 1
+    contact_required: true
+- schema_version: '2.0'
+  resource_type: weapons
+  id: weapon.loitering-munition
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - effect.loitering-hit@2.0.0
+  content:
+    allowed_platform_types:
+    - interceptor-uav
+    target_domains:
+    - air
+    - land
+    effect_ref: effect.loitering-hit@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    hit_probability: 0.75
+    delivery_model: guided_missile
+    missile:
+      launch_speed_mps: 180.0
+      cruise_speed_mps: 250.0
+      max_acceleration_mps2: 60.0
+      max_turn_rate_deg_s: 60.0
+      max_vertical_speed_mps: 120.0
+      seeker_range_m: 5000.0
+      seeker_fov_deg: 130.0
+      seeker_detection_probability: 0.92
+      fuse_radius_m: 15.0
+      max_flight_ticks: 80
+    cooldown_ticks: 5
+    energy_per_shot: 0.0002
+    rounds_per_action: 1
+    contact_required: true
+- schema_version: '2.0'
+  resource_type: weapons
+  id: weapon.surface-missile
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - effect.surface-missile-hit@2.0.0
+  content:
+    allowed_platform_types:
+    - armed-usv
+    target_domains:
+    - surface
+    effect_ref: effect.surface-missile-hit@2.0.0
+    min_range_m: 0.0
+    max_range_m: 3000.0
+    hit_probability: 0.5
+    delivery_model: guided_missile
+    missile:
+      launch_speed_mps: 15.0
+      cruise_speed_mps: 15.0
+      max_acceleration_mps2: 5.0
+      max_turn_rate_deg_s: 30.0
+      max_vertical_speed_mps: 5.0
+      seeker_range_m: 4000.0
+      seeker_fov_deg: 120.0
+      seeker_detection_probability: 0.9
+      fuse_radius_m: 25.0
+      max_flight_ticks: 400
+    cooldown_ticks: 3
+    energy_per_shot: 0.0002
+    rounds_per_action: 1
+    contact_required: true
+- schema_version: '2.0'
+  resource_type: weapons
+  id: weapon.air-interceptor-munition
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - effect.loitering-hit@2.0.0
+  content:
+    allowed_platform_types:
+    - interceptor-uav
+    target_domains:
+    - air
+    effect_ref: effect.loitering-hit@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    hit_probability: 0.75
+    delivery_model: guided_missile
+    missile:
+      launch_speed_mps: 180.0
+      cruise_speed_mps: 250.0
+      max_acceleration_mps2: 60.0
+      max_turn_rate_deg_s: 60.0
+      max_vertical_speed_mps: 120.0
+      seeker_range_m: 5000.0
+      seeker_fov_deg: 130.0
+      seeker_detection_probability: 0.92
+      fuse_radius_m: 15.0
+      max_flight_ticks: 80
+    cooldown_ticks: 5
+    energy_per_shot: 0.0002
+    rounds_per_action: 1
+    contact_required: true
+- schema_version: '2.0'
+  resource_type: weapons
+  id: weapon.suicide-warhead
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - effect.suicide-detonation@2.0.0
+  content:
+    allowed_platform_types:
+    - suicide-usv
+    target_domains:
+    - surface
+    - land
+    effect_ref: effect.suicide-detonation@2.0.0
+    min_range_m: 0.0
+    max_range_m: 150.0
+    hit_probability: 1.0
+    delivery_model: contact_detonation
+    impact_delay_ticks: 1
+    cooldown_ticks: 0
+    energy_per_shot: 0.0
+    rounds_per_action: 1
+    contact_required: true
+- schema_version: '2.0'
+  resource_type: ammunition
+  id: ammunition.interceptor-missile
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.interceptor-missile@2.0.0
+  content:
+    weapon_ref: weapon.interceptor-missile@2.0.0
+    mass_per_round_kg: 4.0
+- schema_version: '2.0'
+  resource_type: ammunition
+  id: ammunition.surface-missile
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.surface-missile@2.0.0
+  content:
+    weapon_ref: weapon.surface-missile@2.0.0
+    mass_per_round_kg: 12.0
+- schema_version: '2.0'
+  resource_type: ammunition
+  id: ammunition.loitering-munition
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.loitering-munition@2.0.0
+  content:
+    weapon_ref: weapon.loitering-munition@2.0.0
+    mass_per_round_kg: 18.0
+- schema_version: '2.0'
+  resource_type: ammunition
+  id: ammunition.air-interceptor-munition
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.air-interceptor-munition@2.0.0
+  content:
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    mass_per_round_kg: 18.0
+- schema_version: '2.0'
+  resource_type: ammunition
+  id: ammunition.suicide-warhead
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.suicide-warhead@2.0.0
+  content:
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    mass_per_round_kg: 120.0
+- schema_version: '2.0'
+  resource_type: loadouts
+  id: loadout.interceptor-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.interceptor-missile@2.0.0
+  - ammunition.interceptor-missile@2.0.0
+  content:
+    compatible_platform_types:
+    - interceptor-uav
+    required_slots:
+    - air-weapon
+    mass_kg: 80.0
+    weapon_refs:
+    - weapon.interceptor-missile@2.0.0
+    ammunition_refs:
+    - ammunition.interceptor-missile@2.0.0
+- schema_version: '2.0'
+  resource_type: loadouts
+  id: loadout.loitering-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.loitering-munition@2.0.0
+  - ammunition.loitering-munition@2.0.0
+  content:
+    compatible_platform_types:
+    - interceptor-uav
+    required_slots:
+    - air-weapon
+    mass_kg: 90.0
+    weapon_refs:
+    - weapon.loitering-munition@2.0.0
+    ammunition_refs:
+    - ammunition.loitering-munition@2.0.0
+- schema_version: '2.0'
+  resource_type: loadouts
+  id: loadout.armed-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.surface-missile@2.0.0
+  - ammunition.surface-missile@2.0.0
+  content:
+    compatible_platform_types:
+    - armed-usv
+    required_slots:
+    - surface-weapon
+    mass_kg: 120.0
+    weapon_refs:
+    - weapon.surface-missile@2.0.0
+    ammunition_refs:
+    - ammunition.surface-missile@2.0.0
+- schema_version: '2.0'
+  resource_type: loadouts
+  id: loadout.air-interceptor-uav
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.air-interceptor-munition@2.0.0
+  - ammunition.air-interceptor-munition@2.0.0
+  content:
+    compatible_platform_types:
+    - interceptor-uav
+    required_slots:
+    - air-weapon
+    mass_kg: 90.0
+    weapon_refs:
+    - weapon.air-interceptor-munition@2.0.0
+    ammunition_refs:
+    - ammunition.air-interceptor-munition@2.0.0
+- schema_version: '2.0'
+  resource_type: loadouts
+  id: loadout.suicide-usv
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies:
+  - weapon.suicide-warhead@2.0.0
+  - ammunition.suicide-warhead@2.0.0
+  content:
+    compatible_platform_types:
+    - suicide-usv
+    required_slots:
+    - suicide-warhead
+    mass_kg: 150.0
+    weapon_refs:
+    - weapon.suicide-warhead@2.0.0
+    ammunition_refs:
+    - ammunition.suicide-warhead@2.0.0
+- schema_version: '2.0'
+  resource_type: environments
+  id: environment.clear
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    weather: clear
+    visibility_scale: 1.0
+    sea_state: 1
+    sensor_range_multiplier: 1.0
+    sensor_detection_probability_multiplier: 1.0
+- schema_version: '2.0'
+  resource_type: environments
+  id: environment.rain-fog
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    weather: rain_or_fog
+    visibility_scale: 0.65
+    sea_state: 4
+    sensor_range_multiplier: 0.7
+    sensor_detection_probability_multiplier: 0.8
+- schema_version: '2.0'
+  resource_type: platforms
+  id: platform.shore-sensor-site
+  version: 2.0.0
+  engine_compatibility: '>=2.0.0,<3.0.0'
+  model_id: models.formal-data@2.0.0
+  dependencies: []
+  content:
+    platform_type: fixed-sensor-site
+    domain: land
+    mobile: false
+    allowed_dynamics:
+    - dynamics.fixed-site@2.0.0
+    component_slots:
+    - sensor
+    - sensor
+    - communication
+    loadout_slots: []
+    payload_capacity_kg: 0.0
+    mass_kg: 3000.0
+    energy_ref: energy.normalized@2.0.0
+    collision_shape_ref: shape.fixed-site@2.0.0
+    visualization_ref: visual.fixed-site@2.0.0

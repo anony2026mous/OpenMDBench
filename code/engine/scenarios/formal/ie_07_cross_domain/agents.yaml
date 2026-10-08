@@ -1,0 +1,80 @@
+schema_version: rule-agent-team@2.0
+set:
+  name: IE 拦截交战场景集
+  member_index: 7
+  zh_name: 跨域渗透
+  notes: 原需求含 2 艘 AUV（水下），引擎不支持水下平台，故只实现空中分波次渗透；低空进入 + 分波次 + 目标在港区远侧，制造跨域/跨时段的观察不完全性。编成已上调，使第 7 到第 8 个场景的数量落差不再突兀。
+objective_m:
+- 700.0
+- -1000.0
+protected_zone_bounds_m:
+- -1500.0
+- -1300.0
+- 1000.0
+- 100.0
+decision_interval_ticks: 5
+facility_weights:
+  facility.pier: 1.0
+  facility.command: 1.0
+defence:
+  faction_id: coalition.defender
+  contact_confidence: 0.0
+  maximum_contact_age_ticks: 8
+  intercept_speed_mps: 43.0
+  weapon_policies:
+  - selector_tags:
+    - interceptor
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    minimum_range_m: 500.0
+    maximum_range_m: 8000.0
+    cooldown_ticks: 5
+  - selector_tags:
+    - usv
+    weapon_ref: weapon.surface-missile@2.0.0
+    minimum_range_m: 0.0
+    maximum_range_m: 3000.0
+    cooldown_ticks: 3
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 43.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  routes:
+  - match_tag: uav
+    objective_m:
+    - 700.0
+    - -1000.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: boat
+    objective_m:
+    - 700.0
+    - -1000.0
+    pattern: direct
+    speed_mps: 10.0
+  timeline:
+  - label: probe wave
+    spawn_tick: 0
+    count: 7
+    axis: east, low altitude (120-200 m) so mainly the shore sensor sees it early
+    behavior: three UAVs and four suicide boats converge on the submarine pier
+  - label: main wave
+    spawn_tick: 400
+    count: 3
+    axis: east, 21-26 km out
+    behavior: three more UAVs arrive about 400 ticks later; the pier is on the far side of the harbour, so the approach is only partly observable from the port
+  weapon_policies:
+  - match_tag: boat
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    min_range_m: 0.0
+    max_range_m: 150.0
+    shots: 1
+    reserve_for_assigned: 0
+  - match_tag: uav
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 1
+    reserve_for_assigned: 1

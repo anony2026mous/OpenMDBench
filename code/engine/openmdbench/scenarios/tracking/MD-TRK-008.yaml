@@ -1,0 +1,60 @@
+schema_version: "1.0"
+scenario_id: MD-TRK-008
+category: tracking
+difficulty: hard
+world:
+  bounds: [0.0, 0.0, 200000.0, 200000.0]
+  map_id: weihai
+public:
+  name: 全谱跟踪
+  background: 执行全谱跟踪任务，维护指定海空域安全与态势感知。
+  primary_objectives: [完成全谱跟踪主要目标]
+  secondary_objectives: [减少能量消耗与附带损伤]
+  known_intelligence: [存在未确认的对方活动]
+  weather_forecast: cloudy
+  constraints: [保护中立目标, 遵守交战规则]
+entities:
+  - id: blue-uav-1
+    side: blue
+    type: uav
+    position: [20000.0, 20000.0, 500.0]
+  - id: red-uav-1
+    side: red
+    type: uav
+    position: [160000.0, 160000.0, 500.0]
+spawn_counts:
+  blue:
+      uav: 5
+      usv: 3
+      shore_radar: 2
+      auv: 2
+  red:
+      uav: 2
+      usv: 2
+      shore_radar: 0
+      auv: 2
+time_limit_ticks: 2400
+roe: [identified_contacts_only, protect_neutral]
+initial_weather: cloudy
+weather_timeline: []
+success_conditions: [primary_objective_complete]
+failure_conditions: [all_blue_assets_lost, protected_asset_destroyed]
+scoring:
+  weights:
+    completion: 0.6
+    efficiency: 0.2
+    safety: 0.2
+  baseline_version: "1.0"
+  baseline:
+    time_ticks: 1920
+    energy_used: 0.5
+referee:
+  opponent_intent: 对方将采用机动、诱骗或多域协同阻止任务完成。
+  hidden_events:
+    - tick: 1200
+      event_type: scenario_challenge
+      payload:
+        scenario_id: MD-TRK-008
+  ground_truth:
+    intent_class: defensive_disruption
+

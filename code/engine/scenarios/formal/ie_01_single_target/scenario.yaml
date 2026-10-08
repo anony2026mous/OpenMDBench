@@ -1,0 +1,861 @@
+schema_version: package@2.0
+scenario:
+  schema_version: '2.0'
+  scenario_id: ie-01-single-target.v1
+  display_name: IE-01-SINGLE-TARGET 单目标拦截（IE 拦截交战场景集）
+  factions:
+  - schema_version: '2.0'
+    id: coalition.defender
+    display_name: 防御方
+  - schema_version: '2.0'
+    id: coalition.intruder
+    display_name: 突防方
+  relationships:
+  - schema_version: '2.0'
+    source_faction_id: coalition.defender
+    target_faction_id: coalition.intruder
+    relation: hostile
+  - schema_version: '2.0'
+    source_faction_id: coalition.intruder
+    target_faction_id: coalition.defender
+    relation: hostile
+  entities:
+  - schema_version: '2.0'
+    id: facility.command
+    faction_id: coalition.defender
+    platform_ref: platform.shore-defence-site@2.0.0
+    dynamics_ref: dynamics.fixed-site@2.0.0
+    component_refs:
+    - sensor.shore-gap-filler@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - -1200.0
+      - -200.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - facility
+    - fixed
+    controller_slot: null
+  - schema_version: '2.0'
+    id: site.shore-radar
+    faction_id: coalition.defender
+    platform_ref: platform.shore-sensor-site@2.0.0
+    dynamics_ref: dynamics.fixed-site@2.0.0
+    component_refs:
+    - sensor.shore-early-warning@2.0.0
+    - sensor.shore-gap-filler@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - -1400.0
+      - -300.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - sensor-site
+    - fixed
+    controller_slot: null
+  - schema_version: '2.0'
+    id: defender.uav-01
+    faction_id: coalition.defender
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 3200.0
+      - 1200.0
+      - 800.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 100.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - combat-unit
+    - interceptor
+    controller_slot: null
+    loadout_ref: loadout.air-interceptor-uav@2.0.0
+    ammunition:
+      ammunition.air-interceptor-munition@2.0.0: 3
+    target_domains:
+    - air
+  - schema_version: '2.0'
+    id: defender.uav-02
+    faction_id: coalition.defender
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 3600.0
+      - 0.0
+      - 800.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 100.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - combat-unit
+    - interceptor
+    controller_slot: null
+    loadout_ref: loadout.air-interceptor-uav@2.0.0
+    ammunition:
+      ammunition.air-interceptor-munition@2.0.0: 3
+    target_domains:
+    - air
+  - schema_version: '2.0'
+    id: defender.uav-03
+    faction_id: coalition.defender
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 3200.0
+      - -1200.0
+      - 800.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 100.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - combat-unit
+    - interceptor
+    controller_slot: null
+    loadout_ref: loadout.air-interceptor-uav@2.0.0
+    ammunition:
+      ammunition.air-interceptor-munition@2.0.0: 3
+    target_domains:
+    - air
+  - schema_version: '2.0'
+    id: defender.uav-04
+    faction_id: coalition.defender
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 4600.0
+      - 1800.0
+      - 900.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 100.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - combat-unit
+    - interceptor
+    controller_slot: null
+    loadout_ref: loadout.air-interceptor-uav@2.0.0
+    ammunition:
+      ammunition.air-interceptor-munition@2.0.0: 3
+    target_domains:
+    - air
+  - schema_version: '2.0'
+    id: defender.usv-01
+    faction_id: coalition.defender
+    platform_ref: platform.armed-usv@2.0.0
+    dynamics_ref: dynamics.armed-usv@2.0.0
+    component_refs:
+    - sensor.usv-radar@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 1800.0
+      - -200.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - combat-unit
+    - usv
+    - surface
+    controller_slot: null
+    loadout_ref: loadout.armed-usv@2.0.0
+    ammunition:
+      ammunition.surface-missile@2.0.0: 2
+    target_domains:
+    - surface
+  - schema_version: '2.0'
+    id: defender.usv-02
+    faction_id: coalition.defender
+    platform_ref: platform.armed-usv@2.0.0
+    dynamics_ref: dynamics.armed-usv@2.0.0
+    component_refs:
+    - sensor.usv-radar@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 2400.0
+      - 800.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - defence
+    - combat-unit
+    - usv
+    - surface
+    controller_slot: null
+    loadout_ref: loadout.armed-usv@2.0.0
+    ammunition:
+      ammunition.surface-missile@2.0.0: 2
+    target_domains:
+    - surface
+  - schema_version: '2.0'
+    id: intruder.uav-01
+    faction_id: coalition.intruder
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 12000.0
+      - -300.0
+      - 150.0
+      velocity_mps:
+      - -43.0
+      - 0.0
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - intruder
+    - uav
+    - wave-1
+    - target.facility.command
+    controller_slot: null
+    loadout_ref: loadout.loitering-uav@2.0.0
+    ammunition:
+      ammunition.loitering-munition@2.0.0: 1
+    target_domains:
+    - air
+    - land
+  - schema_version: '2.0'
+    id: intruder.uav-91
+    faction_id: coalition.intruder
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 12000.0
+      - 1100.0
+      - 150.0
+      velocity_mps:
+      - -43.0
+      - 0.0
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - intruder
+    - uav
+    - wave-1
+    - target.facility.command
+    controller_slot: null
+    loadout_ref: loadout.loitering-uav@2.0.0
+    ammunition:
+      ammunition.loitering-munition@2.0.0: 1
+    target_domains:
+    - air
+    - land
+  - schema_version: '2.0'
+    id: intruder.uav-92
+    faction_id: coalition.intruder
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 12000.0
+      - 2500.0
+      - 150.0
+      velocity_mps:
+      - -43.0
+      - 0.0
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - intruder
+    - uav
+    - wave-1
+    - target.facility.command
+    controller_slot: null
+    loadout_ref: loadout.loitering-uav@2.0.0
+    ammunition:
+      ammunition.loitering-munition@2.0.0: 1
+    target_domains:
+    - air
+    - land
+  - schema_version: '2.0'
+    id: intruder.uav-93
+    faction_id: coalition.intruder
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - sensor.interceptor-radar@2.0.0
+    - sensor.interceptor-eo@2.0.0
+    - communication.command-network@2.0.0
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 12000.0
+      - 3900.0
+      - 150.0
+      velocity_mps:
+      - -43.0
+      - 0.0
+      - 0.0
+      heading_deg: 270.0
+      health: 1.0
+      energy: 1.0
+    tags:
+    - intruder
+    - uav
+    - wave-1
+    - target.facility.command
+    controller_slot: null
+    loadout_ref: loadout.loitering-uav@2.0.0
+    ammunition:
+      ammunition.loitering-munition@2.0.0: 1
+    target_domains:
+    - air
+    - land
+  formations: []
+  events:
+  - schema_version: '2.0'
+    id: event.weather-initial
+    event_type: weather_change
+    trigger:
+      kind: tick
+      tick: 0
+    priority: 1000
+    depends_on: []
+    payload:
+      environment_ref: environment.clear@2.0.0
+  - schema_version: '2.0'
+    id: event.marker-assess
+    event_type: mission_marker
+    trigger:
+      kind: tick
+      tick: 899
+    priority: 10
+    depends_on: []
+    payload:
+      marker_id: marker.assess-protected-assets
+  - schema_version: '2.0'
+    id: event.assets-lost
+    event_type: mission_marker
+    trigger:
+      kind: tick
+      tick: 899
+    priority: 11
+    depends_on: []
+    payload:
+      marker_id: marker.assets-lost
+  - schema_version: '2.0'
+    id: event.defence-success
+    event_type: mission_marker
+    trigger:
+      kind: tick
+      tick: 899
+    priority: 12
+    depends_on: []
+    payload:
+      marker_id: marker.defence-success
+  - schema_version: '2.0'
+    id: event.intruders-destroyed
+    event_type: mission_marker
+    trigger:
+      kind: tick
+      tick: 899
+    priority: 13
+    depends_on: []
+    payload:
+      marker_id: marker.intruders-destroyed
+  - schema_version: '2.0'
+    id: event.defenders-destroyed
+    event_type: mission_marker
+    trigger:
+      kind: tick
+      tick: 899
+    priority: 14
+    depends_on: []
+    payload:
+      marker_id: marker.defenders-destroyed
+  world:
+    schema_version: '2.0'
+    coordinate_system: local_m
+    map_ref: map.weihai-local@2.0.0
+    duration_ticks: 900
+    tick_seconds: 1.0
+    spatial_damage_policy:
+      schema_version: '2.0'
+      collision_effect_ref: effect.collision-impact@2.0.0
+      magnitude_model: scaled_relative_speed
+      magnitude_parameters:
+        scale: 0.01
+      output_unit: '1'
+    zones:
+    - schema_version: '2.0'
+      id: zone.target.facility.command
+      geometry_type: polygon
+      coordinates_m:
+      - - -900.0
+        - -200.0
+      - - -905.764
+        - -141.473
+      - - -922.836
+        - -85.195
+      - - -950.559
+        - -33.329
+      - - -987.868
+        - 12.132
+      - - -1033.329
+        - 49.441
+      - - -1085.195
+        - 77.164
+      - - -1141.473
+        - 94.236
+      - - -1200.0
+        - 100.0
+      - - -1258.527
+        - 94.236
+      - - -1314.805
+        - 77.164
+      - - -1366.671
+        - 49.441
+      - - -1412.132
+        - 12.132
+      - - -1449.441
+        - -33.329
+      - - -1477.164
+        - -85.195
+      - - -1494.236
+        - -141.473
+      - - -1500.0
+        - -200.0
+      - - -1494.236
+        - -258.527
+      - - -1477.164
+        - -314.805
+      - - -1449.441
+        - -366.671
+      - - -1412.132
+        - -412.132
+      - - -1366.671
+        - -449.441
+      - - -1314.805
+        - -477.164
+      - - -1258.527
+        - -494.236
+      - - -1200.0
+        - -500.0
+      - - -1141.473
+        - -494.236
+      - - -1085.195
+        - -477.164
+      - - -1033.329
+        - -449.441
+      - - -987.868
+        - -412.132
+      - - -950.559
+        - -366.671
+      - - -922.836
+        - -314.805
+      - - -905.764
+        - -258.527
+      tags:
+      - target
+      - facility
+      - target.facility.command
+    roe_rules:
+    - schema_version: '2.0'
+      id: roe.defender-engage-intruder
+      source_faction_id: coalition.defender
+      target_faction_id: coalition.intruder
+      relationship: hostile
+      engagement_permitted: true
+    - schema_version: '2.0'
+      id: roe.intruder-engage-defender
+      source_faction_id: coalition.intruder
+      target_faction_id: coalition.defender
+      relationship: hostile
+      engagement_permitted: true
+  mission_states:
+  - state.active
+  - state.assets-lost
+  - state.defence-success
+  - state.defenders-destroyed
+  - state.intruders-destroyed
+  mission_rules:
+  - schema_version: '2.0'
+    id: rule.assets-lost
+    priority: 100
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: count
+      selector:
+        schema_version: '2.0'
+        factions:
+        - coalition.defender
+        tags:
+        - facility
+      parameters:
+        comparison: <=
+        value: 0
+    outcome:
+      set_state: state.assets-lost
+      emit_event: event.assets-lost
+      terminal: true
+      result: intruder_success
+      ranking:
+        coalition.intruder: 1
+        coalition.defender: 2
+  - schema_version: '2.0'
+    id: rule.defenders-destroyed
+    priority: 90
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: count
+      selector:
+        schema_version: '2.0'
+        factions:
+        - coalition.defender
+        tags:
+        - combat-unit
+        include_lifecycle:
+        - scheduled
+        - active
+        - degraded
+      parameters:
+        comparison: <=
+        value: 0
+    outcome:
+      set_state: state.defenders-destroyed
+      emit_event: event.defenders-destroyed
+      terminal: true
+      result: intruder_success
+      ranking:
+        coalition.intruder: 1
+        coalition.defender: 2
+  - schema_version: '2.0'
+    id: rule.intruders-destroyed
+    priority: 60
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: count
+      selector:
+        schema_version: '2.0'
+        factions:
+        - coalition.intruder
+        tags:
+        - intruder
+        include_lifecycle:
+        - scheduled
+        - active
+        - degraded
+      parameters:
+        comparison: <=
+        value: 0
+    outcome:
+      set_state: state.intruders-destroyed
+      emit_event: event.intruders-destroyed
+      terminal: true
+      result: defender_success
+      ranking:
+        coalition.defender: 1
+        coalition.intruder: 2
+  - schema_version: '2.0'
+    id: rule.defence-success
+    priority: 50
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: time
+      selector:
+        schema_version: '2.0'
+        factions:
+        - coalition.defender
+      parameters:
+        comparison: '>='
+        tick: 899
+    outcome:
+      set_state: state.defence-success
+      emit_event: event.defence-success
+      terminal: true
+      result: defender_success
+      ranking:
+        coalition.defender: 1
+        coalition.intruder: 2
+  scoring:
+    aggregation: sum
+    direction: maximize
+    weight_policy: normalized_sum_one
+    metrics:
+    - id: score.facility-integrity
+      selector:
+        schema_version: '2.0'
+        factions:
+        - coalition.defender
+        tags:
+        - facility
+      aggregation: count
+      unit: '1'
+      direction: maximize
+      weight: 1.0
+      available: true
+      value: 1.0
+  controller_slots:
+  - schema_version: '2.0'
+    id: controller.defender.command
+    controller_id: agent.facility.command
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - facility.command
+    controller_endpoint_ref: facility.command
+    required_capabilities:
+    - sensor
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.shore-radar
+    controller_id: agent.site.shore-radar
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - site.shore-radar
+    controller_endpoint_ref: site.shore-radar
+    required_capabilities:
+    - sensor
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.uav-01
+    controller_id: agent.defender.uav-01
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - defender.uav-01
+    controller_endpoint_ref: defender.uav-01
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.uav-02
+    controller_id: agent.defender.uav-02
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - defender.uav-02
+    controller_endpoint_ref: defender.uav-02
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.uav-03
+    controller_id: agent.defender.uav-03
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - defender.uav-03
+    controller_endpoint_ref: defender.uav-03
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.uav-04
+    controller_id: agent.defender.uav-04
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - defender.uav-04
+    controller_endpoint_ref: defender.uav-04
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.usv-01
+    controller_id: agent.defender.usv-01
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - defender.usv-01
+    controller_endpoint_ref: defender.usv-01
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.defender.usv-02
+    controller_id: agent.defender.usv-02
+    faction_id: coalition.defender
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - defender.usv-02
+    controller_endpoint_ref: defender.usv-02
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.intruder.uav-01
+    controller_id: agent.intruder.uav-01
+    faction_id: coalition.intruder
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - intruder.uav-01
+    controller_endpoint_ref: intruder.uav-01
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.intruder.uav-91
+    controller_id: agent.intruder.uav-91
+    faction_id: coalition.intruder
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - intruder.uav-91
+    controller_endpoint_ref: intruder.uav-91
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.intruder.uav-92
+    controller_id: agent.intruder.uav-92
+    faction_id: coalition.intruder
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - intruder.uav-92
+    controller_endpoint_ref: intruder.uav-92
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - schema_version: '2.0'
+    id: controller.intruder.uav-93
+    controller_id: agent.intruder.uav-93
+    faction_id: coalition.intruder
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - intruder.uav-93
+    controller_endpoint_ref: intruder.uav-93
+    required_capabilities:
+    - weapon
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  controller_policy: explicit_uncontrolled

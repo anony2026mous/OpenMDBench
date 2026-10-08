@@ -1,0 +1,776 @@
+schema_version: package@2.0
+adapter_id: adapter.v2
+scenario:
+  schema_version: '2.0'
+  scenario_id: competition.MD-ER-006.standard
+  factions:
+  - schema_version: '2.0'
+    id: red
+  - schema_version: '2.0'
+    id: blue
+  relationships: []
+  entities:
+  - schema_version: '2.0'
+    id: unit.r01
+    faction_id: red
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - communication.competition-dispatch@1.0.0
+    - sensor.competition-air-easy@1.0.0
+    controller_slot: slot.unit.r01
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 0.0
+      - 0.0
+      - 100.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.r02
+    faction_id: red
+    platform_ref: platform.interceptor-uav@2.0.0
+    dynamics_ref: dynamics.interceptor-uav@2.0.0
+    component_refs:
+    - communication.competition-dispatch@1.0.0
+    - sensor.competition-air-easy@1.0.0
+    controller_slot: slot.unit.r02
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 0.0
+      - 300.0
+      - 100.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.r03
+    faction_id: red
+    platform_ref: platform.competition-shore-site@1.0.0
+    dynamics_ref: dynamics.fixed-site@2.0.0
+    component_refs:
+    - communication.competition-dispatch@1.0.0
+    - sensor.competition-shore-easy@1.0.0
+    controller_slot: slot.unit.r03
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 850.0
+      - 0.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  - schema_version: '2.0'
+    id: unit.x01
+    faction_id: blue
+    platform_ref: platform.competition-shore-site@1.0.0
+    dynamics_ref: dynamics.fixed-site@2.0.0
+    component_refs:
+    - communication.competition-dispatch@1.0.0
+    controller_slot: slot.unit.x01
+    initial_state:
+      schema_version: '2.0'
+      position_m:
+      - 1200.0
+      - 0.0
+      - 0.0
+      velocity_mps:
+      - 0.0
+      - 0.0
+      - 0.0
+      heading_deg: 90.0
+      health: 1.0
+      energy: 1.0
+    tags: []
+  formations: []
+  world:
+    schema_version: '2.0'
+    coordinate_system: local_m
+    duration_ticks: 241
+    tick_seconds: 1.0
+    zones:
+    - schema_version: '2.0'
+      id: zone.request01
+      geometry_type: polygon
+      coordinates_m:
+      - - 1100.0
+        - -100.0
+      - - 1300.0
+        - -100.0
+      - - 1300.0
+        - 100.0
+      - - 1100.0
+        - 100.0
+    - schema_version: '2.0'
+      id: zone.hazard01
+      geometry_type: polygon
+      coordinates_m:
+      - - 420.0
+        - -180.0
+      - - 780.0
+        - -180.0
+      - - 780.0
+        - 180.0
+      - - 420.0
+        - 180.0
+    - schema_version: '2.0'
+      id: zone.request02
+      geometry_type: polygon
+      coordinates_m:
+      - - 1100.0
+        - -650.0
+      - - 1300.0
+        - -650.0
+      - - 1300.0
+        - -450.0
+      - - 1100.0
+        - -450.0
+    - schema_version: '2.0'
+      id: zone.request03
+      geometry_type: polygon
+      coordinates_m:
+      - - -1100.0
+        - 500.0
+      - - -900.0
+        - 500.0
+      - - -900.0
+        - 700.0
+      - - -1100.0
+        - 700.0
+    - schema_version: '2.0'
+      id: zone.approach.03
+      geometry_type: polygon
+      coordinates_m:
+      - - -475.0
+        - -105.0
+      - - -205.0
+        - -105.0
+      - - -205.0
+        - 165.0
+      - - -475.0
+        - 165.0
+    - schema_version: '2.0'
+      id: zone.duty.01
+      geometry_type: polygon
+      coordinates_m:
+      - - -165.0
+        - -165.0
+      - - -35.0
+        - -165.0
+      - - -35.0
+        - -35.0
+      - - -165.0
+        - -35.0
+    - schema_version: '2.0'
+      id: zone.duty.02
+      geometry_type: polygon
+      coordinates_m:
+      - - -165.0
+        - 235.0
+      - - -35.0
+        - 235.0
+      - - -35.0
+        - 365.0
+      - - -165.0
+        - 365.0
+  events:
+  - schema_version: '2.0'
+    id: event.weather
+    event_type: weather_change
+    trigger:
+      tick: 12
+    payload:
+      environment_ref: environment.competition-storm@1.0.0
+  - schema_version: '2.0'
+    id: event.fault
+    event_type: component_suppression
+    trigger:
+      tick: 18
+    payload:
+      target_entity_id: unit.r03
+      component_ref: sensor.competition-shore-easy@1.0.0
+      duration_ticks: 240
+  - schema_version: '2.0'
+    id: event.deadline
+    event_type: mission_marker
+    trigger:
+      tick: 241
+    payload:
+      marker_id: marker.deadline
+  - schema_version: '2.0'
+    id: event.success
+    event_type: mission_marker
+    trigger:
+      tick: 241
+    payload:
+      marker_id: marker.success
+  - schema_version: '2.0'
+    id: event.timeout
+    event_type: mission_marker
+    trigger:
+      tick: 241
+    payload:
+      marker_id: marker.timeout
+  - schema_version: '2.0'
+    id: event.receiver-blackout
+    event_type: component_suppression
+    trigger:
+      tick: 22
+    payload:
+      target_entity_id: unit.r02
+      component_ref: communication.competition-dispatch@1.0.0
+      duration_ticks: 18
+  mission_states:
+  - state.active
+  - state.success
+  - state.timeout
+  mission_rules:
+  - schema_version: '2.0'
+    id: rule.success
+    priority: 100
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: all
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+      parameters:
+        conditions:
+        - operator: score
+          parameters:
+            metric_id: metric.arrival
+            comparison: '>='
+            value: 1.0
+        - operator: score
+          parameters:
+            metric_id: metric.safety
+            comparison: '>='
+            value: 1.0
+        - operator: score
+          parameters:
+            metric_id: metric.continuity
+            comparison: '>='
+            value: 0.65
+        - operator: score
+          parameters:
+            metric_id: metric.triage
+            comparison: '>='
+            value: 1.0
+    outcome:
+      set_state: state.success
+      emit_event: event.success
+      terminal: true
+      result: objective_complete
+      ranking:
+        red: 1
+        blue: 2
+  - schema_version: '2.0'
+    id: rule.timeout
+    priority: 10
+    depends_on: []
+    condition:
+      schema_version: '2.0'
+      operator: time
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+      parameters:
+        comparison: '>='
+        tick: 241
+    outcome:
+      set_state: state.timeout
+      emit_event: event.timeout
+      terminal: true
+      result: objective_incomplete
+      ranking:
+        red: 2
+        blue: 1
+  scoring:
+    aggregation_version: utility-v1
+    aggregation: sum
+    direction: maximize
+    weight_policy: normalized_sum_one
+    metrics:
+    - id: metric.arrival
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.33
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-delivered-dispatch@1.0.1
+      plugin_parameters:
+        metric_id: metric.arrival
+        kind: arrival_fraction
+        requests:
+        - request_id: task.01
+          zone_id: zone.request01
+          deadline_tick: 240
+          weight: 3.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 60bd8218a7b56cb5c2b38d8a5ce80ef76510a68eda5fc8d78b0ecab9bd2d872e
+          caution_zone_ids: []
+        - request_id: task.02
+          zone_id: zone.request02
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 704fe8990de5ca153d8b39622c1a68dc16971a0a2106ce31421c2938238dde63
+          caution_zone_ids: []
+        - request_id: task.03
+          zone_id: zone.request03
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: false
+          contract_sha256: d28b98560d11dcd7c6adb937e687b6fd889880f2f3ea4067733ee1127c25205d
+          caution_zone_ids:
+          - zone.approach.03
+        - request_id: duty.01
+          zone_id: zone.duty.01
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          initially_known: true
+          required: true
+          contract_sha256: 0547fb64ebf6512f339cbecbdf3b977601aba64f409d79bd9edc687f09047a74
+          caution_zone_ids: []
+        - request_id: duty.02
+          zone_id: zone.duty.02
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r02
+          initially_known: true
+          required: true
+          contract_sha256: 6ae1d18b6c4f38955ee37b35bf64537874417e12d500222724e8c416df7f9f46
+          caution_zone_ids: []
+        hazards:
+        - zone_id: zone.hazard01
+          activation_event_id: event.weather
+        source_ids:
+        - unit.r03
+        observer_slots:
+          unit.r01: slot.unit.r01
+          unit.r02: slot.unit.r02
+        start_tick: 1
+        end_tick: 241
+        unit: '1'
+    - id: metric.timeliness
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.09
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-delivered-dispatch@1.0.1
+      plugin_parameters:
+        metric_id: metric.timeliness
+        kind: timeliness
+        requests:
+        - request_id: task.01
+          zone_id: zone.request01
+          deadline_tick: 240
+          weight: 3.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 60bd8218a7b56cb5c2b38d8a5ce80ef76510a68eda5fc8d78b0ecab9bd2d872e
+          caution_zone_ids: []
+        - request_id: task.02
+          zone_id: zone.request02
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 704fe8990de5ca153d8b39622c1a68dc16971a0a2106ce31421c2938238dde63
+          caution_zone_ids: []
+        - request_id: task.03
+          zone_id: zone.request03
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: false
+          contract_sha256: d28b98560d11dcd7c6adb937e687b6fd889880f2f3ea4067733ee1127c25205d
+          caution_zone_ids:
+          - zone.approach.03
+        - request_id: duty.01
+          zone_id: zone.duty.01
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          initially_known: true
+          required: true
+          contract_sha256: 0547fb64ebf6512f339cbecbdf3b977601aba64f409d79bd9edc687f09047a74
+          caution_zone_ids: []
+        - request_id: duty.02
+          zone_id: zone.duty.02
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r02
+          initially_known: true
+          required: true
+          contract_sha256: 6ae1d18b6c4f38955ee37b35bf64537874417e12d500222724e8c416df7f9f46
+          caution_zone_ids: []
+        hazards:
+        - zone_id: zone.hazard01
+          activation_event_id: event.weather
+        source_ids:
+        - unit.r03
+        observer_slots:
+          unit.r01: slot.unit.r01
+          unit.r02: slot.unit.r02
+        start_tick: 1
+        end_tick: 241
+        unit: '1'
+    - id: metric.safety
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.09
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-delivered-dispatch@1.0.1
+      plugin_parameters:
+        metric_id: metric.safety
+        kind: route_safety
+        requests:
+        - request_id: task.01
+          zone_id: zone.request01
+          deadline_tick: 240
+          weight: 3.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 60bd8218a7b56cb5c2b38d8a5ce80ef76510a68eda5fc8d78b0ecab9bd2d872e
+          caution_zone_ids: []
+        - request_id: task.02
+          zone_id: zone.request02
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 704fe8990de5ca153d8b39622c1a68dc16971a0a2106ce31421c2938238dde63
+          caution_zone_ids: []
+        - request_id: task.03
+          zone_id: zone.request03
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: false
+          contract_sha256: d28b98560d11dcd7c6adb937e687b6fd889880f2f3ea4067733ee1127c25205d
+          caution_zone_ids:
+          - zone.approach.03
+        - request_id: duty.01
+          zone_id: zone.duty.01
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          initially_known: true
+          required: true
+          contract_sha256: 0547fb64ebf6512f339cbecbdf3b977601aba64f409d79bd9edc687f09047a74
+          caution_zone_ids: []
+        - request_id: duty.02
+          zone_id: zone.duty.02
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r02
+          initially_known: true
+          required: true
+          contract_sha256: 6ae1d18b6c4f38955ee37b35bf64537874417e12d500222724e8c416df7f9f46
+          caution_zone_ids: []
+        hazards:
+        - zone_id: zone.hazard01
+          activation_event_id: event.weather
+        source_ids:
+        - unit.r03
+        observer_slots:
+          unit.r01: slot.unit.r01
+          unit.r02: slot.unit.r02
+        start_tick: 1
+        end_tick: 241
+        unit: '1'
+    - id: metric.triage
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.09
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-delivered-dispatch@1.0.1
+      plugin_parameters:
+        metric_id: metric.triage
+        kind: triage_discipline
+        requests:
+        - request_id: task.01
+          zone_id: zone.request01
+          deadline_tick: 240
+          weight: 3.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 60bd8218a7b56cb5c2b38d8a5ce80ef76510a68eda5fc8d78b0ecab9bd2d872e
+          caution_zone_ids: []
+        - request_id: task.02
+          zone_id: zone.request02
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: true
+          contract_sha256: 704fe8990de5ca153d8b39622c1a68dc16971a0a2106ce31421c2938238dde63
+          caution_zone_ids: []
+        - request_id: task.03
+          zone_id: zone.request03
+          deadline_tick: 240
+          weight: 1.0
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          - unit.r02
+          initially_known: false
+          required: false
+          contract_sha256: d28b98560d11dcd7c6adb937e687b6fd889880f2f3ea4067733ee1127c25205d
+          caution_zone_ids:
+          - zone.approach.03
+        - request_id: duty.01
+          zone_id: zone.duty.01
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r01
+          initially_known: true
+          required: true
+          contract_sha256: 0547fb64ebf6512f339cbecbdf3b977601aba64f409d79bd9edc687f09047a74
+          caution_zone_ids: []
+        - request_id: duty.02
+          zone_id: zone.duty.02
+          deadline_tick: 12
+          weight: 0.15
+          dwell_ticks: 3
+          observer_ids:
+          - unit.r02
+          initially_known: true
+          required: true
+          contract_sha256: 6ae1d18b6c4f38955ee37b35bf64537874417e12d500222724e8c416df7f9f46
+          caution_zone_ids: []
+        hazards:
+        - zone_id: zone.hazard01
+          activation_event_id: event.weather
+        source_ids:
+        - unit.r03
+        observer_slots:
+          unit.r01: slot.unit.r01
+          unit.r02: slot.unit.r02
+        start_tick: 1
+        end_tick: 241
+        unit: '1'
+    - id: metric.continuity
+      selector:
+        schema_version: '2.0'
+        entity_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+      aggregation: mean
+      unit: '1'
+      direction: maximize
+      weight: 0.4
+      available: true
+      value: 0.0
+      required: true
+      normalization:
+        lower_bound: 0.0
+        upper_bound: 1.0
+      plugin_ref: models.competition-observation-metrics@1.0.0
+      plugin_parameters:
+        metric_id: metric.continuity
+        kind: contact_fraction
+        observer_ids:
+        - unit.r01
+        - unit.r02
+        - unit.r03
+        item_ids:
+        - unit.x01
+        start_tick: 19
+        end_tick: 241
+        maximum_age_ticks: 1
+        unit: '1'
+  score_metrics: []
+  controller_policy: explicit_uncontrolled
+  controller_slots:
+  - id: slot.unit.r01
+    controller_id: agent.unit.r01
+    faction_id: red
+    controller_endpoint_ref: unit.r01
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r01
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.r02
+    controller_id: agent.unit.r02
+    faction_id: red
+    controller_endpoint_ref: unit.r02
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r02
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.r03
+    controller_id: agent.unit.r03
+    faction_id: red
+    controller_endpoint_ref: unit.r03
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.r03
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  - id: slot.unit.x01
+    controller_id: agent.unit.x01
+    faction_id: blue
+    controller_endpoint_ref: unit.x01
+    selector:
+      schema_version: '2.0'
+      entity_ids:
+      - unit.x01
+    required_capabilities: []
+    action_schema_ref: action-batch@2.0
+    observation_schema_ref: observation@2.0
+    exclusive: true
+  visibility:
+  - view: referee
+    scope: truth
+    allow: true
+  - view: public
+    scope: public
+    allow: true
+  - view: faction
+    faction_id: red
+    scope: own_and_contacts
+    allow: true
+  - view: faction
+    faction_id: blue
+    scope: own_and_contacts
+    allow: true

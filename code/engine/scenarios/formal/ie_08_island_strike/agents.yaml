@@ -1,0 +1,100 @@
+schema_version: rule-agent-team@2.0
+objective_m:
+- -900.0
+- -500.0
+decision_interval_ticks: 5
+facility_weights:
+  facility.command: 2.0
+  facility.comms: 1.5
+  facility.fuel: 1.5
+  facility.pier: 1.0
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 43.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  routes:
+  - match_tag: strike-command
+    objective_m:
+    - -1200.0
+    - -200.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: strike-comms
+    objective_m:
+    - -800.0
+    - 250.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: strike-fuel
+    objective_m:
+    - -500.0
+    - -900.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: strike-pier
+    objective_m:
+    - 700.0
+    - -1000.0
+    pattern: direct
+    speed_mps: 10.0
+  timeline:
+  - label: wave-1 probing strike
+    spawn_tick: 0
+    count: 3
+    axis: one UAV on each of the east / north-east / south-east axes
+    behavior: flies straight at the island facilities
+  - label: wave-2 main strike
+    spawn_tick: 600
+    count: 9
+    axis: the same three axes, three UAVs each
+    behavior: same routes; arrives after most of wave-1 has been engaged
+  - label: suicide boats
+    spawn_tick: 0
+    count: 5
+    axis: south-east surface
+    behavior: runs at the submarine pier
+  weapon_policies:
+  - match_tag: strike-command
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 4
+    reserve_for_assigned: 2
+  - match_tag: strike-comms
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 4
+    reserve_for_assigned: 2
+  - match_tag: strike-fuel
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 4
+    reserve_for_assigned: 2
+  - match_tag: strike-pier
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    min_range_m: 0.0
+    max_range_m: 30.0
+    shots: 1
+defence:
+  faction_id: coalition.defender
+  intercept_speed_mps: 40.0
+  contact_confidence: 0.62
+  maximum_contact_age_ticks: 8
+  weapon_policies:
+  - selector_tags:
+    - interceptor
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    minimum_range_m: 500.0
+    maximum_range_m: 8000.0
+    cooldown_ticks: 5
+  - selector_tags:
+    - usv
+    weapon_ref: weapon.surface-missile@2.0.0
+    minimum_range_m: 0.0
+    maximum_range_m: 3000.0
+    cooldown_ticks: 3

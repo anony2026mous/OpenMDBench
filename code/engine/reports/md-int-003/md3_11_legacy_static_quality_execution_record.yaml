@@ -1,0 +1,76 @@
+TASK_ID: MD3-11-003
+PHASE: MD3-11
+OBJECTIVE: >-
+  Repair the remaining repository-wide Ruff violations in legacy simulation,
+  environment, model, framework, configuration, and tool sources while
+  preserving numerical and public behavior.
+REQUIREMENTS:
+  - REQ-ARCH-001
+  - REQ-DET-001
+  - REQ-PERF-001
+  - REQ-SEC-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/md3_11_quality_remediation_execution_record.yaml
+  - pyproject.toml
+  - env/
+  - framework/
+  - model/
+  - config/
+  - tools/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - pyproject.toml
+  - env/
+  - framework/
+  - model/
+  - config/
+  - tools/
+  - tests/
+ALLOWED_WRITE:
+  - env/
+  - framework/
+  - model/
+  - config/parallel_args.py
+  - tools/regenerate_map_data.py
+  - reports/md-int-003/
+PROHIBITED:
+  - Disabling or excluding existing Ruff rules, changing dependency versions,
+    weakening tests, changing simulation parameter values or public contracts,
+    commits, pushes, cleanup, and blanket suppression comments.
+TEST_LEVEL: T4
+ALLOWED_COMMANDS:
+  - Ruff format/check/fix, py_compile, focused pytest, source scans, and
+    scoped diff checks.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 180
+ACCEPTANCE:
+  - Repository-wide Ruff and format checks exit zero using existing settings.
+  - Numerical code has behavior-preserving identifier/control-flow corrections.
+  - Relevant legacy simulation smoke and compilation checks pass.
+OUTPUTS:
+  - Ruff-compliant legacy sources, verification evidence, and updated records.
+STOP_CONDITIONS:
+  - A required correction would change public simulation behavior, requires a
+    parameter recalibration, or conflicts with user-owned changes.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      Repository Ruff format/check and Python compilation exit zero; strict
+      mypy and fresh full pytest pass as recorded in full_test_report.md.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Existing rules remain enabled; no blanket suppression, dependency change
+      or numerical parameter change was used to obtain compliance.
+  COMPATIBILITY: Behavior-preserving quality remediation only.
+  DETERMINISM: No RNG or tick policy change.
+  DOMAIN_IMPACT: No new calibration claim.
+  RISKS: None identified within the static-quality scope.

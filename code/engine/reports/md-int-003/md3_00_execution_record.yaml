@@ -1,0 +1,73 @@
+TASK_ID: MD3-00-001
+PHASE: MD3-00
+OBJECTIVE: >-
+  Establish a read-only, evidence-backed baseline of the V2 platform for
+  MD-INT-003a/b/c and produce the requirement traceability, architecture and
+  domain audit, and small-test baseline required to decide later work.
+REQUIREMENTS:
+  - REQ-ARCH-001
+  - REQ-ARCH-002
+  - REQ-ARCH-003
+  - REQ-ARCH-004
+  - REQ-SCN-001
+  - REQ-GEO-001
+  - REQ-DYN-001
+  - REQ-SEN-001
+  - REQ-CBT-001
+  - REQ-MIS-001
+  - REQ-VIZ-001
+  - REQ-DET-001
+  - REQ-PERF-001
+  - REQ-SEC-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - docs/adr/RF-ADR-001-platform-foundation-decisions.md
+  - openmdbench/
+  - tests/
+  - scenarios/
+  - catalog/
+  - reports/platform-refactor/
+ALLOWED_READ:
+  - AGENTS.md
+  - pyproject.toml
+  - README.md
+  - docs/
+  - openmdbench/
+  - tests/
+  - scenarios/
+  - catalog/
+  - reports/platform-refactor/
+  - artifacts/
+  - .git
+ALLOWED_WRITE:
+  - reports/md-int-003/md3_00_execution_record.yaml
+  - reports/md-int-003/md3_00_baseline_audit.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/test_baseline.md
+PROHIBITED:
+  - Production code, schema, Catalog, ScenarioPackage, test, dependency, or configuration changes.
+  - Any MD-INT-003 scenario-ID, fixed-faction, fixed-entity-ID, or fixed-parameter branch.
+  - T2+ tests, full test suites, performance, concurrency, security, soak, commits, pushes, merges, or cleanup.
+TEST_LEVEL: T0/T1
+ALLOWED_COMMANDS:
+  - Read-only filesystem inspection (rg, find, sed, git status/diff/log/show).
+  - Test collection and a small existing V2 smoke test with PYTEST_DISABLE_PLUGIN_AUTOLOAD=1.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 50
+ACCEPTANCE:
+  - No production code changes in the phase diff.
+  - All V4 chapters and U1-U13 are traceable to REQ IDs, current evidence, a classification, target, test, and review status.
+  - Every claimed existing capability has file/symbol/test evidence or is marked PARTIAL, ABSENT, UNVALIDATED, DEFECT, or NEEDS_DECISION.
+  - Git/working-tree baseline and test results are recorded with reproducible commands.
+OUTPUTS:
+  - reports/md-int-003/md3_00_baseline_audit.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/test_baseline.md
+STOP_CONDITIONS:
+  - Required source, map, Catalog, schema, test, or preceding evidence cannot be read.
+  - A requirements conflict changes mechanism semantics or needs parameter/competition-policy choice.
+  - A requested action would require production changes or T2+ testing before MD3-00 gate completion.

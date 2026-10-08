@@ -1,0 +1,115 @@
+TASK_ID: MD3-08-001
+PHASE: MD3-08
+OBJECTIVE: >-
+  Verify and, only if a reusable gap is demonstrated, complete equivalent
+  Python, Gymnasium, Vector and REST ActionBatch/Observation access for the
+  three MD-INT-003 formal packages.
+REQUIREMENTS:
+  - REQ-ACT-001
+  - REQ-ACT-002
+  - REQ-ACT-004
+  - REQ-OBS-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - docs/adr/ADR-MD3-009-bilateral-action-batch-and-permissions.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - reports/md-int-003/md3_07_resource_integration_execution_record.yaml
+  - scenarios/formal/md_int_003_*/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/api/
+  - openmdbench/schemas/
+  - openmdbench/sessions/
+  - openmdbench/world/
+  - tests/contract/
+  - tests/integration/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/api/gateway_v2.py
+  - openmdbench/sessions/formal_v2.py
+  - openmdbench/sessions/gateway_v2.py
+  - openmdbench/sessions/lifecycle_v2.py
+  - openmdbench/world/combat_evidence_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - tests/integration/test_md_int_003_interfaces.py
+  - tests/integration/test_session_action_world_v2.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/interfaces.md
+  - reports/md-int-003/md3_08_execution_record.yaml
+PROHIBITED:
+  - Scenario/faction/entity-ID branches, hidden WorldState reads, special
+    MD-INT-003 actions, schema/Catalog changes, T4/T5, dependency changes,
+    commits, pushes, cleanup, generated artifacts, or real-world calibration
+    claims.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Focused interface, session action, formal scenario and checkpoint tests;
+    local ASGI transport; syntax/import and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 120
+ACCEPTANCE:
+  - Python, Gymnasium, Vector and REST normalize the same bilateral
+    ActionBatch timeline and expose equivalent faction Observation summaries.
+  - Defender five controllable platforms are accepted; shore navigation and
+    cross-faction/session commands are rejected without advancing a tick.
+  - GET observation is non-advancing; retry is idempotent; no adapter accesses
+    WorldState; named public packages require no core scenario branch.
+OUTPUTS:
+  - Failure-oriented MD-INT-003 interface tests, any minimal generic adapter
+    fix required by a failing test, a transport-observability regression update,
+    interface evidence and updated traceability.
+STOP_CONDITIONS:
+  - Required behavior needs a scenario-specific runtime/schema action,
+    undeclared interface semantics, or a hidden-truth read. A generic
+    controller-scoped authority correction is in scope because ADR-MD3-009
+    requires one faction/controller batch to govern all entities in its slot.
+RESULT:
+  STATUS: DONE
+  CHANGES:
+    - >-
+      Added generic controller-scoped opaque authority grants while preserving
+      existing entity-scoped grants; each child remains checked against exact
+      immutable controller ownership.
+    - >-
+      Added a generic fixed-dynamics guard so navigation/patrol actions reject
+      non-mobile fixed sites without a scenario, faction or entity-ID branch.
+    - >-
+      Added MD-INT-003 Python/Gymnasium/Vector/REST timeline, idempotency,
+      non-advancing observation, five-mover, fixed-site and cross-faction
+      failure contracts.
+    - >-
+      Updated the existing send-message assertion to inspect the authoritative
+      transport record: this fixture has no route and deterministically blocks
+      one consumed message rather than reporting a stale queued counter.
+  EVIDENCE:
+    - >-
+      2026-09-02: 98 passed in 161.68s: tests/integration/
+      test_session_action_world_v2.py, test_md_int_003_interfaces.py,
+      test_gateway_equivalence_v2.py; tests/contract/
+      test_session_action_pipeline_v2.py,
+      test_md_int_003_environment_communication.py,
+      test_world_checkpoint_v2.py; tests/system/
+      test_md_int_003_scenarios.py.
+    - >-
+      py_compile passed for modified runtime and integration test modules;
+      scoped diff check passed; production scan found no MD-INT-003, faction,
+      entity-ID or scenario-ID branch in modified generic mechanisms.
+  COMPATIBILITY:
+    - >-
+      Existing entity-scoped authority tokens remain valid. Controller tokens
+      are deterministically rederived from immutable ownership after restore,
+      and existing session/checkpoint contracts passed.
+  LIMITS:
+    - >-
+      T4/T5, 30-seed statistics and 16/32-session concurrency are not run;
+      benchmark parameters remain UNVALIDATED_BENCHMARK.

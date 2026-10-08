@@ -1,0 +1,141 @@
+{
+  "schema_version": "competition-brief@1.0",
+  "scenario_id": "MD-AD-001",
+  "difficulty": "standard",
+  "name": "Single Sector Defense",
+  "status": "candidate_not_competition_accepted",
+  "evaluated_side": "red",
+  "duration_seconds": 240,
+  "physics_dt_seconds": 1.0,
+  "scoring_deadline_tick": 240,
+  "adjudication_tick": 241,
+  "defenders": [
+    "unit.r01",
+    "unit.r02",
+    "unit.r03"
+  ],
+  "protected_zones": [
+    {
+      "schema_version": "2.0",
+      "id": "zone.protected01",
+      "geometry_type": "polygon",
+      "coordinates_m": [
+        [
+          -160.0,
+          -160.0
+        ],
+        [
+          160.0,
+          -160.0
+        ],
+        [
+          160.0,
+          160.0
+        ],
+        [
+          -160.0,
+          160.0
+        ]
+      ]
+    }
+  ],
+  "warning_zones": [],
+  "own_inventory": {
+    "unit.r01": {
+      "weapon_ref": "weapon.interceptor-missile@2.0.0",
+      "target_domain": "air",
+      "initial_ammunition": {
+        "ammunition.interceptor-missile@2.0.0": 10
+      },
+      "minimum_range_m": 500.0,
+      "maximum_range_m": 8000.0,
+      "cooldown_ticks": 5,
+      "rounds_per_action": 1,
+      "delivery_model": "guided_missile",
+      "projectile_profile": {
+        "launch_speed_mps": 180.0,
+        "cruise_speed_mps": 320.0,
+        "max_flight_ticks": 40
+      }
+    },
+    "unit.r02": {
+      "weapon_ref": "weapon.shore-ciws@2.0.0",
+      "target_domain": "air",
+      "initial_ammunition": {
+        "ammunition.shore-ciws@2.0.0": 24
+      },
+      "minimum_range_m": 300.0,
+      "maximum_range_m": 2000.0,
+      "cooldown_ticks": 1,
+      "rounds_per_action": 1
+    },
+    "unit.r03": {
+      "weapon_ref": "weapon.surface-missile@2.0.0",
+      "target_domain": "surface",
+      "initial_ammunition": {
+        "ammunition.surface-missile@2.0.0": 10
+      },
+      "minimum_range_m": 0.0,
+      "maximum_range_m": 3000.0,
+      "cooldown_ticks": 3,
+      "rounds_per_action": 1,
+      "delivery_model": "guided_missile",
+      "projectile_profile": {
+        "launch_speed_mps": 15.0,
+        "cruise_speed_mps": 15.0,
+        "max_flight_ticks": 400
+      }
+    }
+  },
+  "own_assets": [
+    {
+      "entity_id": "unit.r01",
+      "platform_ref": "platform.interceptor-uav@2.0.0",
+      "domain": "air",
+      "mobile": true,
+      "initial_position_m": [
+        0.0,
+        -350.0,
+        200.0
+      ],
+      "nominal_sensor_range_m": 1000.0,
+      "maximum_navigation_speed_mps": 80.0
+    },
+    {
+      "entity_id": "unit.r02",
+      "platform_ref": "platform.competition-shore-site@1.0.0",
+      "domain": "land",
+      "mobile": false,
+      "initial_position_m": [
+        -350.0,
+        0.0,
+        0.0
+      ],
+      "nominal_sensor_range_m": 1000.0,
+      "maximum_navigation_speed_mps": null
+    },
+    {
+      "entity_id": "unit.r03",
+      "platform_ref": "platform.competition-armed-usv@1.0.0",
+      "domain": "surface",
+      "mobile": true,
+      "initial_position_m": [
+        0.0,
+        400.0,
+        0.0
+      ],
+      "nominal_sensor_range_m": 1000.0,
+      "maximum_navigation_speed_mps": 10.0
+    }
+  ],
+  "available_actions": [
+    "navigation",
+    "hold",
+    "fire_weapon",
+    "send_message"
+  ],
+  "engagement_lookahead_ticks": 60,
+  "task": "Preserve each protected zone through the entire deadline. Use observable behavior; do not indiscriminately engage passing traffic.",
+  "difficulty_rationale": "One mechanism-specific standard candidate; difficulty tiers require measured policy separation.",
+  "fidelity": "UNVALIDATED synthetic 240-second benchmark; inherited native combat models are not real-world calibration"
+}

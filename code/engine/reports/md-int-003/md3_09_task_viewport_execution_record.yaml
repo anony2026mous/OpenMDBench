@@ -1,0 +1,104 @@
+TASK_ID: MD3-09-002
+PHASE: MD3-09
+OBJECTIVE: >-
+  Correct the generic formal-V2 default visualization viewport so a task-scale
+  surface engagement is visible without using a scenario-specific camera rule
+  or exposing faction-hidden dynamic truth through frame bounds.
+REQUIREMENTS:
+  - REQ-VIZ-001
+  - REQ-OBS-001
+  - REQ-ARCH-004
+  - REQ-RPL-001
+  - REQ-CHK-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_09_execution_record.yaml
+  - openmdbench/visualization/formal_v2.py
+  - tests/system/test_md_int_003_visualization.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - scenarios/formal/
+  - catalog/v2/
+  - openmdbench/visualization/
+  - openmdbench/scenarios/
+  - openmdbench/sessions/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/visualization/formal_v2.py
+  - tests/system/test_md_int_003_visualization.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/visualization_replay.md
+  - reports/md-int-003/md3_09_task_viewport_execution_record.yaml
+PROHIBITED:
+  - Scenario/faction/entity-ID branches; dynamic entity position use in
+    faction/public viewport calculation; renderer-driven simulation changes;
+    schema/Catalog/scenario/parameter/dependency changes; test weakening;
+    commits, pushes, cleanup and generated artifacts.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Focused formal visualization/scenario/replay tests, syntax/import checks,
+    static source scans and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 90
+ACCEPTANCE:
+  - Formal frames use bounded declared task geometry when it is available,
+    rather than an arbitrarily broad map coordinate frame.
+  - Viewport bounds are identical across referee/faction/public views at a
+    tick and do not depend on hidden live entities.
+  - Existing live/replay/checkpoint and MD-INT-003 scenario tests remain green.
+OUTPUTS:
+  - Generic task-viewport helper, failure-oriented regression, execution
+    evidence and traceability update.
+STOP_CONDITIONS:
+  - A usable viewport requires scenario-specific Python, dynamic hidden truth,
+    a Schema change or a new camera-policy decision.
+RESULT:
+  STATUS: DONE
+  CHANGES:
+    - >-
+      Replaced the formal renderer's broad coordinate-frame default with a
+      task viewport derived from declared non-terrain zones, circle radii and
+      a generic minimum span/margin policy.
+    - >-
+      The calculation deliberately excludes live entity state, so same-tick
+      referee/faction/public frames retain identical bounds without disclosing
+      hidden movement.
+    - >-
+      Added a failure-oriented regression covering task-scale bounds, declared
+      geometry containment and cross-view equality.
+  TESTS:
+    - >-
+      `tests/system/test_md_int_003_visualization.py -q`: 4 passed in 66.62s.
+    - >-
+      `tests/system/test_md_int_003_scenarios.py -q`: 6 passed in 17.93s.
+    - >-
+      `tests/system/test_md_ad_002_v2_visualization.py -q`: 13 passed in
+      59.14s.
+    - >-
+      Scoped Ruff format/check and py_compile passed for both modified files.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reviewed the viewport source and scoped diff: no scenario/faction/entity
+      ID branch, no live entity dependency, no renderer-to-authority path and
+      no schema/Catalog/scenario change. No P0/P1 finding.
+  COMPATIBILITY: >-
+    VisualizationFrameV2 schema is unchanged. Existing formal MD-AD-002 live
+    renderer and replay contracts pass without modification.
+  DETERMINISM: >-
+    Bounds derive from immutable resolved geometry only, therefore are stable
+    across views, live/replay and checkpoint restoration at the same scenario.
+  DOMAIN_IMPACT: No map, dynamics, mission, combat or benchmark parameter changed.
+  RISKS: >-
+    A scenario with no declared non-terrain geometry still falls back to its
+    coordinate frame; it is not affected by this task-viewport policy.
+  NEXT_GATE: >-
+    The corrected MD-INT-003-EASY live session has been restarted at 5x for
+    interactive inspection; no commit or platform release action is implied.

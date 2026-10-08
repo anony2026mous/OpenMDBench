@@ -1,0 +1,18 @@
+services:
+  openmdbench:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - openmdbench-data:/app/var
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  openmdbench-data:

@@ -1,0 +1,95 @@
+TASK_ID: MD3-02-004
+PHASE: MD3-02
+OBJECTIVE: >-
+  Add a new immutable high-sea environment profile whose data supplies the V4
+  speed, per-sensor range, weapon, energy and communication-loss requirements
+  to the generic capability path.
+REQUIREMENTS:
+  - REQ-ENV-001
+  - REQ-ENV-002
+  - REQ-SEN-001
+  - REQ-COM-001
+  - REQ-ENE-001
+  - REQ-ARCH-002
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/environment_communication.md
+  - reports/md-int-003/md3_02_fusion_profile_execution_record.yaml
+  - reports/md-int-003/md3_06_followup_execution_record.yaml
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - openmdbench/catalog/
+  - openmdbench/world/
+  - tests/contract/
+ALLOWED_WRITE:
+  - catalog/v2/md_int_003.yaml
+  - tests/contract/test_md_int_003_catalog_closure.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/catalog_closure.md
+  - reports/md-int-003/md3_02_environment_profile_execution_record.yaml
+PROHIBITED:
+  - Runtime/schema/agent/scenario changes, mutable state, scenario/faction/
+    entity-ID branches, real-world calibration claims, T4/T5, full-suite,
+    dependency changes, commit, push, cleanup, or generated-artifact write.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused Catalog closure/compiler/version/hash tests, syntax/import and
+    scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 40
+ACCEPTANCE:
+  - A new exact environment reference defines V4 high-sea values and generic
+    profile-multiplier metadata without changing @2.0.0 content.
+  - Catalog closure proves source/fidelity and immutable versioning.
+OUTPUTS:
+  - Versioned environment data, closure tests and MD3-02 evidence.
+STOP_CONDITIONS:
+  - The values require scenario identity or non-Catalog runtime state.
+RESULT:
+  STATUS: DONE
+  MODIFIED_FILES:
+    - catalog/v2/md_int_003.yaml
+    - tests/contract/test_md_int_003_catalog_closure.py
+    - reports/md-int-003/requirements_traceability.md
+    - reports/md-int-003/catalog_closure.md
+    - reports/md-int-003/md3_02_environment_profile_execution_record.yaml
+  COMMANDS:
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -m pytest -q
+      tests/contract/test_md_int_003_catalog_closure.py
+      tests/contract/test_catalog_registry_v2.py
+    - >-
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 MPLCONFIGDIR=/tmp/openmdbench-mpl
+      .venv/bin/python -c "load_catalog_bundle_v2(...); print(resource-count/content-hash/file-sha256)"
+    - git diff --check -- catalog/v2/md_int_003.yaml tests/contract/test_md_int_003_catalog_closure.py reports/md-int-003
+  TEST_RESULT: "57 passed in 2.12s; direct Catalog load: 72 resources; diff check clean."
+  CATALOG_HASH: sha256:c070a2cc0540b1deb37db6375149acbc7304b929927708dbc0cf8d6f0bb7caf9
+  CATALOG_FILE_SHA256: 70b6367ec712f4401f55fce3a47d6d1b8696155b6687591efee1950cb3b4d434
+  REVIEW: SELF_REVIEWED
+  COMPATIBILITY: >-
+    The legacy @2.0.0 environment remains byte-for-byte unchanged; the new
+    @2.1.0 reference is selected only by later scenario data.
+  DETERMINISM: >-
+    The environment and profile-key data are immutable/hash-addressed and add
+    no RNG, scenario/faction/entity branch, or mutable state.
+  DOMAIN_IMPACT: >-
+    The new V4 high-sea definition specifies USV speed 0.70, radar/EO profile
+    keys, weapon Pk 0.80, propulsion energy 1.30, and additive communication
+    loss 0.05.
+  RISKS: >-
+    Profile-key and additive-loss data are not evidence of runtime behavior
+    until MD3-06 consumes them through generic capability logic.
+  NEXT: Resume MD3-06-002 for generic environment-profile consumption.

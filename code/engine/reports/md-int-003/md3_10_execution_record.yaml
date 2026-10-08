@@ -1,0 +1,132 @@
+TASK_ID: MD3-10-001
+PHASE: MD3-10
+OBJECTIVE: >-
+  Verify MD-INT-003 three-level system determinism, authority-boundary failure
+  handling and view non-leakage through public scenario/session interfaces.
+REQUIREMENTS:
+  - REQ-DET-001
+  - REQ-OBS-001
+  - REQ-ACT-001
+  - REQ-ACT-002
+  - REQ-CHK-001
+  - REQ-RPL-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - reports/md-int-003/md3_08_execution_record.yaml
+  - reports/md-int-003/md3_09_execution_record.yaml
+  - scenarios/formal/md_int_003_*/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - scenarios/formal/
+  - catalog/v2/
+  - openmdbench/api/
+  - openmdbench/replay/
+  - openmdbench/scenarios/
+  - openmdbench/sessions/
+  - openmdbench/visualization/
+  - openmdbench/world/
+  - tests/contract/
+  - tests/determinism/
+  - tests/integration/
+  - tests/system/
+ALLOWED_WRITE:
+  - tests/determinism/test_md_int_003_system_determinism.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/determinism.md
+  - reports/md-int-003/md3_10_execution_record.yaml
+PROHIBITED:
+  - Scenario/faction/entity-ID branches, hidden WorldState reads, test-only
+    production bypasses, T4/T5, full suite, dependencies, generated artifacts,
+    commits, pushes, cleanup or real-world calibration claims.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Focused formal scenario/session/gateway/replay/checkpoint/determinism and
+    view-filter tests; syntax/import and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 180
+ACCEPTANCE:
+  - Same seed and public timeline give equivalent authority frames/semantics
+    across L1/L2/L3 and distinct session IDs; a changed seed is not silently
+    normalized to the same evidence.
+  - Speed ratio and renderer/polling choices do not alter authority results;
+    checkpoint resume remains equivalent across an event boundary.
+  - Faction/public views, cross-faction/session actions and forged checkpoint
+    inputs fail closed without advancing authority state or revealing truth.
+  - Production scan finds no MD-INT-003/red-blue/entity fixture branch in
+    generic production mechanisms.
+OUTPUTS:
+  - Failure-oriented MD-INT-003 system determinism tests, any minimal generic
+    correction proven necessary, determinism evidence and traceability update.
+STOP_CONDITIONS:
+  - Required behavior needs a scenario-specific production branch, a hidden
+    truth read, T4/T5, generated artifact, or a direction-changing contract.
+RESULT:
+  STATUS: DONE
+  CHANGES:
+    - >-
+      Added failure-oriented public system tests for three-level same-seed
+      session-ID independence, runner mode, seed anchoring, live speed,
+      renderer-off/polling equivalence, four views, checkpoint forgery and
+      generic-production anti-fixture scanning.
+    - >-
+      No production, Catalog or ScenarioPackage change was necessary.
+  EVIDENCE:
+    - >-
+      2026-09-02: new MD3-10 deterministic system contract: 8 passed in
+      218.30s; strengthened same-session-ID seed assertion: 1 passed in
+      47.32s.
+    - >-
+      2026-09-02: adjacent T3 command: 92 passed in 266.75s across MD-INT-003
+      Catalog/surface-combat/damage/mission/environment/interface/scenario/
+      visualization and native/world checkpoint contracts.
+    - >-
+      py_compile and scoped git diff --check passed. A static scan of generic
+      production roots found no MD-INT-003, fixed red/blue fixture or
+      scenario_id equality branch.
+  FAILURE_CLASSIFICATION:
+    - >-
+      The initial new-test execution reported four assertion failures because
+      full frames include distinct session_id traceability values. This was a
+      test semantic-boundary error, not runtime non-determinism; the corrected
+      authority-semantic comparison passed in one full execution without a
+      tolerance change or production modification.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reviewed seed/session provenance, runner mode, frame/replay behavior,
+      polling, faction/public filtering, restore anchors and anti-fixture scan.
+      No P0/P1 found. This is a Codex self-review, not an independent audit.
+  COMPATIBILITY:
+    - >-
+      Frame session_id remains a traceability field in the public DTO and
+      replay; equivalence testing removes it only when comparing separate
+      session executions. No runtime/schema/Catalog contract changed.
+  DETERMINISM:
+    - >-
+      Same seed and public timeline are stable across three levels, session IDs
+      and explicit Lockstep/Continuous runners. Seed remains in both session
+      and world checkpoint evidence. Speed/rendering/polling do not alter the
+      tested authority frames.
+  DOMAIN_IMPACT:
+    - >-
+      Four visualization perspectives, cross-boundary checkpoint validation and
+      generic branch scanning are exercised without exposing opposing faction
+      truth or changing benchmark behavior.
+  RISKS:
+    - >-
+      T4/T5, full-suite static/security checks, GUI wall-clock performance,
+      16/32 concurrency, 30-seed statistics and long-run resource bounds are
+      unexecuted and require explicit authorization in MD3-11.
+  NEXT_GATE: >-
+    MD3-11 requires explicit user authorization for its T4/T5 full, performance,
+    concurrency, security and long-stability gate.

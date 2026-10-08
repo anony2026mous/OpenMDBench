@@ -1,0 +1,44 @@
+schema_version: package@2.0
+scenario:
+  schema_version: "2.0"
+  scenario_id: gs.formation-scale
+  display_name: Generic formation scale scenario
+  factions:
+    - {schema_version: "2.0", id: faction.alpha}
+    - {schema_version: "2.0", id: faction.bravo}
+    - {schema_version: "2.0", id: faction.civilian}
+  relationships:
+    - schema_version: "2.0"
+      source_faction_id: faction.alpha
+      target_faction_id: faction.bravo
+      relation: hostile
+  entities: []
+  formations:
+    - schema_version: "2.0"
+      id: formation-independent
+      count: 100
+      id_pattern: formed-{index:03d}
+      entity_template:
+        schema_version: "2.0"
+        id: formation-template
+        faction_id: faction.alpha
+        platform_ref: platforms.generic@2.0.0
+        dynamics_ref: dynamics.generic@2.0.0
+        initial_state:
+          schema_version: "2.0"
+          position_m: [100.0, 200.0, 300.0]
+          velocity_mps: [10.0, 0.0, 0.0]
+          heading_deg: 90.0
+        controller_slot: controllers/formation-template
+        tags: [generic]
+      offsets_m: [[0.0, 0.0, 0.0]]
+  world:
+    schema_version: "2.0"
+    coordinate_system: local_m
+    duration_ticks: 1000
+    tick_seconds: 1.0
+    boundary_policy: constrain_motion
+    zones: []
+  events: []
+  mission_rules: []
+  score_metrics: []

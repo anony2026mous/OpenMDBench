@@ -1,0 +1,126 @@
+TASK_ID: MD3-09-001
+PHASE: MD3-09
+OBJECTIVE: >-
+  Verify and, only when a reusable gap is demonstrated, complete MD-INT-003
+  live frame, replay and checkpoint equivalence across faction/public views.
+REQUIREMENTS:
+  - REQ-OBS-001
+  - REQ-ARCH-001
+  - REQ-ARCH-004
+  - REQ-DET-001
+  - REQ-CHK-001
+  - REQ-RPL-001
+  - REQ-VIZ-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - reports/md-int-003/md3_08_execution_record.yaml
+  - scenarios/formal/md_int_003_*/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/replay/
+  - openmdbench/sessions/
+  - openmdbench/visualization/
+  - openmdbench/world/
+  - openmdbench/dynamics/native_v2.py
+  - openmdbench/dynamics/sim2sea_mmg_worker.py
+  - tests/contract/
+  - tests/determinism/
+  - tests/integration/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/replay/v2.py
+  - openmdbench/sessions/lifecycle_v2.py
+  - openmdbench/visualization/formal_v2.py
+  - openmdbench/visualization/lifecycle_v2.py
+  - openmdbench/visualization/live_formal_v2.py
+  - openmdbench/visualization/profiles.py
+  - openmdbench/visualization/renderer_v2.py
+  - openmdbench/visualization/v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/world/checkpoint_v2.py
+  - openmdbench/dynamics/native_v2.py
+  - openmdbench/dynamics/sim2sea_mmg_worker.py
+  - tests/contract/test_native_dynamics_adapter_v2.py
+  - tests/system/test_md_int_003_visualization.py
+  - tests/determinism/test_md_int_003_checkpoint_replay.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/visualization_replay.md
+  - reports/md-int-003/md3_09_execution_record.yaml
+PROHIBITED:
+  - Scenario/faction/entity-ID branches, hidden WorldState reads in views,
+    renderer-driven simulation changes, T4/T5, generated artifacts, dependency
+    changes, commits, pushes, cleanup or real-world calibration claims.
+TEST_LEVEL: T3
+ALLOWED_COMMANDS:
+  - Focused Agg/headless visualization, replay/import, checkpoint/restore,
+    view-filter and formal scenario tests; syntax/import and scoped diff checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 150
+ACCEPTANCE:
+  - Live and replay derive equivalent immutable frames at the same tick without
+    advancing simulation; rendered destroyed/despawned state is consistent.
+  - Faction/public filtering has no truth leak; checkpoint restores preserve
+    pending environment/communication/event state and subsequent evidence.
+  - Slow rendering/frame dropping cannot alter authority tick or event result.
+OUTPUTS:
+  - Failure-oriented MD-INT-003 visualization/checkpoint/replay tests, any
+    minimal generic fix, evidence and traceability update.
+STOP_CONDITIONS:
+  - Required behavior needs a scenario-specific renderer/replay path, hidden
+    truth, generated artifact write or an undeclared view contract.
+RESULT:
+  STATUS: DONE
+  CHANGES:
+    - >-
+      Switched rich formal frame construction to a small immutable presentation
+      snapshot, excluded terminal lifecycle entities, and added missing generic
+      visualization profile aliases required by resolved MD-INT-003 assets.
+    - >-
+      Made faction/public frame output fail closed: raw authority events and
+      dispatcher internals remain referee-only, while only declared weather and
+      zone activation state are shared outside referee view.
+    - >-
+      Preserved the MMG worker's raw solver radians in its checkpoint state and
+      restore path; legacy snapshots lacking that optional core field remain
+      readable through the prior degree conversion fallback.
+    - >-
+      Sorted mission fact event receipts by authority tick and operation ID so
+      checkpoint reconstruction cannot change a fact hash through dictionary
+      insertion order.
+    - >-
+      Added failure-oriented view-filter/live-replay/L3-checkpoint tests and a
+      turning production-MMG snapshot continuation regression.
+  EVIDENCE:
+    - >-
+      2026-09-02: production MMG turning snapshot/restore regression passed:
+      1 passed in 5.06s.
+    - >-
+      2026-09-02: tests/system/test_md_int_003_visualization.py passed:
+      3 passed in 115.70s.
+    - >-
+      2026-09-02: adjacent T3 command passed: 58 passed in 267.95s across
+      tests/contract/test_native_dynamics_adapter_v2.py,
+      tests/integration/test_md_int_003_interfaces.py,
+      tests/system/test_md_int_003_scenarios.py and
+      tests/system/test_md_int_003_visualization.py.
+    - >-
+      py_compile passed for modified modules and tests. Scoped diff review
+      found no scenario/faction/entity-ID production branch or hidden World
+      state access in a view.
+  COMPATIBILITY:
+    - >-
+      Native core snapshots remain hash-protected; old core snapshots lacking
+      heading_math_rad can still restore. Entity lifecycle, existing exact refs
+      and public frame schema remain compatible with the exercised callers.
+  LIMITS:
+    - >-
+      T4/T5, 30-seed statistics and concurrency/load measurements are not run;
+      Catalog parameters remain UNVALIDATED_BENCHMARK.

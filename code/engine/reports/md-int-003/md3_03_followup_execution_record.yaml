@@ -1,0 +1,97 @@
+TASK_ID: MD3-03-002
+PHASE: MD3-03
+OBJECTIVE: >-
+  Make the generic contact_detonation weapon delivery model a valid CombatSystem
+  profile with the same legality, delayed-resolution, damage, lifecycle, RNG and
+  checkpoint authority boundaries as other data-defined weapon deliveries.
+REQUIREMENTS:
+  - REQ-CBT-001
+  - REQ-CBT-002
+  - REQ-CBT-003
+  - REQ-DMG-001
+  - REQ-ARCH-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/surface_combat.md
+  - reports/md-int-003/md3_03_execution_record.yaml
+  - reports/md-int-003/md3_07_execution_record.yaml
+  - openmdbench/combat/system_v2.py
+  - openmdbench/world/factory_v2.py
+  - tests/contract/test_md_int_003_surface_combat.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - catalog/v2/
+  - openmdbench/combat/
+  - openmdbench/world/
+  - openmdbench/scenarios/
+  - openmdbench/schemas/
+  - tests/contract/
+  - tests/system/
+ALLOWED_WRITE:
+  - openmdbench/combat/system_v2.py
+  - tests/contract/test_md_int_003_surface_combat.py
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/surface_combat.md
+  - reports/md-int-003/md3_03_followup_execution_record.yaml
+PROHIBITED:
+  - Scenario/faction/platform/entity-ID branches, scenario or Catalog changes,
+    global RNG, direct health/lifecycle mutation, a second combat/damage path,
+    T4/T5, full-suite, dependency change, commit, push, cleanup or generated-artifact write.
+TEST_LEVEL: T2/T3
+ALLOWED_COMMANDS:
+  - Focused combat/world/checkpoint/MD3 scenario session contracts, syntax/import,
+    and scoped diff/no-scenario-branch checks.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 60
+ACCEPTANCE:
+  - contact_detonation is data-selected, never scenario-selected, and its legal
+    profile can load without weakening validation of unknown delivery models.
+  - A legal contact delivery produces a single authoritative DamageIntent at the
+    configured tick; illegal requests have no ammo/RNG side effects.
+  - Existing instant, delayed-effect and guided-missile compatibility, checkpoint,
+    deterministic identity and lifecycle contracts continue to pass.
+OUTPUTS:
+  - Generic CombatSystem delivery support, failure-oriented contract regression,
+    and updated MD3-03 evidence.
+STOP_CONDITIONS:
+  - Support needs a scenario identity or bypasses the existing combat/damage/
+    lifecycle authority path.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      Contact-delivery launch/one-tick-impact contract added; focused MD3-03
+      combat, damage, World checkpoint, MD-AD rule-agent and migration regressions
+      completed without a failure.
+    - >-
+      MD-INT-003 L1 public-rule-agent session loaded and advanced one tick with
+      three attacker navigation commands; its dedicated system test passed 4/4.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Reviewed the delivery-model whitelist, exact delay validation, shared
+      pending-impact construction, unknown-model rejection, legality-before-RNG,
+      checkpoint ownership and scenario-neutral source scan. No P0/P1 found in
+      the follow-up scope. This is single-Codex self-review, not independent review.
+  COMPATIBILITY: >-
+    instant and guided_missile retain zero-delay validation; delayed_effect retains
+    its pending-impact semantics. contact_detonation now has the same explicit
+    nonzero-delay contract and does not alter existing resource definitions.
+  DETERMINISM: >-
+    Contact delivery reuses the existing request/shot-index pending-impact
+    identities and named shot evidence; no global RNG or session-specific branch
+    was introduced.
+  DOMAIN_IMPACT: >-
+    A contact-compatible weapon can remain in a normal entity loadout and session
+    CombatSystem profile without bypassing Effect/DamageIntent/Lifecycle authority.
+  RISKS: >-
+    Benchmark weapon values remain UNVALIDATED_BENCHMARK. This phase does not
+    claim real-world contact-fuse calibration and did not run T4/T5.
+  NEXT_GATE: "MD3-03 follow-up DONE; return to MD3-07 data-only scenario execution."

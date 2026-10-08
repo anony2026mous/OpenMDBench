@@ -1,0 +1,563 @@
+﻿
+
+
+####################################################################################################
+### _w1_p0_fairness_accept.py
+####################################################################################################
+================================================================================================
+CHECK 1  withheld mode: does any scenario-declared enemy-plan string survive?
+================================================================================================
+  IE-01-SINGLE-TARGET      briefing=withheld  hits= 0  OK
+  IE-01-SINGLE-TARGET      briefing=declared  hits= 1  OK
+  IE-11-DECOY-SCREEN       briefing=withheld  hits= 0  OK
+  IE-11-DECOY-SCREEN       briefing=declared  hits=12  OK
+  IE-08-ISLAND-STRIKE      briefing=withheld  hits= 0  OK
+  IE-08-ISLAND-STRIKE      briefing=declared  hits= 3  OK
+
+================================================================================================
+CHECK 2  pure-llm's own timeline channel honours briefing_declared
+================================================================================================
+  pure_llm_agent.py reads briefing_declared : True
+  unconditional timeline injection removed  : True
+
+================================================================================================
+CHECK 3  public channels identical across the three LLM arms
+================================================================================================
+  field                                      llm            llm-rl          pure-llm
+  briefing_declared                        False             False             False
+  weapon_range                            0-8000            0-8000            0-8000
+  speed_range                   uav 0-43, usv 0-  uav 0-43, usv 0-  uav 0-43, usv 0-
+  objective                         (-1200,-200)      (-1200,-200)      (-1200,-200)
+  max_tokens                                1024              1024              1024
+  llm_cadence_ticks                           10                10                10
+  llm_is_same_class                    LLMClient         LLMClient         LLMClient
+
+================================================================================================
+P0 RESULT: PASS
+================================================================================================
+
+
+####################################################################################################
+### _w1_code_diff.py
+####################################################################################################
+============================================================================================
+run_episode.py   archived=1323 lines   live=1397 lines
+============================================================================================
+
+  hunk 1: replace  old[148:162] -> new[148:182]  (-14 +34)
+      - def _build_roe_notes(timeline) -> str:
+      - """把场景自己声明的波次性质，翻译成 LLM 的目标分类 / ROE 指引。
+      - 
+      - 背景：混合 LLM 的三段式提示词曾把"第一波是诱饵、第二波是民用、
+      - 留给第三波主攻"连同具体 tick 号**硬编码**在模板里（那是
+      - ... (+9 more removed)
+      + def _armed_intruder_tags(profile_data: Dict[str, Any]) -> set:
+      + """tags that carry a weapon, read from the declared weapon bindings."""
+      + tags = set()
+      + for wp in ((profile_data.get("attack") or {}).get("weapon_policies") or ()):
+      + if isinstance(wp, dict):
+      + ... (+29 more added)
+
+  hunk 2: replace  old[163:164] -> new[183:186]  (-1 +3)
+      - 
+      + attack = profile_data.get("attack") or {}
+      + timeline = tuple(attack.get("timeline") or ())
+      + armed_tags = _armed_intruder_tags(profile_data)
+
+  hunk 3: replace  old[165:181] -> new[187:216]  (-16 +29)
+      - non_threats = []
+      - hostiles = []
+      - for item in timeline or ():
+      - if not isinstance(item, dict):
+      - continue
+      - ... (+11 more removed)
+      + 
+      + lines: List[str] = []
+      + 
+      + # ---- 敌方兵力情报：仅诊断档给出，主表口径完全不给 ----
+      + #
+      + ... (+24 more added)
+
+  hunk 4: replace  old[182:189] -> new[217:229]  (-7 +12)
+      - f"  * {label} (spawn_tick={spawn_tick}) is declared NON-THREAT: "
+      - f"{behavior or 'no behavior declared'} — do NOT intercept or fire at it; "
+      - "use track/patrol and preserve missiles for the hostile waves."
+      - )
+      - if hostiles:
+      - ... (+2 more removed)
+      + f"  * [aggregate briefing] Enemy order of battle: "
+      + f"{armed_uavs + armed_boats} armed intruder platforms "
+      + f"({armed_uavs} air, {armed_boats} surface) across all waves.")
+      + if decoys:
+      + lines.append(
+      + ... (+7 more added)
+
+  hunk 5: replace  old[190:194] -> new[230:249]  (-4 +19)
+      - f"  * Declared HOSTILE strike waves: {listed}. Engage them all; do not hold "
+      - "fire waiting for a later wave that this scenario does not declare."
+      - )
+      - if not non_threats:
+      + f"  * {civ_n} neutral civilian platform(s) share the area. The engine "
+      + "enforces ROE: firing on a civilian contact is a violation. Treat any "
+      + "contact the engine has not classified as hostile as non-engageable.")
+      + 
+      + lines.append(
+      + ... (+14 more added)
+
+  hunk 6: replace  old[195:199] -> new[250:255]  (-4 +5)
+      - "  * This scenario declares NO diversion, feint or civilian wave: EVERY "
+      - "detected contact is a hostile threat. Engage it as soon as the graph shows "
+      - "can_intercept=true or prepare_intercept=true."
+      - )
+      + "  * NO prior intelligence on the enemy is available: you are NOT told how "
+      + "many waves will arrive, when, from which axis, or which contacts are "
+      + "armed. Several waves and unarmed decoys are possible. Classify every "
+      + "contact from your own observations and preserve missiles for real threats.")
+      + 
+
+  hunk 7: insert  old[259:259] -> new[315:321]  (-0 +6)
+      + # 速度包线：由 speed_by_tag 派生、逐平台给出，与逐单位清单同源。
+      + # 此前 pure-llm 的提示词硬编码 "0-45"，而真实上限是场景声明的 43（IE-08 为
+      + # 40）—— 提示词比执行层宽松，会诱导 LLM 下达随后被静默裁剪的速度值。
+      + "speed_range": ", ".join(
+      + f"{k} 0-{float(v):.0f}" for k, v in sorted(
+      + ... (+1 more added)
+
+  hunk 8: replace  old[265:267] -> new[327:330]  (-2 +3)
+      - # 目标分类 / ROE 指引：由本场景自己声明的 attack.timeline 生成，
+      - # 绝不复用别的场景的诱饵/民用教条（见 _build_roe_notes）。
+      + # 目标分类 / ROE 指引：按**声明的武器装订**分类（不再做文本子串匹配，
+      + # 那会把 IE-11 的"real air package"误判为非威胁），并按 --llm-briefing
+      + # 决定是否披露未来波次的时刻/方位/意图（默认 withheld = 不给未来真值）。
+
+  hunk 9: replace  old[268:269] -> new[331:334]  (-1 +3)
+      - profile_data.get("attack", {}).get("timeline", ())),
+      + profile_data,
+      + briefing=str(getattr(args, "llm_briefing", "withheld"))),
+      + "briefing_declared": str(getattr(args, "llm_briefing", "withheld")) == "declared",
+
+  hunk 10: insert  old[1197:1197] -> new[1262:1271]  (-0 +9)
+      + parser.add_argument("--llm-briefing", default="withheld",
+      + choices=("withheld", "declared"),
+      + help="LLM 提示词是否包含场景声明的攻击时间线（作战简报）。"
+      + "**withheld（默认，公平口径）**=只给聚合事实（武装来袭者"
+      + "总数、诱饵数、中立民用数），不给波次时刻/方位/意图，"
+      + ... (+4 more added)
+
+  => 10 changed regions
+============================================================================================
+llm_planner.py   archived=480 lines   live=497 lines
+============================================================================================
+
+  hunk 1: replace  old[434:438] -> new[434:449]  (-4 +15)
+      - prompt = prompt.replace(
+      - "- Scheduled attack timeline (scenario-declared context, not an execution command):",
+      - "- Scheduled attack timeline (scenario-declared context, not an execution command):\n" + graph.format_timeline_for_prompt()
+      - )
+      + # 会话声明的攻击时间线：仅在 --llm-briefing declared 时披露。
+      + # 默认 withheld：不给未来波次的时刻/方位/意图，否则等于把敌方作战
+      + # 计划提前交给 LLM（defender 在 tick 0 的观测接触数为 0），
+      + # 而规则规划器与 RL 执行层拿不到同一文本，对照不对等。
+      + _tl_header = ("- Scheduled attack timeline "
+      + ... (+10 more added)
+
+  hunk 2: insert  old[477:477] -> new[488:494]  (-0 +6)
+      + # 情报口径必须落盘：否则事后无法判断一局是在 --llm-briefing declared
+      + # （含敌方作战计划）还是 withheld（无情报）下跑的 —— 这两者的分数
+      + # 不可混用，而历史数据正因缺少该字段而无法复核。
+      + "briefing": ("declared"
+      + if self._prompt_context.get("briefing_declared", False)
+      + ... (+1 more added)
+
+  => 2 changed regions
+============================================================================================
+pure_llm_agent.py   archived=786 lines   live=828 lines
+============================================================================================
+
+  hunk 1: insert  old[38:38] -> new[38:39]  (-0 +1)
+      + ExecutorConfigV2,
+
+  hunk 2: replace  old[57:58] -> new[58:60]  (-1 +2)
+      - "speed_range": "0-45",
+      + # speed_range 不再硬编码：由调用方从 speed_max_by_tag 派生后传入，
+      + # 未传时由 __init__ 依据实际包线填好（见 resolved 构造）。
+
+  hunk 3: replace  old[123:124] -> new[125:128]  (-1 +3)
+      - 5. If declared timeline marks a wave as diversion/feint/civilian, DO NOT fire on it; preserve missiles for real threats.
+      + 5. If no prior intelligence is disclosed, decide which contacts are real threats from your
+      + own observations (closing rate, distance to the protected zone, behaviour trend); be
+      + sparing with missiles against contacts that are not closing on the objective.
+
+  hunk 4: replace  old[127:128] -> new[131:132]  (-1 +1)
+      - "defender.interceptor-001": {{"command": "navigate", "heading_deg": 270, "speed_mps": 40}},
+      + "defender.interceptor-001": {{"command": "navigate", "heading_deg": 270, "speed_mps": @@SPEED@@}},
+
+  hunk 5: replace  old[159:160] -> new[163:164]  (-1 +1)
+      - "defender.interceptor-001": {{"command": "navigate", "heading_deg": 270, "speed_mps": 40}},
+      + "defender.interceptor-001": {{"command": "navigate", "heading_deg": 270, "speed_mps": @@SPEED@@}},
+
+  hunk 6: replace  old[230:231] -> new[234:235]  (-1 +1)
+      - "uav": 45.0, "usv": 10.0, "interceptor": 45.0, "picket": 10.0}
+      + "uav": 12.0, "usv": 12.0, "interceptor": 12.0, "picket": 12.0}
+
+  hunk 7: insert  old[239:239] -> new[243:259]  (-0 +16)
+      + # speed_range 必须与实际包线一致（此前硬编码 "0-45"，而真实上限是
+      + # 场景声明的 43 或 40 —— 提示词比执行层宽松，可能诱导 LLM 下达超限速度）。
+      + # 由 speed_max_by_tag 派生，逐平台列出，与逐单位清单同源。
+      + if not resolved.get("speed_range"):
+      + _by_kind = {k: v for k, v in self.speed_max_by_tag.items()
+      + ... (+11 more added)
+
+  hunk 8: replace  old[242:243] -> new[262:264]  (-1 +2)
+      - self._system_prompt = SYSTEM_PROMPT.format(**resolved)
+      + self._system_prompt = SYSTEM_PROMPT.format(**resolved).replace(
+      + "@@SPEED@@", self._example_speed)
+
+  hunk 9: replace  old[296:297] -> new[317:331]  (-1 +14)
+      - timeline_text = graph.format_timeline_for_prompt() if graph is not None else "(no timeline declared)"
+      + # 敌方作战时间线只在 --llm-briefing declared 时披露。默认 withheld 不给：
+      + # 实测确认 "armed vs decoy" 不是观测字段（观测只有位置/置信度/观测者），
+      + # 所以任何波次时刻/方位/兵力数字都无法从观测推导，只能来自场景声明；
+      + # 而 rule-rule 与 rl 两臂从不读该声明 ⇒ 给了就是特权信息，对照不再公平。
+      + # 此前这里 **无条件** 注入，是 pure-llm 最后一个情报通道（2026-09-27 关闭）。
+      + ... (+9 more added)
+
+  hunk 10: replace  old[308:309] -> new[342:343]  (-1 +1)
+      - )
+      + ).replace("@@SPEED@@", self._example_speed)
+
+  hunk 11: replace  old[321:322] -> new[355:356]  (-1 +1)
+      - )
+      + ).replace("@@SPEED@@", self._example_speed)
+
+  hunk 12: replace  old[337:338] -> new[371:375]  (-1 +4)
+      - return 15.0
+      + # 兜底必须与执行层同源：ExecutorConfigV2.default_speed_mps（12.0）。
+      + # 此前硬编码 15.0，与执行层的 12.0 不一致 —— 提示词会让 LLM 以为还能跑
+      + # 更快。该分支只在平台类别与全部标签都未命中时触发（如岸基固定设施）。
+      + return float(ExecutorConfigV2.default_speed_mps)
+
+  hunk 13: insert  old[779:779] -> new[816:821]  (-0 +5)
+      + # 情报口径必须落盘（同 llm_planner）：declared 含敌方作战计划，
+      + # withheld 无情报 —— 两者分数不可混用。
+      + "briefing": ("declared"
+      + if self._prompt_context.get("briefing_declared", False)
+      + else "withheld"),
+
+  => 13 changed regions
+
+
+####################################################################################################
+### _w1_baseline_drift.py
+####################################################################################################
+================================================================================================
+BASELINE DRIFT GATE   arm=rule
+================================================================================================
+
+--- A. scenario package identity (archive vs live) ---
+    ie_01_single_target              archive=852191d50c305fdd  live=852191d50c305fdd  SAME
+    ie_02_dual_threat                archive=b8e9a6da2272269f  live=b8e9a6da2272269f  SAME
+    ie_03_surface_raid               archive=5c33b53cc6b5b927  live=5c33b53cc6b5b927  SAME
+    ie_04_combined_arms              archive=fcc2b8d1b54de991  live=fcc2b8d1b54de991  SAME
+    ie_05_multi_axis                 archive=a2602a494fc41ef4  live=a2602a494fc41ef4  SAME
+    ie_06_decoy_mixed                archive=4722cd6b7ab65774  live=4722cd6b7ab65774  SAME
+    ie_07_cross_domain               archive=869301b252f9553f  live=869301b252f9553f  SAME
+    ie_08_island_strike              archive=43d0228057633c64  live=43d0228057633c64  SAME
+    ie_09_staggered_waves            archive=1847894ecb0cd505  live=1847894ecb0cd505  SAME
+    ie_10_dual_axis_pincer           archive=9176bdc75994c270  live=9176bdc75994c270  SAME
+    ie_11_decoy_screen               archive=e5f18975568d545d  live=e5f18975568d545d  SAME
+    ie_12_fog_onset                  archive=81d8c535fbe0592d  live=81d8c535fbe0592d  SAME
+    ie_13_deep_strike                archive=3695b7dc616fd06d  live=3695b7dc616fd06d  SAME
+    ie_14_saturation_three_wave      archive=c9535bd174eca738  live=c9535bd174eca738  SAME
+    => 14/14 scenario packages unchanged
+
+--- B. archived rule readings, by scenario ---
+    ie_01_single_target              n=26  mean=0.6882 sd=0.3573 range=[0.1594,0.9892]  pkg=SAME
+    ie_02_dual_threat                n=17  mean=0.8344 sd=0.3251 range=[0.0618,1.0108]  pkg=SAME
+    ie_03_surface_raid               n=16  mean=1.0129 sd=0.3336 range=[0.2041,1.4286]  pkg=SAME
+    ie_04_combined_arms              n=14  mean=0.7747 sd=0.1975 range=[0.2136,0.9362]  pkg=SAME
+    ie_05_multi_axis                 n=12  mean=0.6960 sd=0.1778 range=[0.2683,0.9093]  pkg=SAME
+    ie_06_decoy_mixed                n=12  mean=0.5423 sd=0.2168 range=[0.0571,0.7746]  pkg=SAME
+    ie_07_cross_domain               n=12  mean=0.7519 sd=0.0654 range=[0.6317,0.8710]  pkg=SAME
+    ie_08_island_strike              n=1   mean=0.4846 sd=0.0000 range=[0.4846,0.4846]  pkg=SAME
+    ie_09_staggered_waves            n=3   mean=0.8203 sd=0.1654 range=[0.5864,0.9377]  pkg=SAME
+    ie_10_dual_axis_pincer           n=3   mean=0.8008 sd=0.1205 range=[0.6331,0.9112]  pkg=SAME
+    ie_11_decoy_screen               n=3   mean=0.6813 sd=0.0937 range=[0.5587,0.7863]  pkg=SAME
+    ie_12_fog_onset                  n=9   mean=0.7111 sd=0.1870 range=[0.3476,0.8680]  pkg=SAME
+    ie_13_deep_strike                n=7   mean=0.7092 sd=0.1318 range=[0.5552,0.8642]  pkg=SAME
+    ie_14_saturation_three_wave      n=3   mean=0.7874 sd=0.1365 range=[0.6001,0.9217]  pkg=SAME
+    md_ad_006_island_strike          n=12  mean=0.4939 sd=0.0969 range=[0.2680,0.6789]  pkg=CHANGED
+
+--- C. live rule readings, by scenario ---
+    ie_01_single_target              n=29  mean=0.7191 range=[0.1594,0.9892]
+    ie_02_dual_threat                n=17  mean=0.8344 range=[0.0618,1.0108]
+    ie_03_surface_raid               n=16  mean=1.0129 range=[0.2041,1.4286]
+    ie_04_combined_arms              n=14  mean=0.7747 range=[0.2136,0.9362]
+    ie_05_multi_axis                 n=12  mean=0.6960 range=[0.2683,0.9093]
+    ie_06_decoy_mixed                n=12  mean=0.5423 range=[0.0571,0.7746]
+    ie_07_cross_domain               n=12  mean=0.7519 range=[0.6317,0.8710]
+    ie_08_island_strike              n=1   mean=0.4846 range=[0.4846,0.4846]
+    ie_09_staggered_waves            n=3   mean=0.8203 range=[0.5864,0.9377]
+    ie_10_dual_axis_pincer           n=3   mean=0.8008 range=[0.6331,0.9112]
+    ie_11_decoy_screen               n=3   mean=0.6813 range=[0.5587,0.7863]
+    ie_12_fog_onset                  n=9   mean=0.7111 range=[0.3476,0.8680]
+    ie_13_deep_strike                n=7   mean=0.7092 range=[0.5552,0.8642]
+    ie_14_saturation_three_wave      n=3   mean=0.7874 range=[0.6001,0.9217]
+    md_ad_006_island_strike          n=12  mean=0.4939 range=[0.2680,0.6789]
+
+--- D. drift verdict (only where the package is unchanged) ---
+    ie_01_single_target              arch=0.6882(n=26) live=0.7191(n=29) |dmean|=0.0308 spread=[0.1594,0.9892]  OK
+    ie_02_dual_threat                arch=0.8344(n=17) live=0.8344(n=17) |dmean|=0.0000 spread=[0.0618,1.0108]  OK
+    ie_03_surface_raid               arch=1.0129(n=16) live=1.0129(n=16) |dmean|=0.0000 spread=[0.2041,1.4286]  OK
+    ie_04_combined_arms              arch=0.7747(n=14) live=0.7747(n=14) |dmean|=0.0000 spread=[0.2136,0.9362]  OK
+    ie_05_multi_axis                 arch=0.6960(n=12) live=0.6960(n=12) |dmean|=0.0000 spread=[0.2683,0.9093]  OK
+    ie_06_decoy_mixed                arch=0.5423(n=12) live=0.5423(n=12) |dmean|=0.0000 spread=[0.0571,0.7746]  OK
+    ie_07_cross_domain               arch=0.7519(n=12) live=0.7519(n=12) |dmean|=0.0000 spread=[0.6317,0.8710]  OK
+    ie_08_island_strike              arch=0.4846(n=1) live=0.4846(n=1) |dmean|=0.0000 spread=[0.4846,0.4846]  OK
+    ie_09_staggered_waves            arch=0.8203(n=3) live=0.8203(n=3) |dmean|=0.0000 spread=[0.5864,0.9377]  OK
+    ie_10_dual_axis_pincer           arch=0.8008(n=3) live=0.8008(n=3) |dmean|=0.0000 spread=[0.6331,0.9112]  OK
+    ie_11_decoy_screen               arch=0.6813(n=3) live=0.6813(n=3) |dmean|=0.0000 spread=[0.5587,0.7863]  OK
+    ie_12_fog_onset                  arch=0.7111(n=9) live=0.7111(n=9) |dmean|=0.0000 spread=[0.3476,0.8680]  OK
+    ie_13_deep_strike                arch=0.7092(n=7) live=0.7092(n=7) |dmean|=0.0000 spread=[0.5552,0.8642]  OK
+    ie_14_saturation_three_wave      arch=0.7874(n=3) live=0.7874(n=3) |dmean|=0.0000 spread=[0.6001,0.9217]  OK
+    md_ad_006_island_strike          SKIPPED (package changed - archived cells not comparable)
+
+  packages compared: 14   DRIFT: 0
+
+  NOTE: overlapping ranges are the pass condition. The point of the gate is
+  that the live readings must fall inside the archived arm's own spread -
+  a systematic shift would mean shared-code edits moved the baseline arm.
+
+
+####################################################################################################
+### _w1_terminal_structure.py
+####################################################################################################
+========================================================================================================
+TERMINAL-CONDITION STRUCTURE AUDIT
+========================================================================================================
+
+  scenario                   horizonrule id                         trigger kind              dynamic?
+  ----------------------------------------------------------------------------------------------------
+
+--- summary ---
+    scenarios with a DYNAMIC (arm-controlled) terminal: 0
+    none - every scenario ends at a declared tick, so episode length is a
+    scenario constant and cannot be influenced by any arm.
+
+
+####################################################################################################
+### _w1_scoring_convention_audit.py
+####################################################################################################
+========================================================================================================
+SCORING-CONVENTION AUDIT + LENGTH-INDEPENDENCE
+========================================================================================================
+
+--- archived declared (LLM arms): 218 episodes ---
+    normalised    218  (100%)
+
+--- live withheld (n3): 4 episodes ---
+    normalised      4  (100%)
+
+--- length-independence (normalised-convention episodes only) ---
+    scenario                    arm         n  corr(ticks,score)  score@short  score@long
+    IE-01-SINGLE-TARGET         llm        13              0.348       0.8935      0.9006
+    IE-01-SINGLE-TARGET         llm-rl     28             -0.483       0.9029      0.7094
+    IE-02-DUAL-THREAT           llm        10             -0.406       0.9122      0.6848
+    IE-02-DUAL-THREAT           llm-rl     14             -0.903       0.9024      0.8187
+    IE-03-SURFACE-RAID          llm        10             -0.550       0.9547      0.4940
+    IE-03-SURFACE-RAID          llm-rl     24             -0.508       0.9898      0.4777
+    IE-04-COMBINED-ARMS         llm         5             -0.798       0.9191      0.7272
+    IE-04-COMBINED-ARMS         llm-rl      5             -0.584       0.8683      0.8318
+    IE-05-MULTI-AXIS            llm         8             -0.425       0.7082      0.8019
+    IE-05-MULTI-AXIS            llm-rl      9             -0.814       0.8919      0.7882
+    IE-06-DECOY-MIXED           llm         6             -0.208       0.6925      0.7997
+    IE-06-DECOY-MIXED           llm-rl      8              0.766       0.7989      0.8154
+    IE-07-CROSS-DOMAIN          llm         5              0.000       0.7457      0.8256
+    IE-07-CROSS-DOMAIN          llm-rl      6              0.000       0.7178      0.7784
+    IE-08-ISLAND-STRIKE         llm-rl      8              0.972       0.2903      0.5955
+    IE-09-STAGGERED-WAVES       llm-rl      5             -0.996       0.9159      0.7104
+    IE-10-DUAL-AXIS-PINCER      llm-rl      5             -0.777       0.9216      0.8665
+    IE-11-DECOY-SCREEN          llm-rl      6             -0.912       0.8361      0.6704
+    IE-12-FOG-ONSET             llm-rl      4             -1.000       0.8983      0.4042
+    IE-13-DEEP-STRIKE           llm-rl      5             -0.927       0.9114      0.7305
+    IE-14-SATURATION-THREE-WAVE llm-rl      5             -0.755       0.9172      0.7306
+    MD-AD-006-ISLAND-STRIKE     llm         8              0.904       0.2715      0.5614
+    MD-AD-006-ISLAND-STRIKE     llm-rl      4              0.997       0.4321      0.5983
+
+    If corr is near zero and short/long halves score alike, the metric does
+    not reward ending the episode early - it measures how well the arm fought.
+
+--- T2b identity check on the value actually used in the tables ---
+    live episodes whose defender_score is NOT the normalised value: 0
+
+
+####################################################################################################
+### _w1_length_audit.py
+####################################################################################################
+========================================================================================================
+EPISODE-LENGTH CONTAMINATION AUDIT
+========================================================================================================
+
+--- T1  terminal tick distribution, declared口径 (archived LLM arms) ---
+    scenario                         n    P10    P50    P90    max   rule.intruders-destroyed share
+    IE-01-SINGLE-TARGET             39     54     71    899    899   31/39 = 79%
+    IE-02-DUAL-THREAT               23    112    141    899    899   17/23 = 74%
+    IE-03-SURFACE-RAID              34    136    462    999    999   23/34 = 68%
+    IE-04-COMBINED-ARMS             10    298   1199   1199   1199   5/10 = 50%
+    IE-05-MULTI-AXIS                17    474    911   1199   1199   9/17 = 53%
+    IE-06-DECOY-MIXED               14    623    701   1199   1199   8/14 = 57%
+    IE-07-CROSS-DOMAIN              11   1399   1399   1399   1399   0/11 = 0%
+    IE-08-ISLAND-STRIKE             10   1191   1799   1799   1799   0/10 = 0%
+    IE-09-STAGGERED-WAVES            8    428    587    999    999   6/8 = 75%
+    IE-10-DUAL-AXIS-PINCER           8    685    852   1099   1099   5/8 = 62%
+    IE-11-DECOY-SCREEN               9    497   1199   1199   1199   4/9 = 44%
+    IE-12-FOG-ONSET                  7    461    744   1199   1199   3/7 = 43%
+    IE-13-DEEP-STRIKE                8    274   1399   1399   1399   4/8 = 50%
+    IE-14-SATURATION-THREE-WAVE      8    203   1499   1499   1499   4/8 = 50%
+    MD-AD-006-ISLAND-STRIKE         12    719   1799   1799   1800   0/12 = 0%
+
+    Reading: if most ARCHIVED (declared) episodes also end far below the
+    horizon, then short episodes are the engine's normal behaviour, not an
+    artifact of the withheld口径.
+
+--- T1b terminal rule ids in the archived declared set ---
+    rule.intruders-destroyed                      119
+    rule.defence-success                          78
+    rule.assets-lost                              12
+    rule.facilities-lost                          8
+    rule.defenders-destroyed                      1
+
+--- T2  normalisation is length-independent ---
+    episodes checked                    : 275
+    max |normalised - recomputed|        : 4.29e-01
+    mismatches beyond 1e-6               : 266
+      MD-AD-006-ISLAND-STRIKE      ticks=1191   normalised=0.289500 recomputed=0.289460
+      MD-AD-006-ISLAND-STRIKE      ticks=1799   normalised=0.605700 recomputed=0.605730
+      MD-AD-006-ISLAND-STRIKE      ticks=1799   normalised=0.574800 recomputed=0.574850
+      MD-AD-006-ISLAND-STRIKE      ticks=1799   normalised=0.591000 recomputed=0.591030
+      MD-AD-006-ISLAND-STRIKE      ticks=1799   normalised=0.601900 recomputed=0.601935
+      MD-AD-006-ISLAND-STRIKE      ticks=1191   normalised=0.252400 recomputed=0.252420
+      MD-AD-006-ISLAND-STRIKE      ticks=1799   normalised=0.485900 recomputed=0.485850
+      IE-03-SURFACE-RAID           ticks=146    normalised=1.428571 recomputed=1.000000
+    (the recomputation uses only layers/weights/applicability - no tick input,
+     so agreement proves the metric cannot reward a shorter episode per se)
+
+--- T3  withheld (this session) vs declared, same scenario ---
+    scenario                      arm       n_decl norm_decl  n_whd  norm_whd  ticks_d  ticks_w
+    IE-01-SINGLE-TARGET           llm           11    1.0030      1    1.0026       54       66
+    IE-01-SINGLE-TARGET           llm-rl        27    0.8918      1    1.0027       78       60
+    IE-02-DUAL-THREAT             llm            8    0.8542      1    1.0057      131      141
+
+
+####################################################################################################
+### _w1_fairness_recheck.py
+####################################################################################################
+============================================================================================
+A. what each arm is GIVEN (construction-time channels)
+============================================================================================
+
+  rule-rule (rule_planner.py)
+      scenario attack timeline (enemy plan)      -
+      roe_notes text                             -
+      interception graph (structured picture)    -
+      ObservationV2                              YES
+      task/mission text                          YES
+      weapon envelope table                      YES
+      fire doctrine                              YES
+
+  rl / rule-rl / llm-rl executor (rl_agent.py + rl_executor.py)
+      scenario attack timeline (enemy plan)      -
+      roe_notes text                             -
+      interception graph (structured picture)    -
+      ObservationV2                              YES
+      task/mission text                          -
+      weapon envelope table                      -
+      fire doctrine                              YES
+
+  pure-llm (pure_llm_agent.py)
+      scenario attack timeline (enemy plan)      YES
+      roe_notes text                             -
+      interception graph (structured picture)    YES
+      ObservationV2                              YES
+      task/mission text                          YES
+      weapon envelope table                      YES
+      fire doctrine                              -
+
+  llm-rule / llm-rl planner (llm_planner.py)
+      scenario attack timeline (enemy plan)      YES
+      roe_notes text                             YES
+      interception graph (structured picture)    YES
+      ObservationV2                              YES
+      task/mission text                          YES
+      weapon envelope table                      -
+      fire doctrine                              YES
+
+============================================================================================
+B. the enemy plan reaches the LLM by two paths - are BOTH closed in withheld?
+============================================================================================
+  path 1  roe_notes built from profile_data
+          withheld branch emits enemy force counts? YES
+          withheld explanatory line contains force numbers? False
+  path 2  graph.format_timeline_for_prompt() injected into the user prompt
+          gated on briefing_declared? True
+          code: if self._prompt_context.get("briefing_declared", False): prompt = prompt.replace( _tl_header, _tl_header + "\n" + graph.format_timeline_for_prompt()) else: prompt = prompt.replace( _tl_header, "- Enem
+
+============================================================================================
+C. does the RULE planner see the same structured picture as the LLM?
+============================================================================================
+  rule_planner.py      graph=Y  raw contacts=Y
+  llm_planner.py       graph=Y  raw contacts=Y
+
+============================================================================================
+D. residual asymmetries to declare in the paper
+============================================================================================
+  1. planning rate   : LLM plans every 10 ticks; the rule planner re-solves every
+                       tick. Not equalised (LLM cost makes 1-tick planning infeasible).
+  2. representation  : the LLM reads prose; rule/RL read numbers. Inherent to the
+                       comparison, not a leak.
+  3. pure-llm vs the goal-based arms: pure-llm emits low-level actions every call,
+                       the others emit goal commands. Different action spaces.
+  4. latency/cost    : LLM arms are ~7x slower per tick. A cost column is required.
+  5. fallback        : the LLM planner falls back to the rule planner when parsing
+                       fails (parse_failures>0 has been observed), so the LLM arm can
+                       silently inherit rule behaviour on some planning cycles.
+
+
+####################################################################################################
+### _w1_info_symmetry_audit.py
+####################################################################################################
+=== channel inventory per arm ===
+
+  rule planner (rule-rule)  (rule_planner.py)
+    reads scenario attack timeline : False
+    receives roe_notes text        : False
+    consumes ObservationV2         : True
+    consumes interception graph    : True
+
+  RL agent (rl / rule-rl / llm-rl executor)  (rl_agent.py)
+    reads scenario attack timeline : False
+    receives roe_notes text        : False
+    consumes ObservationV2         : True
+    consumes interception graph    : False
+
+  pure LLM  (pure_llm_agent.py)
+    reads scenario attack timeline : True
+    receives roe_notes text        : False
+    consumes ObservationV2         : True
+    consumes interception graph    : True
+
+  LLM planner (llm-rule / llm-rl)  (llm_planner.py)
+    reads scenario attack timeline : True
+    receives roe_notes text        : True
+    consumes ObservationV2         : True
+    consumes interception graph    : True
+
+=== does the Observation itself expose threat classification? ===
+  fields the attacker's own observation exposes: ['contacts_by_faction', 'estimated_position_m', 'observer_entity_id', 'tags']
+  => contacts carry position/confidence/observer; faction filtering decides visibility.
+     'armed vs decoy' is NOT an observation field for either side.
+
+=== how are civilians kept safe? engine-side or prompt-side? ===
+  llm_planner.py:131: "  * This scenario declares no diversion, feint or civilian wave: EVERY detected "
+  llm_planner.py:381: # ROE 约束过滤：若该接触已被标记为中立民用 (civilian)，禁止下达截击开火命令，自动降级为跟踪
+  llm_planner.py:383: if "civilian" in tags:

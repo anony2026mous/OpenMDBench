@@ -1,0 +1,94 @@
+schema_version: rule-agent-team@2.0
+set:
+  name: IE 拦截交战场景集
+  member_index: 6
+  zh_name: 真假威胁与诱导攻击
+  notes: 3 真 2 假：诱饵无武器、且由场景在 attack.timeline 里明确声明为非威胁；规则侧没有这个概念、只看得见空中接触，LLM 侧拿得到声明式上下文 —— 这是本场景集里最能体现判读差异的一轴。诱饵'转为真实攻击'的升级版未实现。水面打击目标原为陆上指挥中心（自爆船无法抵达），第 11 轮改指港口入口泊位。
+objective_m:
+- -1200.0
+- -200.0
+protected_zone_bounds_m:
+- -1500.0
+- -700.0
+- 1000.0
+- 100.0
+decision_interval_ticks: 5
+facility_weights:
+  facility.command: 1.5
+  facility.berth: 1.0
+defence:
+  faction_id: coalition.defender
+  contact_confidence: 0.0
+  maximum_contact_age_ticks: 8
+  intercept_speed_mps: 43.0
+  weapon_policies:
+  - selector_tags:
+    - interceptor
+    weapon_ref: weapon.air-interceptor-munition@2.0.0
+    minimum_range_m: 500.0
+    maximum_range_m: 8000.0
+    cooldown_ticks: 5
+  - selector_tags:
+    - usv
+    weapon_ref: weapon.surface-missile@2.0.0
+    minimum_range_m: 0.0
+    maximum_range_m: 3000.0
+    cooldown_ticks: 3
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 43.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  routes:
+  - match_tag: uav
+    objective_m:
+    - -1200.0
+    - -200.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: boat
+    objective_m:
+    - 700.0
+    - -400.0
+    pattern: direct
+    speed_mps: 10.0
+  - match_tag: decoy
+    until_tick: 150
+    objective_m:
+    - -1200.0
+    - -200.0
+    pattern: direct
+    speed_mps: 43.0
+  - match_tag: decoy
+    start_tick: 150
+    objective_m:
+    - 32000.0
+    - -9000.0
+    pattern: direct
+    speed_mps: 43.0
+  timeline:
+  - label: real strike package
+    spawn_tick: 0
+    count: 7
+    axis: east and north-east
+    behavior: four UAVs run at the command post and three suicide boats run at the harbour-mouth berth; these carry the strike munitions
+  - label: decoy flight
+    spawn_tick: 0
+    count: 2
+    axis: south-east, offset from the real axis
+    behavior: 'declared DECOYS: unarmed, they approach on a plausible bearing and turn away at tick 150 without ever entering weapon range; do not spend missiles on them'
+  weapon_policies:
+  - match_tag: boat
+    weapon_ref: weapon.suicide-warhead@2.0.0
+    min_range_m: 0.0
+    max_range_m: 150.0
+    shots: 1
+    reserve_for_assigned: 0
+  - match_tag: uav
+    weapon_ref: weapon.loitering-munition@2.0.0
+    min_range_m: 500.0
+    max_range_m: 8000.0
+    shots: 1
+    reserve_for_assigned: 1

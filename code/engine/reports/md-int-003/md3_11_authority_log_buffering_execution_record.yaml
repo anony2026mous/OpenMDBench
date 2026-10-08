@@ -1,0 +1,70 @@
+TASK_ID: MD3-11-006
+PHASE: MD3-11
+OBJECTIVE: >-
+  Remove per-tick compressed authority-log flushing so completed MD-AD-002
+  matches retain their exact self-contained hash chain without serialising the
+  simulation wall time to file-system flush latency.
+REQUIREMENTS:
+  - REQ-PERF-001
+  - REQ-RPL-001
+  - REQ-DET-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/full_test_report.md
+  - reports/md-int-003/performance_concurrency.md
+  - openmdbench/replay/md_ad_002.py
+  - openmdbench/envs/benchmark.py
+  - openmdbench/runners/md_ad_002.py
+  - tests/system/test_md_ad_002_hard.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/replay/
+  - openmdbench/runners/
+  - tests/
+ALLOWED_WRITE:
+  - openmdbench/replay/md_ad_002.py
+  - openmdbench/envs/benchmark.py
+  - openmdbench/runners/md_ad_002.py
+  - tests/system/
+  - reports/md-int-003/
+PROHIBITED:
+  - Log schema, record content, hash-chain, replay-view, scenario, dynamics,
+    or test-expectation changes; test weakening; dependency changes; commits,
+    pushes, and cleanup.
+TEST_LEVEL: T5
+ALLOWED_COMMANDS:
+  - Focused pytest, deterministic log comparisons, runtime profiling, Ruff,
+    mypy, py_compile, and scoped diff checks.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 180
+ACCEPTANCE:
+  - Completed logs are byte-for-byte deterministic for the same match inputs.
+  - A close always flushes and produces a directly readable complete log.
+  - Per-tick append does not synchronously flush the compression stream.
+OUTPUTS:
+  - Bounded buffered authority-log writer, regression evidence and performance
+    evidence suitable for the fresh full-quality gate.
+STOP_CONDITIONS:
+  - Buffered output changes a completed log's replay contract or prevents
+    deterministic authoritative replay.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      MD-AD-002 system log/replay contracts pass in the fresh full pytest gate
+      (108 system items); completed buffered logs remain deterministic and
+      directly readable after close.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Writer flushing is bounded (every 256 records and close); the runner uses
+      the authority world snapshot rather than serialising a checkpoint each
+      tick. Hash-chain and replay content were not changed.
+  COMPATIBILITY: Existing log schema, hash chain and replay-reader contract are unchanged.
+  DETERMINISM: Same match inputs retain identical completed authority logs.
+  DOMAIN_IMPACT: No simulation parameter or combat behavior changed.
+  RISKS: Buffered records not yet flushed are process-local until close; normal close always flushes.

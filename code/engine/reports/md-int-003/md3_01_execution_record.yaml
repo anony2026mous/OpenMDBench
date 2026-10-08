@@ -1,0 +1,91 @@
+TASK_ID: MD3-01-001
+PHASE: MD3-01
+OBJECTIVE: >-
+  Freeze the scenario-independent MD-INT-003 contract boundaries and benchmark
+  credibility policy by recording the required ADRs, without creating runtime
+  mechanisms, Catalog resources, ScenarioPackages, or tests.
+REQUIREMENTS:
+  - REQ-ARCH-001
+  - REQ-ARCH-002
+  - REQ-ARCH-003
+  - REQ-ARCH-004
+  - REQ-ACT-003
+  - REQ-CBT-001
+  - REQ-CBT-002
+  - REQ-DMG-001
+  - REQ-GEO-004
+  - REQ-ENV-001
+  - REQ-COM-001
+  - REQ-MIS-002
+  - REQ-SCR-002
+  - REQ-SEC-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - docs/adr/RF-ADR-001-platform-foundation-decisions.md
+  - reports/md-int-003/md3_00_execution_record.yaml
+  - reports/md-int-003/md3_00_baseline_audit.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/test_baseline.md
+  - openmdbench/schemas/core_v2.py
+  - openmdbench/schemas/interface_v2.py
+  - openmdbench/systems/generic_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/combat/system_v2.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/schemas/
+  - openmdbench/systems/generic_v2.py
+  - openmdbench/world/factory_v2.py
+  - openmdbench/combat/system_v2.py
+  - tests/contract/
+  - tests/integration/
+  - .git
+ALLOWED_WRITE:
+  - reports/md-int-003/md3_01_execution_record.yaml
+  - reports/md-int-003/md3_01_contract_decisions.md
+  - docs/adr/ADR-MD3-001-surface-target-domain.md
+  - docs/adr/ADR-MD3-002-interdict-helper-boundary.md
+  - docs/adr/ADR-MD3-003-self-detonation-wreck-lifecycle.md
+  - docs/adr/ADR-MD3-004-interdiction-geometry-primitives.md
+  - docs/adr/ADR-MD3-005-environment-modifier-order.md
+  - docs/adr/ADR-MD3-006-communication-tick-quantization.md
+  - docs/adr/ADR-MD3-007-terminal-and-truncation-semantics.md
+  - docs/adr/ADR-MD3-008-score-na-and-missing-data.md
+  - docs/adr/ADR-MD3-009-bilateral-action-batch-and-permissions.md
+PROHIBITED:
+  - Production code, schemas, Catalog, ScenarioPackages, resources, tests, dependencies, or configuration changes.
+  - Declaring any benchmark parameter calibrated or real-world validated.
+  - Scenario-specific main loops, fixed faction/entity branches, or runtime action handlers.
+  - T2+ tests, full suite, performance/concurrency/security/soak, commit, push, merge, cleanup.
+TEST_LEVEL: T0/T1
+ALLOWED_COMMANDS:
+  - Read-only inspection and small contract-test collection only.
+  - YAML/Markdown structural validation.
+COMMAND_TIMEOUT: 300
+TOTAL_BUDGET: 45
+ACCEPTANCE:
+  - Nine required ADRs state scope, decision, alternatives, compatibility, test obligations, and remaining parameter status.
+  - All U1-U13 are explicitly retained as UNVALIDATED_BENCHMARK until external freeze.
+  - No unresolved item changes MD3-02 resource shape; open calibration does not block benchmark resources.
+  - No production code or test modification occurs in the phase diff.
+OUTPUTS:
+  - reports/md-int-003/md3_01_contract_decisions.md
+  - docs/adr/ADR-MD3-001-surface-target-domain.md
+  - docs/adr/ADR-MD3-002-interdict-helper-boundary.md
+  - docs/adr/ADR-MD3-003-self-detonation-wreck-lifecycle.md
+  - docs/adr/ADR-MD3-004-interdiction-geometry-primitives.md
+  - docs/adr/ADR-MD3-005-environment-modifier-order.md
+  - docs/adr/ADR-MD3-006-communication-tick-quantization.md
+  - docs/adr/ADR-MD3-007-terminal-and-truncation-semantics.md
+  - docs/adr/ADR-MD3-008-score-na-and-missing-data.md
+  - docs/adr/ADR-MD3-009-bilateral-action-batch-and-permissions.md
+STOP_CONDITIONS:
+  - A decision requires a new calibrated real-world value, competition rule, or a mechanism not covered by the requirements.
+  - An ADR would require changing production behavior before its designated implementation stage.
+  - A requested change would create a scenario-specific runtime path or exceed T1 authorization.

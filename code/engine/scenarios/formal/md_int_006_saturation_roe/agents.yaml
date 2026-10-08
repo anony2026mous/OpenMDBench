@@ -1,0 +1,31 @@
+schema_version: rule-agent-team@2.0
+objective_m: [0.0, 0.0]
+protected_zone_bounds_m: [-8000.0, -8000.0, 8000.0, 8000.0]
+decision_interval_ticks: 10
+attack:
+  faction_id: coalition.intruder
+  pattern: direct
+  speed_mps: 42.0
+  split_angle_deg: 0.0
+  serpentine_angle_deg: 0.0
+  serpentine_period_ticks: 1
+  timeline:
+    - {label: wave-1, spawn_tick: 0, count: 2, behavior: "south-west feint decoy wave; turn away at tick 115"}
+    - {label: wave-2, spawn_tick: 200, count: 1, behavior: "civilian non-threat drift along north lane"}
+    - {label: wave-3, spawn_tick: 300, count: 2, behavior: "main strike penetration assault"}
+  routes:
+    - {match_tag: feint-lateral, until_tick: 115, objective_m: [0.0, -3500.0], speed_mps: 42.0}
+    - {match_tag: feint-lateral, start_tick: 115, objective_m: [36000.0, -8000.0], speed_mps: 42.0}
+    - {match_tag: civilian-drift, objective_m: [-30000.0, 5000.0], speed_mps: 15.0}
+    - {match_tag: main-strike, objective_m: [0.0, 0.0], speed_mps: 42.0}
+defence:
+  faction_id: coalition.defender
+  intercept_speed_mps: 40.0
+  contact_confidence: 0.55
+  maximum_contact_age_ticks: 10
+  weapon_policies:
+    - selector_tags: [interceptor]
+      weapon_ref: weapon.interceptor-missile@2.0.0
+      minimum_range_m: 500.0
+      maximum_range_m: 8000.0
+      cooldown_ticks: 5

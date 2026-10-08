@@ -1,0 +1,76 @@
+TASK_ID: MD3-11-002
+PHASE: MD3-11
+OBJECTIVE: >-
+  Repair the explicitly authorized full-quality gate failures without reducing
+  format, Ruff, strict-mypy or Bandit enforcement.
+REQUIREMENTS:
+  - REQ-ARCH-001
+  - REQ-DET-001
+  - REQ-OBS-001
+  - REQ-CHK-001
+  - REQ-SEC-001
+  - REQ-PERF-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Surface_Assault_Requirements.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - reports/md-int-003/full_test_report.md
+  - reports/md-int-003/security_report.md
+  - reports/md-int-003/md3_11_execution_record.yaml
+  - pyproject.toml
+  - openmdbench/
+  - tests/
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - pyproject.toml
+  - openmdbench/
+  - tests/
+ALLOWED_WRITE:
+  - openmdbench/
+  - tests/
+  - reports/md-int-003/full_test_report.md
+  - reports/md-int-003/security_report.md
+  - reports/md-int-003/requirements_traceability.md
+  - reports/md-int-003/md3_11_quality_remediation_execution_record.yaml
+PROHIBITED:
+  - Disabling/ignoring quality rules, blanket nosec/type-ignore suppression,
+    test weakening, dependency changes, Catalog/scenario parameter changes,
+    commits, pushes or cleanup.
+TEST_LEVEL: T4
+ALLOWED_COMMANDS:
+  - Ruff format/check/fix, strict mypy, Bandit, focused affected pytest,
+    py_compile, source scans and scoped diff checks.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 360
+ACCEPTANCE:
+  - Format, Ruff, strict mypy and Bandit all exit zero with their existing
+    project configuration.
+  - Corrections preserve public behavior and focused affected contracts pass.
+  - No scenario/faction/entity identity branches or static-tool bypasses occur.
+OUTPUTS:
+  - Quality-compliant sources/tests, focused regression evidence and updated
+    full-test/security records.
+STOP_CONDITIONS:
+  - A required correction changes a released public contract or platform
+    behavior beyond the reported failure, requires a policy waiver, or conflicts
+    with user-owned worktree changes.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      Ruff format/check, strict mypy, Bandit and compilation all pass; fresh
+      full pytest passes 2,111 items.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      The original ADR and communication-recovery failures were repaired and
+      verified without disabling rules, weakening tests or adding scenario-ID
+      branches.
+  COMPATIBILITY: Public contracts preserved by full contract/integration/system regression.
+  DETERMINISM: Communication recovery and checkpoint paths have targeted coverage.
+  DOMAIN_IMPACT: No Catalog/scenario parameter modification.
+  RISKS: Platform-wide RF-15 release review remains out of scope.

@@ -1,0 +1,571 @@
+diff --git a/source_codes/catalog/v2/md_int_003.yaml b/source_codes/catalog/v2/md_int_003.yaml
+index 3e2fa42..8145843 100644
+--- a/source_codes/catalog/v2/md_int_003.yaml
++++ b/source_codes/catalog/v2/md_int_003.yaml
+@@ -1,4 +1,4 @@
+-schema_version: catalog-bundle@2.0
++﻿schema_version: catalog-bundle@2.0
+ resources:
+   - schema_version: "2.0"
+     resource_type: maps
+@@ -748,3 +748,4 @@ resources:
+     model_id: models.formal-data@2.0.0
+     dependencies: []
+     content: {metrics: [port_damage, attacker_interdicted, defender_survival, neutral_harm, zone_occupancy, path_conflict], missing_data_policy: metric_data_missing, parameter_source: MD-INT-003-V4, fidelity: UNVALIDATED_BENCHMARK}
++
+diff --git a/source_codes/openmdbench/benchmark.py b/source_codes/openmdbench/benchmark.py
+index 21fe3ff..88bedfe 100644
+--- a/source_codes/openmdbench/benchmark.py
++++ b/source_codes/openmdbench/benchmark.py
+@@ -2,7 +2,10 @@
+ 
+ from __future__ import annotations
+ 
+-import resource
++try:
++    import resource
++except ImportError:  # Windows: resource is POSIX-only
++    resource = None  # type: ignore[assignment]
+ import tempfile
+ import time
+ from pathlib import Path
+@@ -23,6 +26,8 @@ from openmdbench.visualization.schema import (
+ 
+ 
+ def _rss_mb() -> float:
++    if resource is None:
++        return 0.0
+     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+ 
+ 
+diff --git a/source_codes/openmdbench/combat/system_v2.py b/source_codes/openmdbench/combat/system_v2.py
+index 7e66bbc..f4ba7b3 100644
+--- a/source_codes/openmdbench/combat/system_v2.py
++++ b/source_codes/openmdbench/combat/system_v2.py
+@@ -45,6 +45,37 @@ def _canonical_hash(value: object) -> str:
+     return "sha256:" + hashlib.sha256(encoded).hexdigest()
+ 
+ 
++def _combat_scope_entities(resolved: object) -> tuple[Any, ...]:
++    """Every entity that can exist in the World, including spawn blueprints.
++
++    Combat resolution collects every weapon, ammunition, effect, and damage
++    binding reachable from an entity.  Entities introduced by
++    ``event_type: spawn`` are compiled as immutable ``ResolvedEntityV2``
++    blueprints inside the event payload — the same objects the world factory
++    later instantiates, and the same ones ``component_damage_profiles`` already
++    includes.  Omitting them here makes a weapon carried *only* by a spawned
++    force (the usual intruder composition) absent from the profile map, so
++    every engagement against it is denied with ``combat.weapon_unknown`` — and
++    because that failure aborts the whole tick's combat transaction, it also
++    vetoes the other side's already-legal shots in the same tick.
++    """
++
++    entities = list(getattr(resolved, "entities", ()) or ())
++    seen = {str(getattr(entity, "id", "")) for entity in entities}
++    for event in getattr(resolved, "events", ()) or ():
++        if str(getattr(event, "event_type", "")) != "spawn":
++            continue
++        blueprint = getattr(getattr(event, "payload", None), "entity", None)
++        if blueprint is None:
++            continue
++        entity_id = str(getattr(blueprint, "id", ""))
++        if entity_id and entity_id in seen:
++            continue
++        seen.add(entity_id)
++        entities.append(blueprint)
++    return tuple(entities)
++
++
+ class CombatCatalogSnapshotV2(CombatModelV2):
+     """The catalog portion actually embedded in a compiled scenario."""
+ 
+@@ -57,7 +88,7 @@ class CombatCatalogSnapshotV2(CombatModelV2):
+         try:
+             resolved.validate_integrity()
+             resources: dict[str, str] = {}
+-            for entity in resolved.entities:
++            for entity in _combat_scope_entities(resolved):
+                 for bindings in entity.resource_bindings.values():
+                     for binding in bindings:
+                         previous = resources.setdefault(binding.exact_ref, binding.content_hash)
+@@ -144,7 +175,7 @@ class CombatSystemV2:
+                 )
+             catalog_resources = dict(catalog_snapshot.resource_evidence)
+             bindings: dict[str, Any] = {}
+-            for entity in resolved.entities:
++            for entity in _combat_scope_entities(resolved):
+                 for group in entity.resource_bindings.values():
+                     for binding in group:
+                         if catalog_resources.get(binding.exact_ref) != binding.content_hash:
+@@ -1207,7 +1238,13 @@ class CombatSystemV2:
+                 "missile terminal resolution differs from authoritative World time",
+             )
+         target = self.world._entities.get(flight.target_id)
+-        if target is None or target.state.lifecycle not in {"active", "degraded"}:
++        # A target that still exists and is not already destroyed is a physical
++        # object the missile can hit.  Treating ``disabled`` as unavailable threw
++        # away every fuzed finishing hit (status ``target_unavailable`` with
++        # closest_approach 0.0), so a unit could only ever be reduced to
++        # ``disabled`` and never to ``destroyed`` — no engagement in any scenario
++        # could produce a kill.
++        if target is None or target.state.lifecycle in {"destroyed", "wreck", "despawned"}:
+             receipt = MissileTerminalReceiptV2(
+                 missile_id=flight.missile_id,
+                 request_id=flight.request_id,
+diff --git a/source_codes/openmdbench/core/units.py b/source_codes/openmdbench/core/units.py
+index 883854f..b1c16b0 100644
+--- a/source_codes/openmdbench/core/units.py
++++ b/source_codes/openmdbench/core/units.py
+@@ -4,6 +4,28 @@ from __future__ import annotations
+ 
+ import math
+ 
++# ---------------------------------------------------------------------------
++# Sim2Sea MMG propeller-rate scale.
++#
++# The trusted MMG solver consumes ``nps`` as propeller revolutions per second:
++# ``X_P = (1 - t_P) * rho * K_T * nps**2 * D_p**4`` with advance ratio
++# ``J = (1 - w_P) * u / (nps * D_p)`` (``env/vessel_sim.py``).  The calibrated
++# hull is the 1/45.7-scale KVLCC2 (``env/calibrated_vessels.py:kvlcc2_l7``,
++# ``Lpp = 7.0 m``, ``D_p = 0.204 m``), so its physical prop-rate band is far
++# above the small placeholder cap that used to be hard-coded in the dynamics,
++# controller, and worker modules.
++#
++# Calibration reference: 200 NPS <-> 15 m/s, i.e. ~13.33 NPS per m/s.  The
++# trusted band therefore spans the solver's own trusted maximum speed
++# (12.9 m/s ~ 172 NPS) with margin, which makes it self-consistent with
++# ``algorithm_limits[MMG]["max_speed_mps"] = 12.9``.
++#
++# This is only an upper *bound*: a resource still declares its own ``max_nps``
++# (the prop rate at its ``max_speed_mps``), so resources declaring
++# ``max_nps <= 5.0`` keep their previous behaviour exactly.
++MMG_NPS_PER_MPS = 200.0 / 15.0
++MMG_TRUSTED_MAX_NPS = 200.0
++
+ 
+ def degrees_to_radians(degrees: float) -> float:
+     """Convert degrees to radians."""
+diff --git a/source_codes/openmdbench/domains/surface/controller_v2.py b/source_codes/openmdbench/domains/surface/controller_v2.py
+index 1e4174b..2220a4f 100644
+--- a/source_codes/openmdbench/domains/surface/controller_v2.py
++++ b/source_codes/openmdbench/domains/surface/controller_v2.py
+@@ -5,10 +5,13 @@ from __future__ import annotations
+ import math
+ from collections.abc import Mapping
+ 
+-from openmdbench.core.units import heading_deg_to_math_rad
++from openmdbench.core.units import MMG_TRUSTED_MAX_NPS, heading_deg_to_math_rad
+ from openmdbench.domains.surface.actions import MMGAction, heading_to_rudder
+ 
+ _DEFAULT_MAX_SPEED_MPS = 12.9
++# Fallback prop rate when a dynamics resource declares none.  Kept at the
++# historical value so undeclared resources behave exactly as before; the
++# trusted *upper bound* now comes from the shared MMG scale.
+ _DEFAULT_MAX_NPS = 5.0
+ _DEFAULT_MAX_RUDDER_RAD = 0.3
+ _DEFAULT_HEADING_GAIN = 1.0
+@@ -44,7 +47,7 @@ def mmg_navigation_action_v2(
+     max_nps = _positive_parameter(parameters, "max_nps", _DEFAULT_MAX_NPS)
+     max_rudder = _positive_parameter(parameters, "max_rudder_rad", _DEFAULT_MAX_RUDDER_RAD)
+     gain = _positive_parameter(parameters, "controller_gain", _DEFAULT_HEADING_GAIN)
+-    if max_nps > _DEFAULT_MAX_NPS or max_rudder > _DEFAULT_MAX_RUDDER_RAD:
++    if max_nps > MMG_TRUSTED_MAX_NPS or max_rudder > _DEFAULT_MAX_RUDDER_RAD:
+         raise ValueError("MMG controller parameters exceed trusted solver actuator limits")
+     target_speed = min(float(target_speed_mps), max_speed)
+     nps = max_nps * target_speed / max_speed
+diff --git a/source_codes/openmdbench/dynamics/native_v2.py b/source_codes/openmdbench/dynamics/native_v2.py
+index f26d642..01c760e 100644
+--- a/source_codes/openmdbench/dynamics/native_v2.py
++++ b/source_codes/openmdbench/dynamics/native_v2.py
+@@ -21,6 +21,7 @@ from openmdbench.catalog.v2 import (
+     ModelFactoryMetadataV2,
+     ModelRegistryV2,
+ )
++from openmdbench.core.units import MMG_TRUSTED_MAX_NPS
+ from openmdbench.domains.air.uav import UAVCommand, UAVState, step_uav
+ from openmdbench.domains.underwater.auv import AUVCommand, AUVState, step_auv
+ from openmdbench.schemas.core_v2 import CoreModelV2
+@@ -141,7 +142,7 @@ class DynamicsCommandV2(CoreModelV2):
+ 
+ class MMGCommandV2(CoreModelV2):
+     schema_version: Literal["2.0"] = "2.0"
+-    nps: float = Field(ge=0.0, le=5.0)
++    nps: float = Field(ge=0.0, le=MMG_TRUSTED_MAX_NPS)
+     rudder_rad: float = Field(ge=-0.3, le=0.3)
+ 
+     @model_validator(mode="before")
+@@ -431,7 +432,7 @@ def _parameters(model_ref: str, value: Mapping[str, object]) -> dict[str, int |
+         },
+         MMG_MODEL_REF: {
+             "max_speed_mps": (12.9, "max"),
+-            "max_nps": (5.0, "max"),
++            "max_nps": (MMG_TRUSTED_MAX_NPS, "max"),
+             "max_rudder_rad": (0.3, "max"),
+         },
+     }
+diff --git a/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py b/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py
+index b848910..040cd0b 100644
+--- a/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py
++++ b/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py
+@@ -23,7 +23,11 @@ from typing import Any, cast
+ 
+ import numpy as np
+ 
+-from openmdbench.core.units import heading_deg_to_math_rad, math_rad_to_heading_deg
++from openmdbench.core.units import (
++    MMG_TRUSTED_MAX_NPS,
++    heading_deg_to_math_rad,
++    math_rad_to_heading_deg,
++)
+ 
+ _RESPONSE_TIMEOUT_S = 120.0
+ MMG_SOLVER_IDENTITY_V2 = "sim2sea-mmg:kvlcc2-l7:rk4:worker-v2"
+@@ -139,7 +143,7 @@ class _Sim2SeaMMGWorkerEngine:
+         interval = _finite(dt_s)
+         if not interval > 0.0:
+             raise ValueError("MMG integration interval must be positive")
+-        if not 0.0 <= nps_value <= 5.0 or abs(rudder_value) > 0.3:
++        if not 0.0 <= nps_value <= MMG_TRUSTED_MAX_NPS or abs(rudder_value) > 0.3:
+             raise ValueError("MMG actuator command is outside trusted solver limits")
+         if self._position_m is None or self._heading_deg is None or self._body_velocity_mps is None:
+             raise ValueError("MMG worker must receive set_state before step")
+diff --git a/source_codes/openmdbench/md_int_001_selftest.py b/source_codes/openmdbench/md_int_001_selftest.py
+index db78395..e30c4e0 100644
+--- a/source_codes/openmdbench/md_int_001_selftest.py
++++ b/source_codes/openmdbench/md_int_001_selftest.py
+@@ -4,7 +4,11 @@ from __future__ import annotations
+ 
+ import json
+ import platform
+-import resource
++
++try:
++    import resource
++except ImportError:  # Windows: resource is POSIX-only
++    resource = None  # type: ignore[assignment]
+ import time
+ from pathlib import Path
+ from typing import Any
+diff --git a/source_codes/openmdbench/missions/engine_v2.py b/source_codes/openmdbench/missions/engine_v2.py
+index 241e8c4..6224dae 100644
+--- a/source_codes/openmdbench/missions/engine_v2.py
++++ b/source_codes/openmdbench/missions/engine_v2.py
+@@ -1308,7 +1308,12 @@ class MissionEngineV2:
+         )
+         self._mission_definition_hash = _canonical_hash(
+             {
+-                "states": resolved.mission_states,
++                # Canonical (sorted) order: the checkpoint stores
++                # ``resolved_mission_states`` sorted, and ``validate_integrity``
++                # recomputes this hash from that stored field.  Hashing the raw
++                # declaration order makes the checkpoint self-inconsistent for
++                # any scenario that declares its mission states unsorted.
++                "states": tuple(sorted(resolved.mission_states)),
+                 "rules": self._resolved_rule_evidence,
+                 "scoring": self._resolved_scoring_evidence,
+             }
+diff --git a/source_codes/openmdbench/release_validation.py b/source_codes/openmdbench/release_validation.py
+index 0ec444a..442f095 100644
+--- a/source_codes/openmdbench/release_validation.py
++++ b/source_codes/openmdbench/release_validation.py
+@@ -7,7 +7,11 @@ import gc
+ import json
+ import os
+ import platform
+-import resource
++
++try:
++    import resource
++except ImportError:  # Windows: resource is POSIX-only
++    resource = None  # type: ignore[assignment]
+ import time
+ import tracemalloc
+ from concurrent.futures import ProcessPoolExecutor
+@@ -32,6 +36,8 @@ def _fd_count() -> int | None:
+ 
+ 
+ def _rss_mb() -> float:
++    if resource is None:
++        return 0.0
+     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+ 
+ 
+diff --git a/source_codes/openmdbench/sessions/lifecycle_v2.py b/source_codes/openmdbench/sessions/lifecycle_v2.py
+index d47bc44..9ec873f 100644
+--- a/source_codes/openmdbench/sessions/lifecycle_v2.py
++++ b/source_codes/openmdbench/sessions/lifecycle_v2.py
+@@ -1385,6 +1385,11 @@ class ActionPipelineV2:
+                 item
+                 for item in self._world_view.entities_stable()
+                 if item.definition.composition.dynamics_ref is not None
++                # 只给"仍可机动"的实体补指令：WorldFactory 的运动提供者只接受
++                # active/degraded 的机动实体集合，多补一个 disabled/destroyed 的
++                # 就会让整 tick 抛 "requires exactly one current command per
++                # active dynamics entity"，任何战损都会中断整局。
++                and item.state.lifecycle in {"active", "degraded"}
+             )
+             generated_items: list[EntityControlCommandV2] = []
+             for entity in dynamics_entities:
+diff --git a/source_codes/openmdbench/systems/generic_v2.py b/source_codes/openmdbench/systems/generic_v2.py
+index 89629e0..e0ffaff 100644
+--- a/source_codes/openmdbench/systems/generic_v2.py
++++ b/source_codes/openmdbench/systems/generic_v2.py
+@@ -155,7 +155,16 @@ class GenericSubsystemEngineV2:
+                 bearing_noise_deg = self._number(sensor, "bearing_noise_deg", 0.0)
+                 update_ticks = self._positive_int(sensor, "update_ticks", 1)
+                 confirmation_frames = self._positive_int(sensor, "confirmation_frames", 1)
+-                stale_after_ticks = self._positive_int(sensor, "stale_after_ticks", 1)
++                if "stale_after_ticks" in sensor:
++                    stale_after_ticks = self._positive_int(sensor, "stale_after_ticks", 1)
++                else:
++                    # 档案未声明接触寿命时，按传感器刷新周期推导：
++                    # 容忍恰好 K=3 次连续漏检。探测是概率性的
++                    # （P(3 连漏) = (1-p)^3：p=0.7 -> 2.7%，p=0.9 -> 0.1%），
++                    # 单次漏检不应立刻丢弃航迹；航迹在 3 个完整刷新周期后自然过期
++                    # （保留条件 tick - observed_tick < stale_after_ticks）。
++                    # +1 保证第 3 个漏检周期结束时才过期。
++                    stale_after_ticks = 3 * update_ticks + 1
+                 engagement_max_age_ticks = self._positive_int(
+                     sensor, "engagement_max_age_ticks", stale_after_ticks
+                 )
+diff --git a/source_codes/openmdbench/world/factory_v2.py b/source_codes/openmdbench/world/factory_v2.py
+index 3a3582c..3929fd1 100644
+--- a/source_codes/openmdbench/world/factory_v2.py
++++ b/source_codes/openmdbench/world/factory_v2.py
+@@ -4008,14 +4008,23 @@ class WorldStateV2:
+         damage: dict[str, DamageIntentV2] = {}
+         for missile_id, flight in sorted(self._missile_flights.items()):
+             target = self._entities.get(flight.target_id)
+-            target_start = (
+-                prior_motion_positions.get(flight.target_id) if target is not None else None
+-            )
++            # A target that has left the active-dynamics set (disabled / destroyed)
++            # no longer appears in ``prior_motion_positions``, but it is still a
++            # physical object at a known position.  Without the fallback the
++            # missile gets ``target_unavailable`` for the rest of its flight, so a
++            # second (finishing) hit can never land and nothing can ever be
++            # destroyed by a guided missile — every engagement stops at
++            # ``disabled``.
+             target_end = (
+                 cast(tuple[float, float, float], tuple(target.state.position_m))
+                 if target is not None
+                 else None
+             )
++            target_start = (
++                None
++                if target_end is None
++                else prior_motion_positions.get(flight.target_id, target_end)
++            )
+             advance = advance_guided_missile_v2(
+                 flight,
+                 target_start_position_m=target_start,
+diff --git a/source_codes/scenarios/formal/md_ad_002_easy/scenario.yaml b/source_codes/scenarios/formal/md_ad_002_easy/scenario.yaml
+index 3c912f1..994bebb 100644
+--- a/source_codes/scenarios/formal/md_ad_002_easy/scenario.yaml
++++ b/source_codes/scenarios/formal/md_ad_002_easy/scenario.yaml
+@@ -41,7 +41,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.0.0, sensor.interceptor-eo@2.0.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [7048.0, 3330.0, 800.0], velocity_mps: [25.0, 0.0, 0.0], heading_deg: 90.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-001
+@@ -53,7 +53,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.0.0, sensor.interceptor-eo@2.0.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [7929.0, 0.0, 800.0], velocity_mps: [-25.0, 0.0, 0.0], heading_deg: 270.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-002
+@@ -65,7 +65,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.0.0, sensor.interceptor-eo@2.0.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [881.0, 0.0, 1000.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 0.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-003
+diff --git a/source_codes/scenarios/formal/md_ad_002_hard/scenario.yaml b/source_codes/scenarios/formal/md_ad_002_hard/scenario.yaml
+index a4b6bb3..43d7825 100644
+--- a/source_codes/scenarios/formal/md_ad_002_hard/scenario.yaml
++++ b/source_codes/scenarios/formal/md_ad_002_hard/scenario.yaml
+@@ -41,7 +41,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.0.0, sensor.interceptor-eo@2.0.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [7048.0, 3330.0, 800.0], velocity_mps: [25.0, 0.0, 0.0], heading_deg: 90.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-001
+@@ -53,7 +53,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.0.0, sensor.interceptor-eo@2.0.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [7929.0, 0.0, 800.0], velocity_mps: [-25.0, 0.0, 0.0], heading_deg: 270.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-002
+@@ -65,7 +65,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.0.0, sensor.interceptor-eo@2.0.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [881.0, 0.0, 1000.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 0.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-003
+diff --git a/source_codes/scenarios/formal/md_ad_002_medium/scenario.yaml b/source_codes/scenarios/formal/md_ad_002_medium/scenario.yaml
+index 6a30205..69c98d0 100644
+--- a/source_codes/scenarios/formal/md_ad_002_medium/scenario.yaml
++++ b/source_codes/scenarios/formal/md_ad_002_medium/scenario.yaml
+@@ -41,7 +41,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.1.0, sensor.interceptor-eo@2.1.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [7048.0, 3330.0, 800.0], velocity_mps: [25.0, 0.0, 0.0], heading_deg: 90.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-001
+@@ -53,7 +53,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.1.0, sensor.interceptor-eo@2.1.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [7929.0, 0.0, 800.0], velocity_mps: [-25.0, 0.0, 0.0], heading_deg: 270.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-002
+@@ -65,7 +65,7 @@ scenario:
+       dynamics_ref: dynamics.interceptor-uav@2.0.0
+       loadout_ref: loadout.interceptor-uav@2.0.0
+       component_refs: [sensor.interceptor-radar@2.1.0, sensor.interceptor-eo@2.1.0, communication.command-network@2.0.0]
+-      ammunition: {ammunition.interceptor-missile@2.0.0: 12}
++      ammunition: {ammunition.interceptor-missile@2.0.0: 2}
+       target_domains: [air]
+       initial_state: {schema_version: "2.0", position_m: [881.0, 0.0, 1000.0], velocity_mps: [0.0, 0.0, 0.0], heading_deg: 0.0, health: 1.0, energy: 1.0}
+       controller_slot: controller.defender.interceptor-003
+diff --git a/source_codes/scenarios/formal/md_int_003_easy/agents.yaml b/source_codes/scenarios/formal/md_int_003_easy/agents.yaml
+index 738faae..84e57c1 100644
+--- a/source_codes/scenarios/formal/md_int_003_easy/agents.yaml
++++ b/source_codes/scenarios/formal/md_int_003_easy/agents.yaml
+@@ -1,4 +1,4 @@
+-schema_version: rule-agent-team@2.0
++﻿schema_version: rule-agent-team@2.0
+ objective_m: [618.127, 0.0]
+ decision_interval_ticks: 5
+ attack:
+@@ -19,3 +19,4 @@ defence:
+       minimum_range_m: 200.0
+       maximum_range_m: 6000.0
+       cooldown_ticks: 2
++
+diff --git a/source_codes/scenarios/formal/registry.yaml b/source_codes/scenarios/formal/registry.yaml
+index a27d4a3..d8ebd53 100644
+--- a/source_codes/scenarios/formal/registry.yaml
++++ b/source_codes/scenarios/formal/registry.yaml
+@@ -1,20 +1,35 @@
+ schema_version: formal-scenario-registry@2.0
+ scenarios:
+-  - public_id: MD-AD-002-EASY
+-    package: md_ad_002_easy
+-    catalog_bundle: md_ad_002
+-  - public_id: MD-AD-002-MEDIUM
+-    package: md_ad_002_medium
+-    catalog_bundle: md_ad_002
+-  - public_id: MD-AD-002-HARD
+-    package: md_ad_002_hard
+-    catalog_bundle: md_ad_002
+-  - public_id: MD-INT-003-EASY
+-    package: md_int_003_easy
+-    catalog_bundle: md_int_003
+-  - public_id: MD-INT-003-MEDIUM
+-    package: md_int_003_medium
+-    catalog_bundle: md_int_003
+-  - public_id: MD-INT-003-HARD
+-    package: md_int_003_hard
+-    catalog_bundle: md_int_003
++- public_id: MD-AD-002-EASY
++  package: md_ad_002_easy
++  catalog_bundle: md_ad_002
++- public_id: MD-AD-002-MEDIUM
++  package: md_ad_002_medium
++  catalog_bundle: md_ad_002
++- public_id: MD-AD-002-HARD
++  package: md_ad_002_hard
++  catalog_bundle: md_ad_002
++- public_id: MD-AD-004-DECEPTION
++  package: md_ad_004_deception
++  catalog_bundle: md_ad_002
++- public_id: MD-INT-003-EASY
++  package: md_int_003_easy
++  catalog_bundle: md_int_003
++- public_id: MD-INT-003-MEDIUM
++  package: md_int_003_medium
++  catalog_bundle: md_int_003
++- public_id: MD-INT-003-HARD
++  package: md_int_003_hard
++  catalog_bundle: md_int_003
++- public_id: MD-INT-002-AIR-SURFACE
++  package: md_int_002_air_surface
++  catalog_bundle: md_ad_002
++- public_id: MD-INT-005-STEALTH-MULTI-AXIS
++  package: md_int_005_stealth_multi_axis
++  catalog_bundle: md_ad_002
++- public_id: MD-INT-006-SATURATION-ROE
++  package: md_int_006_saturation_roe
++  catalog_bundle: md_ad_002
++- public_id: MD-AD-006-ISLAND-STRIKE
++  package: md_ad_006_island_strike
++  catalog_bundle: md_ad_006
+diff --git a/source_codes/tests/unit/test_mmg_navigation_controller_v2.py b/source_codes/tests/unit/test_mmg_navigation_controller_v2.py
+index 911b206..f9e076a 100644
+--- a/source_codes/tests/unit/test_mmg_navigation_controller_v2.py
++++ b/source_codes/tests/unit/test_mmg_navigation_controller_v2.py
+@@ -3,6 +3,7 @@
+ from __future__ import annotations
+ 
+ import pytest
++from openmdbench.core.units import MMG_TRUSTED_MAX_NPS
+ from openmdbench.domains.surface.controller_v2 import mmg_navigation_action_v2
+ 
+ _PARAMETERS = {
+@@ -38,7 +39,7 @@ def test_navigation_clamps_only_to_the_selected_vessel_speed_profile() -> None:
+ @pytest.mark.parametrize(
+     "parameters",
+     (
+-        {**_PARAMETERS, "max_nps": 5.1},
++        {**_PARAMETERS, "max_nps": MMG_TRUSTED_MAX_NPS + 0.1},
+         {**_PARAMETERS, "max_rudder_rad": 0.31},
+         {**_PARAMETERS, "controller_gain": 0.0},
+     ),
+@@ -53,3 +54,21 @@ def test_navigation_rejects_controller_profiles_outside_trusted_mmg_limits(
+             target_heading_deg=0.0,
+             parameters=parameters,
+         )
++
++
++def test_navigation_accepts_a_calibrated_propeller_rate_profile() -> None:
++    """A resource may declare the prop rate that reaches its own max speed.
++
++    The Sim2Sea MMG solver consumes NPS directly, so a 10 m/s hull declares
++    ``max_nps = 133.33`` (200 NPS <-> 15 m/s).  Rejecting that profile made
++    every surface vessel crawl at ~0.30 m/s instead of its commanded speed.
++    """
++    action = mmg_navigation_action_v2(
++        current_heading_deg=0.0,
++        target_speed_mps=10.0,
++        target_heading_deg=90.0,
++        parameters={**_PARAMETERS, "max_speed_mps": 10.0,
++                    "max_nps": 133.33333333333334},
++    )
++    assert action.nps == pytest.approx(133.33333333333334)
++    assert action.rudder_rad == pytest.approx(-0.3)

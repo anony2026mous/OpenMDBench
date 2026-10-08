@@ -1,0 +1,82 @@
+TASK_ID: MD3-11-008
+PHASE: MD3-11
+OBJECTIVE: >-
+  Eliminate repeated materialisation or scans of complete authoritative
+  event-receipt history from per-tick mission-scoring hot paths, without
+  discarding the in-memory audit ledger, changing replay evidence, or
+  weakening checkpoint restoration.
+REQUIREMENTS:
+  - REQ-PERF-001
+  - REQ-DET-001
+  - REQ-RPL-001
+  - REQ-CHK-001
+INPUTS:
+  - AGENTS.md
+  - docs/OpenMDBench_Platform_Refactor_Service_Requirements.md
+  - docs/OpenMDBench_Platform_Refactor_Implementation_Test_Review_Plan.md
+  - docs/MD-INT-003_Implementation_Test_Review_Plan.md
+  - openmdbench/world/factory_v2.py
+  - openmdbench/missions/engine_v2.py
+  - tools/t5_md_int_003_concurrency.py
+ALLOWED_READ:
+  - AGENTS.md
+  - docs/
+  - reports/md-int-003/
+  - openmdbench/world/
+  - openmdbench/missions/
+  - openmdbench/sessions/
+  - openmdbench/policies/
+  - tests/
+  - tools/
+ALLOWED_WRITE:
+  - openmdbench/missions/engine_v2.py
+  - openmdbench/world/factory_v2.py
+  - tests/contract/
+  - tests/integration/
+  - tests/determinism/
+  - tests/performance/
+  - tools/t5_md_int_003_concurrency.py
+  - artifacts/md-int-003/
+  - reports/md-int-003/
+PROHIBITED:
+  - Discarding receipt history before match close; log/replay/checkpoint schema
+    changes; scenario or dynamics changes; test weakening; dependency changes;
+    commits, pushes, and cleanup.
+TEST_LEVEL: T5
+ALLOWED_COMMANDS:
+  - Focused pytest, determinism and checkpoint comparisons, cProfile,
+    headless performance probes, Ruff, mypy, py_compile, and scoped diff checks.
+COMMAND_TIMEOUT: 1800
+TOTAL_BUDGET: 240
+ACCEPTANCE:
+  - Rule-only per-tick mission scoring does not materialise historical event
+    receipt payloads.
+  - Public/audit snapshots and checkpoint/replay anchors retain complete,
+    deterministic receipt evidence.
+  - A 1,500-tick MD-INT-003 match remains below the stated 100ms mean-tick
+    target under the recorded hardware/probe conditions.
+OUTPUTS:
+  - Minimal hot-path correction, regression tests, deterministic evidence, and
+    refreshed MD3-11 performance records.
+STOP_CONDITIONS:
+  - The only feasible remedy changes the authoritative audit, replay, or
+    checkpoint contract.
+RESULT:
+  STATUS: DONE
+  TESTS:
+    - >-
+      96 passed: mission-scoring, damage lifecycle, checkpoint replay and
+      restore-isolation regressions; fresh full pytest also passed 2,111 items.
+    - >-
+      1,500-tick probes: L1/L2/L3 means 74.418/78.267/78.312 ms, each below
+      the 100 ms mean-tick target.
+  REVIEW:
+    STATUS: SELF_REVIEWED
+    DETAIL: >-
+      Rule-only event scoring requests a receipt-free fact anchor. The complete
+      ordered ledger remains authoritative for audit/public snapshots and
+      checkpoints; the derived receipt index is rebuilt on restore.
+  COMPATIBILITY: No log, replay or checkpoint schema change.
+  DETERMINISM: Exact receipt equality remains the lookup authority; the index is derived only.
+  DOMAIN_IMPACT: No scenario or dynamics data changed.
+  RISKS: The index is intentionally process-local derived state and must remain rebuildable on future ledger changes.

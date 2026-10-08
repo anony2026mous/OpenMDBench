@@ -1,0 +1,122 @@
+{
+  "schema": "hifi-record-episode@1",
+  "case": {
+    "id": "ie-08-island-strike__llm-rl__s5110",
+    "scenario": "IE-08-ISLAND-STRIKE",
+    "seed": 5110,
+    "planner": "llm-rl"
+  },
+  "planner": "llm",
+  "status": "complete",
+  "started_utc": "2026-10-02T13:14:47.655169+00:00",
+  "snapshot": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T070659Z-d1d0a213",
+  "endpoint": null,
+  "source_pin_commit": "ccabad00154e9c6209e227859470f96449dec498",
+  "recorder_sha256": "f5e0a15d436293c2055d02fe299f87211ee9b2ecee20f7bd851e8288653fb905",
+  "cli_argv": [
+    "--scenario",
+    "IE-08-ISLAND-STRIKE",
+    "--seed",
+    "5110",
+    "--planner",
+    "llm",
+    "--max-ticks",
+    "1800",
+    "--pure-llm-envelope",
+    "executor",
+    "--frontend",
+    "graph",
+    "--llm-briefing",
+    "withheld",
+    "--llm-backend",
+    "vllm",
+    "--llm-base-url",
+    "http://127.0.0.1:8001/v1",
+    "--llm-model",
+    "Qwen3.8-27B",
+    "--llm-max-tokens",
+    "1024",
+    "--plan-interval",
+    "10",
+    "--decision-interval",
+    "5",
+    "--rl-speed-source",
+    "legacy_tags",
+    "--step-timeout",
+    "300.0",
+    "--checkpoint-dir",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z/attribution/ie-08-island-strike__llm-rl__s5110/reference_executor/checkpoints",
+    "--log",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z/attribution/ie-08-island-strike__llm-rl__s5110/reference_executor/events.jsonl",
+    "--output",
+    "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z/attribution/ie-08-island-strike__llm-rl__s5110/reference_executor/report.json",
+    "--goal-granularity",
+    "strong"
+  ],
+  "smoke_only": false,
+  "replay": {
+    "from": "/mnt/QTJC/chenyi-codex/experiments/e5-hifi-natural-failures-r2-20261002T0220Z/episodes/ie-08-island-strike__llm-rl__s5110",
+    "mode": "frozen-planner",
+    "requests_sha256": "48aa5079f256d980dad606d634b9fca5e524784560e2b3fd19b025de82226a2a",
+    "recorded_calls": 120,
+    "ticks_derived": false
+  },
+  "compiled_hashes": {
+    "resolved_hash": "sha256:d5e05259e7730080a2b231298525425b0558b03095c244847eb7bdd69ff3e108",
+    "catalog_hash": "sha256:7dbf89ec664bdf3169975ed07cbd1be9096a615dd6980507c32e4c35fbba977f",
+    "model_registry_hash": "sha256:5a5bf3b3bdd83d28f7cc57a52f77f4a40f0cc3bb67da444ef6b8ea1113dec9c6"
+  },
+  "weights_sha256": {
+    "openmd/code/eval/_w1_runs/rl/theta_rl_legacy2.npz": "da7e6426f0035030d8a557dfe5a90d65fc18a704dc955d49ef34e66b5008435a",
+    "openmd/code/eval/_w1_runs/rl/theta_arm5_llm_reward_v9.npz": "b87e302046128682055ff958a7c094f2b28c691ce6201ebfbb2bd7ac42e060d0"
+  },
+  "engine_module_origin": "/mnt/QTJC/chenyi-codex/source-code/snapshots/20261002T070659Z-d1d0a213/openmd/source-code/source_codes/openmdbench/__init__.py",
+  "runtime_packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "taichi": "1.7.3",
+    "torch": "2.14.0+cpu",
+    "pydantic": "2.13.5",
+    "PyYAML": "6.0.3"
+  },
+  "frozen_plan_horizon": {
+    "last_recorded_decision_tick": 1190,
+    "held_last_plan_calls_after_horizon": 60
+  },
+  "finished_utc": "2026-10-02T14:22:18.020782+00:00",
+  "llm_calls": 180,
+  "replay_divergence": [],
+  "trajectory_frames": 1800,
+  "decision_frames": 1799,
+  "trajectory_last_tick": 1799,
+  "trajectory_complete": true,
+  "trajectory_error": null,
+  "ticks_run": 1799,
+  "eligible_for_main_score": true,
+  "natural_terminal": true,
+  "terminal_result": {
+    "rule_id": "rule.defence-success",
+    "outcome": "defender_success",
+    "priority": 50,
+    "tick": 1799,
+    "latched": true,
+    "trigger_evidence": {
+      "event_id": "event.defence-success",
+      "candidate_hash": "sha256:9dc7bb5242ca7363b25de09e6ea9f82e3b4fd395defa398ae1ff154a61309b10",
+      "selection_policy": "priority_desc_rule_id_asc_event_id_asc"
+    },
+    "ranking": {
+      "coalition.defender": 1,
+      "coalition.intruder": 2
+    },
+    "result": "defender_success"
+  },
+  "defender_score": 0.5598,
+  "artifacts_sha256": {
+    "report.json": "caab874263d66c383226202b888ef839303343f0549d3daea75d12c4933d1c22",
+    "events.jsonl": "1bde990781d9777dd796a58761b97dd8224b9cad4fafbc5e68a740bfc1745d35",
+    "trajectory.jsonl": "b634f15f658209f9527f01c18b9c818e440b6a9665e3f8cd006a696fc7a9c10a",
+    "decisions.jsonl": "1574d99e8b9223cb8cdcd4e9d7e75dd87c1ed44c3eb7345a504641cc8c0abbac",
+    "requests.jsonl": "0cee5401603caaeb9bc9d050f6c5f8f5cfe034fc292d3b7599e9eaa472508c18"
+  }
+}

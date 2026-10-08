@@ -1,0 +1,67 @@
+"""Authoritative RF-06 combat API bound to a validated runtime World."""
+
+from openmdbench.combat.damage_v2 import (
+    DamageApplyReceiptV2,
+    DamageStateV2,
+    DamageSystemV2,
+    FaultInjectingDamageModelV2,
+)
+from openmdbench.combat.models_v2 import (
+    CombatCheckpointV2,
+    CombatErrorV2,
+    CombatModelEvidenceV2,
+    DamageIntentV2,
+    DamageResolutionV2,
+    EffectApplicationV2,
+    EngagementRequestV2,
+    EntityDamageStateV2,
+    HitV2,
+    PendingImpactReceiptV2,
+    PendingImpactV2,
+    ShotEvidenceV2,
+    WeaponExecutionV2,
+)
+from openmdbench.combat.system_v2 import (
+    CombatCatalogSnapshotV2,
+    CombatSystemV2,
+    CombatWorldStateEvidenceV2,
+    EffectDamageChainV2,
+    EngagementLegalityV2,
+    HitModelEvidenceV2,
+    HitModelReceiptV2,
+    HitModelResultV2,
+    HitModelV2,
+    domain_component_damage_intent,
+)
+from openmdbench.schemas.domain_v2 import DamageIntentV2 as CanonicalDamageIntentV2
+
+__all__ = [
+    "CanonicalDamageIntentV2",
+    "CombatCatalogSnapshotV2",
+    "CombatCheckpointV2",
+    "CombatErrorV2",
+    "CombatModelEvidenceV2",
+    "CombatSystemV2",
+    "CombatWorldStateEvidenceV2",
+    "DamageApplyReceiptV2",
+    "DamageIntentV2",
+    "DamageResolutionV2",
+    "DamageStateV2",
+    "DamageSystemV2",
+    "EffectApplicationV2",
+    "EffectDamageChainV2",
+    "EngagementLegalityV2",
+    "EngagementRequestV2",
+    "EntityDamageStateV2",
+    "FaultInjectingDamageModelV2",
+    "HitModelEvidenceV2",
+    "HitModelReceiptV2",
+    "HitModelResultV2",
+    "HitModelV2",
+    "HitV2",
+    "PendingImpactReceiptV2",
+    "PendingImpactV2",
+    "ShotEvidenceV2",
+    "WeaponExecutionV2",
+    "domain_component_damage_intent",
+]
