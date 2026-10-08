@@ -28,6 +28,17 @@ One command, run from inside this bundle:
 python reproduce/verify_paper_table.py
 ```
 
+Two further paper tables were matched after the co-author's grid data arrived:
+
+| Check | Command | Result |
+|---|---|---|
+| `tab_p1_seedgrid` (six-arm, seeds 501–510) | `reproduce/verify_p1_grid.py` | **0/60 cells differ** |
+| Appendix I.2 dose-gain means (seeds 512–521) | `reproduce/verify_p2_dose.py` | **0/8 mismatch** |
+
+**For the full artefact-by-artefact mapping — including what is *not* covered — read
+[`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).** It states plainly which appendix blocks are
+absent, so the coverage of this bundle is auditable rather than assumed.
+
 ---
 
 ## Layout
