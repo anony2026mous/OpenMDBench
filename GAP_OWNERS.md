@@ -28,7 +28,7 @@ Read off the team's own planning documents in `~/Downloads`, not inferred:
 | **E12** key-contrast seed extension (5→10) | **E12** | **武昊** | `⏸ 可选，视时间线` |
 | **E1** confirmation tiers 19/27 | **E1 承接** | **肖棹** (transferred from 武昊) | `🆕 新增，待启动` |
 | **tab:e5pilot** — 3 grid cases lack attribution records | **E5 自然故障盲归因 pilot** | **肖棹** | `✅ 完成` |
-| **I.3** real-stream counterfactual (601–610) — no data anywhere | 真实流批次 | **unassigned** | see below |
+| **I.3** real-stream counterfactual (601–610) — ~~no data anywhere~~ **RESOLVED** | real-stream batch | 肖棹 | **found and now in the bundle.** Located on the co-author's server as `runs/p0-strengthening-20261001/inputs/P3a__llm_goal_causal__s601-610__confirm__v1` and verified 0/10 cell mismatches by `reproduce/verify_p3a.py`. It was missed because the seed range is reused by the E3 deception files; the batch is found by its intervention marker (`all_unit_goals_to_legal_hold`). |
 | **tab:interface** — NL vs JSON modality | — | **unassigned** | see below |
 
 ## Three findings that matter
