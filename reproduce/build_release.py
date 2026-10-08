@@ -55,9 +55,17 @@ JUNK_DIR_NAMES = {
 }
 
 # Stray run logs are not release material, and they leak the authoring machine's
-# absolute home paths (measured: 69 occurrences, mostly in these files). Dropping
-# them keeps the published tree free of one developer's directory layout.
-JUNK_FILE_SUFFIXES = (".console.txt", ".jsonl", ".log", ".log.lock")
+# absolute home paths (measured: 69 occurrences, mostly in these files).
+#
+# `.jsonl` is deliberately NOT listed here. It is ambiguous: the withheld-grid analysis
+# wrote per-episode console logs as .jsonl, but the g1-fault-dose batch stores its
+# per-tick simulation traces as .jsonl too -- 76 MB of real evidence. Excluding the
+# suffix globally silently dropped that, so .jsonl is filtered by PATH instead
+# (see is_junk).
+JUNK_FILE_SUFFIXES = (".console.txt", ".log", ".log.lock")
+
+# Directories whose .jsonl contents are logs rather than data.
+LOG_DIR_NAMES = {"logs", "log", "_w1_runs"}
 
 # Files that must NEVER be published, with the reason recorded in the build report.
 # `KEY_DO_NOT_SHARE.json` is the blind-annotation answer key: the appendix's kappa
@@ -100,6 +108,13 @@ def is_junk(p: Path) -> str | None:
     for part in p.parts:
         if part.lower() in JUNK_DIR_NAMES:
             return f"excluded dir ({part})"
+    # .jsonl is kept or dropped by location, because the same suffix names both
+    # per-episode console logs (drop) and per-tick simulation traces (keep).
+    if p.suffix == ".jsonl":
+        if any(part.lower() in LOG_DIR_NAMES for part in p.parts[:-1]):
+            return "run log (.jsonl under a log directory)"
+        if re.search(r"\.console\.jsonl$", p.name, re.I):
+            return "run log (.console.jsonl)"
     if p.suffix in (".pyc", ".pyo", ".pyd", ".so", ".log.lock"):
         return f"build/bytecode artifact ({p.suffix})"
     return None
@@ -329,6 +344,13 @@ def main() -> int:
               dest / "code" / "collaborator_snapshot",
               label="code/collaborator_snapshot")
 
+    # Anchored critical-fault validation batch (appendix I.4). Lives only on this
+    # machine -- absent from both servers -- so it must travel with the release.
+    print("      g1 fault-dose batch (appendix I.4)")
+    copy_tree(SRC_ROOT / "release_assets" / "g1-fault-dose",
+              dest / "data" / "g1-fault-dose",
+              label="data/g1-fault-dose")
+
     # the withheld grid dataset: OUR analysis outputs, scripts and result documents.
     # These live in EVAL itself (not in _w1_runs), which is why an earlier version of
     # this script shipped the per-episode reports but silently omitted every table,
@@ -407,7 +429,7 @@ def main() -> int:
         rep.mkdir(parents=True, exist_ok=True)
         # Root-level metadata: dotfiles must be copied explicitly by name.
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
-                     "PAPER_COVERAGE.md", "SERVER_SEARCH_RECORD.md", ".gitignore"):
+                     "PAPER_COVERAGE.md", ".gitignore"):
             s = assets / name
             if s.is_file():
                 shutil.copy2(s, dest / name)
@@ -418,6 +440,7 @@ def main() -> int:
             copied_log.append(("asset data/PENDING.md", 1, s.stat().st_size))
         n = size = 0
         for name in ("verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
+                     "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
                      "scan_for_secrets.py",
                      "build_dataset.py", "_w1_common.py", "build_release.py",
                      "extract_paper_refs.py"):
@@ -428,7 +451,9 @@ def main() -> int:
                 size += s.stat().st_size
         # Recorded verification output ships beside the scripts that produced it.
         for name in ("PAPER_TABLE_VERIFICATION.txt", "P1_GRID_VERIFICATION.txt",
-                     "P2_DOSE_VERIFICATION.txt", "SECRET_SCAN.txt"):
+                     "P2_DOSE_VERIFICATION.txt", "SIXARM_VERIFICATION.txt",
+                     "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
+                     "SECRET_SCAN.txt"):
             s = assets / name
             if s.is_file():
                 shutil.copy2(s, rep / name)

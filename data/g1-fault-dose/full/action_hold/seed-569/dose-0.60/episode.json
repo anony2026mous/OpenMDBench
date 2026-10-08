@@ -1,0 +1,2644 @@
+{
+  "schema": "role-c-grid-episode@1",
+  "aborted": null,
+  "instrumentation_sha256": "5fd68088c07f06437a5e35107c8010022b087cc5443f63cf214efb2a4bafdb38",
+  "replay_source": null,
+  "config": {
+    "seed": 569,
+    "difficulty": "medium",
+    "task_mode": "continuous",
+    "planner": "rule",
+    "executor": "heuristic",
+    "interval": 5,
+    "degraded_p": 0.0,
+    "mappo_checkpoint_sha256": null,
+    "llm_base_url": null,
+    "llm_model": null
+  },
+  "design": "original_policy_run",
+  "source_hashes": {
+    "code/attribution.py": "4f4c424a439feb16d009c14946f8eeeef54a9fdb1ae507ad3487080bf05ba61d",
+    "code/grid_env/__init__.py": "9d6896b368d7894e771192918519bb3438be634ce31421affe971cbc3c806557",
+    "code/grid_env/agents/__init__.py": "78b3062af3016d2b4fc9beea22a102fd97967aaf419692cae38a8746f9fe1d59",
+    "code/grid_env/agents/base_agent.py": "296ec3887202e1003cf37c033c4f41e220b21ef57b23eabb3f0f08112a31c8b5",
+    "code/grid_env/agents/hybrid_agent.py": "a5a10ce43e0b140e91d1901df8940c750e4f42e5b11c1e98fa287617455bb444",
+    "code/grid_env/agents/llm_client.py": "2f705e5800c04b15ee7697f68bc7d96fb5e39124c15474bda76cea042878c14e",
+    "code/grid_env/agents/mappo_agent.py": "3379258ec606efbad68a29ad33953e0af74fc13dc289708c8681f2fb1573bfd8",
+    "code/grid_env/agents/ppo_agent.py": "ad60daaa0a4c8808af68a4553fa0edd039c0665d2370f04f00de97a3438e868a",
+    "code/grid_env/agents/pure_llm_agent.py": "2f60ef7f40a1b74dbf1f6d8ad99fee42cba68d8a33c206c3c90958cd9c35cef0",
+    "code/grid_env/agents/pure_rl_agent.py": "941a2316368dc08d88954cebde510d457baafa0a200157fe19f8cb25005c5c39",
+    "code/grid_env/agents/random_agent.py": "ccc2658a58539e4f5e72d0a9a7d62d89eb59b59e0a7701ab6f5453af7562afb7",
+    "code/grid_env/agents/rule_agent.py": "a621b0baaf51b64bec3cf6a51f04dea131a57fcc8a0f9fc7275732679c1b3777",
+    "code/grid_env/goai.py": "1c2dfbe7126f4b85708b0b8924a788670ae9b99ced21a26d79bd8aef2cd5821a",
+    "code/grid_env/grid_env.py": "fceac8f3dda9d1f0334f685809d6f5c2201d17fa8812039341514a0a691e1659",
+    "code/grid_env/grid_env_v1_backup.py": "681a59f1e85ce5ac2b762e2b8e236b8c4be579aadc4364891ab856b5565e2810",
+    "code/grid_env/instruction_generator.py": "ed955f5ea170c69f6562aac4a7da1091ca1c67ed9526dd84cba91105b7ef1c3a",
+    "code/grid_env/server.py": "6b5e490af3d2c338bda4909343bf8b3f7439f224403009064bd3f7188eedfb7d"
+  },
+  "decisions": [
+    {
+      "step": 1,
+      "commands": [
+        {
+          "task_id": "recon_001",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_001",
+          "patrol_002",
+          "patrol_003"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 6,
+      "commands": [
+        {
+          "task_id": "recon_004",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_006",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_004",
+          "patrol_005",
+          "patrol_006"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 11,
+      "commands": [
+        {
+          "task_id": "recon_007",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_008",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_009",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_007",
+          "patrol_008",
+          "patrol_009"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 16,
+      "commands": [
+        {
+          "task_id": "intercept_010",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_011",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_012",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_010",
+          "track_011",
+          "patrol_012"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 21,
+      "commands": [
+        {
+          "task_id": "intercept_013",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_014",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_015",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_013",
+          "track_014",
+          "patrol_015"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 26,
+      "commands": [
+        {
+          "task_id": "intercept_016",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_017",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_018",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_016",
+          "track_017",
+          "patrol_018"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 31,
+      "commands": [
+        {
+          "task_id": "intercept_019",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_020",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_021",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_019",
+          "track_020",
+          "patrol_021"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 36,
+      "commands": [
+        {
+          "task_id": "recon_022",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_023",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_024",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_022",
+          "patrol_023",
+          "patrol_024"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 41,
+      "commands": [
+        {
+          "task_id": "recon_025",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_026",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_027",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_025",
+          "patrol_026",
+          "patrol_027"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 46,
+      "commands": [
+        {
+          "task_id": "recon_028",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_029",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_030",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_028",
+          "patrol_029",
+          "patrol_030"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 51,
+      "commands": [
+        {
+          "task_id": "recon_031",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_032",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_033",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_031",
+          "patrol_032",
+          "patrol_033"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 56,
+      "commands": [
+        {
+          "task_id": "recon_034",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_035",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_036",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_034",
+          "patrol_035",
+          "patrol_036"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 61,
+      "commands": [
+        {
+          "task_id": "intercept_037",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_038",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_comb_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_039",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_037",
+          "intercept_038",
+          "track_039"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 66,
+      "commands": [
+        {
+          "task_id": "intercept_040",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_comb_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_041",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_042",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_040",
+          "intercept_041",
+          "track_042"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 71,
+      "commands": [
+        {
+          "task_id": "intercept_043",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_comb_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_044",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_045",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_043",
+          "intercept_044",
+          "track_045"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 76,
+      "commands": [
+        {
+          "task_id": "recon_046",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_047",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_048",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_046",
+          "patrol_047",
+          "patrol_048"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 81,
+      "commands": [
+        {
+          "task_id": "intercept_049",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_050",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_051",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_049",
+          "intercept_050",
+          "track_051"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 86,
+      "commands": [
+        {
+          "task_id": "intercept_052",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_053",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_trans_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_054",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_052",
+          "intercept_053",
+          "track_054"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 91,
+      "commands": [
+        {
+          "task_id": "intercept_055",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_056",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_057",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_055",
+          "track_056",
+          "patrol_057"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 96,
+      "commands": [
+        {
+          "task_id": "intercept_058",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_059",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_060",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_058",
+          "track_059",
+          "patrol_060"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 101,
+      "commands": [
+        {
+          "task_id": "intercept_061",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_062",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_063",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_061",
+          "track_062",
+          "patrol_063"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 106,
+      "commands": [
+        {
+          "task_id": "intercept_064",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_065",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_066",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_064",
+          "track_065",
+          "patrol_066"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 111,
+      "commands": [
+        {
+          "task_id": "intercept_067",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_068",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_069",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_067",
+          "track_068",
+          "patrol_069"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 116,
+      "commands": [
+        {
+          "task_id": "intercept_070",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_071",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_072",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_070",
+          "track_071",
+          "patrol_072"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 121,
+      "commands": [
+        {
+          "task_id": "intercept_073",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_074",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_scout_w1_0"
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_075",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_073",
+          "track_074",
+          "patrol_075"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 126,
+      "commands": [
+        {
+          "task_id": "recon_076",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_077",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_078",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_076",
+          "patrol_077",
+          "patrol_078"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 131,
+      "commands": [
+        {
+          "task_id": "recon_079",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_080",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_081",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_079",
+          "patrol_080",
+          "patrol_081"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 136,
+      "commands": [
+        {
+          "task_id": "recon_082",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_083",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_084",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_082",
+          "patrol_083",
+          "patrol_084"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 141,
+      "commands": [
+        {
+          "task_id": "recon_085",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_086",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_087",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_085",
+          "patrol_086",
+          "patrol_087"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 146,
+      "commands": [
+        {
+          "task_id": "recon_088",
+          "goal_type": "loiter",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              7
+            ]
+          },
+          "priority": 0.4,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_089",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              5,
+              8
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_090",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              11,
+              7
+            ]
+          },
+          "priority": 0.3,
+          "constraints": [],
+          "deadline": null,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "recon_088",
+          "patrol_089",
+          "patrol_090"
+        ],
+        "rejected": []
+      }
+    }
+  ],
+  "step_fingerprints": [
+    {
+      "step": 1,
+      "env_hash": "f0f614f9049ff81945e1ff3d24ede0f2a4c299ae95b75999072196346bedc56a",
+      "broker_hash": "0ed1a382eb753756ff02c944c64e89f0e82036f9013fb5b9b7463cd573ee8c9e",
+      "actions_hash": "ed3d62fc1e482b71b0a23d73897e35845a5cefe2b816b947c3df53a6bcf13f11"
+    },
+    {
+      "step": 2,
+      "env_hash": "504fa75d4248fe1baa2b350395fa51293b65b1b528a12fa20f82e0e79da7dfee",
+      "broker_hash": "c68a60f81be2970b08ce24839e5b46d4f2ea110b3373dde8fd521be9b8ddfe40",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 3,
+      "env_hash": "8f1e8c50de37a876ca25a85724acc34fb293be6f51168417a8b8f2e47c5de343",
+      "broker_hash": "966078759b506622a4e2e2f60551594cbd2eb05ba1c4aa34d069ae3274dd8920",
+      "actions_hash": "63e9932151e1aaf6f8d0c8023aa91c83763a5cca4b4df86a372676e90de6db29"
+    },
+    {
+      "step": 4,
+      "env_hash": "5070f62cd639077f8a473119f0025a0c2a450a775dc94244f3b6c6749c6a686e",
+      "broker_hash": "bd90c750e2fe6a5b7b77765f81f5d1fc568eb0e85c778f2641e613cc97469460",
+      "actions_hash": "ed3d62fc1e482b71b0a23d73897e35845a5cefe2b816b947c3df53a6bcf13f11"
+    },
+    {
+      "step": 5,
+      "env_hash": "c46a1be7e96c56773750d6629934e0f971c353dc4c4ccf6230ef35a55eb0ce29",
+      "broker_hash": "dcfa66375aaa4ab0083bc900d2eb0d5a7080658268e3b4224a198f9ece2b2605",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 6,
+      "env_hash": "586f49a0786fa0c1b032d73038b9825881301851c252e2728d1bf010dc63956e",
+      "broker_hash": "1966f1f1e4333b174d76e29d751a0c30d008ebb2f2945538f31548ec716ef362",
+      "actions_hash": "63e9932151e1aaf6f8d0c8023aa91c83763a5cca4b4df86a372676e90de6db29"
+    },
+    {
+      "step": 7,
+      "env_hash": "870b30569091294e55f664e2c764e431a7dd17826f76c3054f39400833fdea32",
+      "broker_hash": "fa863ada5f76688edc9fd82617b8d07ea218fa09b585a43e7430a88b46950bfc",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 8,
+      "env_hash": "a435e15534ecca2fbcceded7b6829b4f12c68fd44d7fad2327842c3b3df89df6",
+      "broker_hash": "fa863ada5f76688edc9fd82617b8d07ea218fa09b585a43e7430a88b46950bfc",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 9,
+      "env_hash": "49087c5826d171b3325cf5dff75f0188200eb0865b35aee3c622064b7670bb50",
+      "broker_hash": "fa863ada5f76688edc9fd82617b8d07ea218fa09b585a43e7430a88b46950bfc",
+      "actions_hash": "f7ef89be83781f737281f19d2ec9377db2dca882f6bf232974492b01e1a23432"
+    },
+    {
+      "step": 10,
+      "env_hash": "08eb719057e086d7df1d2f0453487343c228794341399804b6b8318a4dfde53d",
+      "broker_hash": "017d3f7f4d99f3e46f7b840b670fc91eba38ebe31de890db4e4c670b879f8cbb",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 11,
+      "env_hash": "1f8af5921459fedb284859ee43e842ea50b80f85276b9f3f515e5b543137ccb9",
+      "broker_hash": "52036bc8d747dae4ca52d9a2845f66483f2e5da5a8fdceb8dd01d2cdac326734",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 12,
+      "env_hash": "8e35008ca0fe81e46b48b0a5a44a896e29e01768e6c6211c47b9ede859a01b84",
+      "broker_hash": "f763d484e62fd3167b2022cf360d89df2945f708428d05b007344e1bdaff6020",
+      "actions_hash": "f7ef89be83781f737281f19d2ec9377db2dca882f6bf232974492b01e1a23432"
+    },
+    {
+      "step": 13,
+      "env_hash": "09ae18b71f08062a1a85db26bd9e86ba318bed140c0e23556c936683d8235002",
+      "broker_hash": "b82adff1f4af9509e682609d6ed632f5c81894a0bec112b764aacd3c8259847b",
+      "actions_hash": "b23470a7e933601eebf00d806608115a4cb8f08f9a3a1d56be9f5a791b252b7a"
+    },
+    {
+      "step": 14,
+      "env_hash": "e02dfae7a2e858fdc91af6e4362194b48e4b787ee6d6476d7c5530a3ff1843d6",
+      "broker_hash": "799a97b437b22e767c9e8a9706f8171c3eee3185128dfad2de859880096559f6",
+      "actions_hash": "b3470f8da03606a07f66f10d218a260877a2cc642a170a261efa6181cf3c4036"
+    },
+    {
+      "step": 15,
+      "env_hash": "138af6bd246ecd8f1a2e24c0c38fdc78093afe0695ccee0f9e4bc07e46a17935",
+      "broker_hash": "22450dae77f73a84f931916b685663fe557397fd84224aebd5e42f8aee04a0d4",
+      "actions_hash": "eb445e08e7792309f279fe2a002658b5a0473fde8b1f72f124b995b8acf36b0b"
+    },
+    {
+      "step": 16,
+      "env_hash": "a2ad8412e2daace8892087814feaf1e2d34d1845dbcedde218b0e0f88aac20dd",
+      "broker_hash": "eb6dc701bb9351b4c395a3e8a62700efaf25dff0848bffb5cfb507292d167003",
+      "actions_hash": "ed3d62fc1e482b71b0a23d73897e35845a5cefe2b816b947c3df53a6bcf13f11"
+    },
+    {
+      "step": 17,
+      "env_hash": "1f4acb2186269715b6fc834e10fecd8cf4457ebae5c99841e9f33d99d0d7f76e",
+      "broker_hash": "3240abcbc81d2db30cdbdd8e07cfb7859818f8b218ddf59c9511b4d3089439aa",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 18,
+      "env_hash": "4d1b631901a3e5b1a7bf684a28240405b8b51d3dc84ad575eb6127842e845a94",
+      "broker_hash": "eb6dc701bb9351b4c395a3e8a62700efaf25dff0848bffb5cfb507292d167003",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 19,
+      "env_hash": "1281f2864122dabf8f81732ecd9d0529e13d9e12496392f781ff737ffc067936",
+      "broker_hash": "eb6dc701bb9351b4c395a3e8a62700efaf25dff0848bffb5cfb507292d167003",
+      "actions_hash": "85212f25b6505668ec34415b54e8ab666ce327e7421d5020df29fca3d3ee3d39"
+    },
+    {
+      "step": 20,
+      "env_hash": "c194c6fcbf75f09dcda2ec8060e431aa49c23354948b660bd17f9ce5cd949455",
+      "broker_hash": "0498ce22b2af6915277378dff5cab617f98a6e0401f8bceddb11b26c12b55503",
+      "actions_hash": "1ac6e237d2fe467d6705e1b03bcd21b277abf9caea237676a15ce187f421af72"
+    },
+    {
+      "step": 21,
+      "env_hash": "6ce1b4032b609541b7ad21fb3f088a7404f6d176634834ca25a8f50a7ab42ed0",
+      "broker_hash": "da0046f4e9541030dcbb7a622ffca9dae0f695b2d45268c338fcc4019266260c",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 22,
+      "env_hash": "7c77f77a0d153896b66d73e78ccf76eb512c1952d7634f20972fddfb32aec7a8",
+      "broker_hash": "11174266ec989dd6bb1ea7096590e57a886d52271f3a2c758cbb748376ca392d",
+      "actions_hash": "5004056b25e85a1a6635777ffb5efcfa98392d7862f5318ca06103f9db7d3adb"
+    },
+    {
+      "step": 23,
+      "env_hash": "df14c8160220575a2f28db2b51a0d1f6fa2c0faaafe361e8e83530e2497cb718",
+      "broker_hash": "da0046f4e9541030dcbb7a622ffca9dae0f695b2d45268c338fcc4019266260c",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 24,
+      "env_hash": "e975e776026d6488bf087a7b598650921b227869eccd398841efb3bf1ffec9ef",
+      "broker_hash": "11174266ec989dd6bb1ea7096590e57a886d52271f3a2c758cbb748376ca392d",
+      "actions_hash": "11bd4d8d963df4cb6faa010777c7638078ef2901946112778ddad452caf0c504"
+    },
+    {
+      "step": 25,
+      "env_hash": "c4910a7c33d12590d5b36da98c50f45987e2d356289a7afb4fdc0157027a4952",
+      "broker_hash": "e4c4d36968fb935a55aa8b89d9e0e5f75fee98685a2dc00797c46a6d4d94a2e7",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 26,
+      "env_hash": "26f9558d79fe182398ebde73bb1e96c0289f5fdd05b9d53c8fc9f9da34b1a7f8",
+      "broker_hash": "eb4b93a53972d80873d647df0e6e6736a1eddd4926e0f904b003c19440e9a381",
+      "actions_hash": "63e9932151e1aaf6f8d0c8023aa91c83763a5cca4b4df86a372676e90de6db29"
+    },
+    {
+      "step": 27,
+      "env_hash": "06b87fd4e11a4cec96db600443740b5fc09325a15f7002858ae2d7cd74d9f083",
+      "broker_hash": "3a1f5e526cda52369f2c1e88c0f0c7ade6f287990eed492f3714878b6d9d7ea5",
+      "actions_hash": "40cde1a1a1673f44ea013a6541493ddb0b5bcd048c98951a95e044e0e4505c7c"
+    },
+    {
+      "step": 28,
+      "env_hash": "90a420070914ece0218d997f81703f2d971ea4b6b42ceda5ceb042bdf09838c3",
+      "broker_hash": "3a1f5e526cda52369f2c1e88c0f0c7ade6f287990eed492f3714878b6d9d7ea5",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 29,
+      "env_hash": "64433e3c187fe0524208bc0284dbb4c23314b14e6930097abae081f6303dfcd1",
+      "broker_hash": "3a1f5e526cda52369f2c1e88c0f0c7ade6f287990eed492f3714878b6d9d7ea5",
+      "actions_hash": "fc2594cb2ab9147278e3015e7eeb95021a2362e40b246ea5ec4654b51c4c2a87"
+    },
+    {
+      "step": 30,
+      "env_hash": "304fa0dab6431516b32a167c4be75fbc1caee83187c9d38ebf5ca232dd217064",
+      "broker_hash": "acb3f1e13dc632a73b15c82cccbb5dfe72b05e40f82ba3e1bdb48d1a5ccf6ace",
+      "actions_hash": "f7ef89be83781f737281f19d2ec9377db2dca882f6bf232974492b01e1a23432"
+    },
+    {
+      "step": 31,
+      "env_hash": "1c7b886f81d4a72ec3eaa50ee37f3d276e40b8f85d6dc2c15b50fba9bd303694",
+      "broker_hash": "2336326b09f8ed03fefc67a3213a77936da624109ebbcf0fc8ae3caf57b5aa69",
+      "actions_hash": "63e9932151e1aaf6f8d0c8023aa91c83763a5cca4b4df86a372676e90de6db29"
+    },
+    {
+      "step": 32,
+      "env_hash": "e01103c78616a3e09c4c7f923ef2dd76252b21003bb2a631b37d1335f59887c6",
+      "broker_hash": "2336326b09f8ed03fefc67a3213a77936da624109ebbcf0fc8ae3caf57b5aa69",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 33,
+      "env_hash": "351e47275b10e8c4602eff2f8048db776ab04575e0339ccfe94d5724752e2ed5",
+      "broker_hash": "2336326b09f8ed03fefc67a3213a77936da624109ebbcf0fc8ae3caf57b5aa69",
+      "actions_hash": "477afacbbb387eb4053f89921c5663a372b20012b9f23dd2d5167cfc2b030e10"
+    },
+    {
+      "step": 34,
+      "env_hash": "2ffa0c16770d8b85a904bf8b43387765d055d19cc08351ece8845b97ff09ed3f",
+      "broker_hash": "3de45766ea03cfe59008843c8124c45ce7e9746c09307d5e6f8a1e9aaff6a8c4",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 35,
+      "env_hash": "ba7c59d5366a2f7947ced079673eabe66bf2ea195a4d027480aad57db0315052",
+      "broker_hash": "4bbb31d2e050674bb01c566928024e0004f323da4643dfda6339641bcdb819ce",
+      "actions_hash": "85212f25b6505668ec34415b54e8ab666ce327e7421d5020df29fca3d3ee3d39"
+    },
+    {
+      "step": 36,
+      "env_hash": "e99a7b16e1d4999595c3fd9d585fc85a198db9097971a23359f1196958120ce0",
+      "broker_hash": "767bc7c55799e88165ed4af0d1d6e52c9003bb9e34dfaabf76d865e4bb9adc28",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 37,
+      "env_hash": "f6eb83c55becfaa073442dc25a3724e3ca61716b71c0a9a2381ba40778db634f",
+      "broker_hash": "767bc7c55799e88165ed4af0d1d6e52c9003bb9e34dfaabf76d865e4bb9adc28",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 38,
+      "env_hash": "485fc783ca9f557ddb783f86fdebe558a573a2bf1fa91c022234c8a627dfa67a",
+      "broker_hash": "767bc7c55799e88165ed4af0d1d6e52c9003bb9e34dfaabf76d865e4bb9adc28",
+      "actions_hash": "03d3cffcb2508ca0b542730ad6874c0519f3cbc2e8c29a1a0009036f12b40a4b"
+    },
+    {
+      "step": 39,
+      "env_hash": "836fb5f8e578fd53cc701d6b270f1654912cf4fd5ca902996481d84f737d52af",
+      "broker_hash": "067f346775311764ec0057b3838ebcbff7cc612b5a9792ed05f71db0cd2148a0",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 40,
+      "env_hash": "aaedbb25434a3545439891ca7846fec1d0c38647bbd900ffaf367d7e4651e957",
+      "broker_hash": "33c01564320348e56fa53f307620a0aa893150fb42ad7e2e62f214a56a5909ef",
+      "actions_hash": "03d3cffcb2508ca0b542730ad6874c0519f3cbc2e8c29a1a0009036f12b40a4b"
+    },
+    {
+      "step": 41,
+      "env_hash": "964aabcfb688033e64da0685b954073004153a9510c9ccc3865f83b30d6f50ac",
+      "broker_hash": "fc87052d5000991e8be0fc0d90e0b7fa18d226591793726841668de973c2c7f5",
+      "actions_hash": "03d3cffcb2508ca0b542730ad6874c0519f3cbc2e8c29a1a0009036f12b40a4b"
+    },
+    {
+      "step": 42,
+      "env_hash": "a478a4d3b4038947e7142ee451722eab137556a0a6b385779d2285140ffc9323",
+      "broker_hash": "eb1eab8b2ebb59becb055fe899a9ba65978e85da112c5944a4f2d426a8a61e7b",
+      "actions_hash": "656818be8dd520fb1474ee86fb9912a90dd99060bbbd936e64e2c8b440f3d068"
+    },
+    {
+      "step": 43,
+      "env_hash": "89d1b19f20e682b3f707e74c921c059656dc0bc8388217e4034c167cddfa1bec",
+      "broker_hash": "64220e4c68a7ea6f0b1a34a9ef757e405a900539b30f96c59c3adaf323d01683",
+      "actions_hash": "82b6cb62e476862321c77c1142f1c9f78d005811435b36cfcf36bea66aea23a8"
+    },
+    {
+      "step": 44,
+      "env_hash": "154a2eefec3f6a2441c67c32fc13552018479a3ab4a4b7ed0ed195129c9c7d2a",
+      "broker_hash": "64220e4c68a7ea6f0b1a34a9ef757e405a900539b30f96c59c3adaf323d01683",
+      "actions_hash": "114e802f665f17978d2db50c0313089ed0849bd28bd5291a33f0e0edebc82079"
+    },
+    {
+      "step": 45,
+      "env_hash": "c8835741cfd7ea968e493c65933c4f7d350c56857f91ac28eb89011bc5b1559d",
+      "broker_hash": "5c3d730b3c7d4654701b2ce6c04490ef026ff5c487bc3a7a5bd18120af5df583",
+      "actions_hash": "114e802f665f17978d2db50c0313089ed0849bd28bd5291a33f0e0edebc82079"
+    },
+    {
+      "step": 46,
+      "env_hash": "26512bbb4724092180d7e569e8eb048ba0ec59aee4f4519e4d2d50e855325fbd",
+      "broker_hash": "87b8a8aef47fe2b304bf14067ad8c0508855829c3ca60ec0759f8d51105b3c7a",
+      "actions_hash": "1ebe0853a6788a8610be2ccf77820d6e06d13e1e83c693a4286883f2065e26df"
+    },
+    {
+      "step": 47,
+      "env_hash": "5183d8a9cf2eefa6edcb58cd70fcb62e3a0d44319fac39a1e2b90f1992f1334f",
+      "broker_hash": "87b8a8aef47fe2b304bf14067ad8c0508855829c3ca60ec0759f8d51105b3c7a",
+      "actions_hash": "d36fb78c7393d043f9c646834867a6bf325025ebd84bff7d8443b15b1171dc5e"
+    },
+    {
+      "step": 48,
+      "env_hash": "f623febd0714d13149a5d8f3025a804673aa8a1ee31b20aedc56c85ba851d2b2",
+      "broker_hash": "87b8a8aef47fe2b304bf14067ad8c0508855829c3ca60ec0759f8d51105b3c7a",
+      "actions_hash": "1ebe0853a6788a8610be2ccf77820d6e06d13e1e83c693a4286883f2065e26df"
+    },
+    {
+      "step": 49,
+      "env_hash": "615b2b275ef861dbca60f858ae8664b44a2002afda23a6770f8c8fad106144af",
+      "broker_hash": "87b8a8aef47fe2b304bf14067ad8c0508855829c3ca60ec0759f8d51105b3c7a",
+      "actions_hash": "b3470f8da03606a07f66f10d218a260877a2cc642a170a261efa6181cf3c4036"
+    },
+    {
+      "step": 50,
+      "env_hash": "b1f7d576ff4d63fb34ed80f2e0debc654ab4a2ff4a91e335d10ad317b024e422",
+      "broker_hash": "5d39bebe00fb52f476b504e31180a70a0fb797352ab63e6ea8fcd01c683465d4",
+      "actions_hash": "431ff10e09c3fcba379a85ddb82f98b9cd65502a671e5b70609ad95b57a00753"
+    },
+    {
+      "step": 51,
+      "env_hash": "54a071a3e108241cd655615dbccba8bb00a3b4991a7055baa83e76806c62331d",
+      "broker_hash": "fb4283ce0bdd5d3e005689593893a51bd6c76c734a2beccb69f942d5e0006774",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 52,
+      "env_hash": "16f65712f54b4a8c7ffb1baf54c1919bf8b6a3a590648b4d3157f952d909fd59",
+      "broker_hash": "fb4283ce0bdd5d3e005689593893a51bd6c76c734a2beccb69f942d5e0006774",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 53,
+      "env_hash": "8f53ecc8f7525c915366c7a3eabfb7d0df6397c142dc21d6ba4de1882a2f1ed9",
+      "broker_hash": "fb4283ce0bdd5d3e005689593893a51bd6c76c734a2beccb69f942d5e0006774",
+      "actions_hash": "79df12e87cdb6479dcb0b70d3bd16bf270f9004d6719131f32857cbf65a901db"
+    },
+    {
+      "step": 54,
+      "env_hash": "cbfdc4099bfcfdd6bd19988403f93188422517572256916daaed5315804cf14c",
+      "broker_hash": "804526e78746a10e4c1263a836c8283f0c9465056701ead9f676e80ffa40f0d1",
+      "actions_hash": "114e802f665f17978d2db50c0313089ed0849bd28bd5291a33f0e0edebc82079"
+    },
+    {
+      "step": 55,
+      "env_hash": "21efa45cf6b111fe222f144318d7ade5c0dc4f13f7482117eb33b7e9984c47d7",
+      "broker_hash": "206f8daf99e7d38d46b498b239f15b22cfe11789eb5e06fa212383e02550ebe2",
+      "actions_hash": "79df12e87cdb6479dcb0b70d3bd16bf270f9004d6719131f32857cbf65a901db"
+    },
+    {
+      "step": 56,
+      "env_hash": "e175bc1d21d8c6648ac76c4c0bed9c76226603041fb207f774779c6319bc393c",
+      "broker_hash": "ffc4f7fcd460bcc1b6731996b20d69b045f92b8fbd7982453c7991c213fb8498",
+      "actions_hash": "1ebe0853a6788a8610be2ccf77820d6e06d13e1e83c693a4286883f2065e26df"
+    },
+    {
+      "step": 57,
+      "env_hash": "dc88d69942d5620b3cf6b1b4be785cf467cbc03d2ca56a84f5f8b30f893c1ea5",
+      "broker_hash": "ffc4f7fcd460bcc1b6731996b20d69b045f92b8fbd7982453c7991c213fb8498",
+      "actions_hash": "a3b0bb268f05ce9f8ccb7da5c9b3d03fdc4f9eb65464f3a1ccc9d858c8bd3bb4"
+    },
+    {
+      "step": 58,
+      "env_hash": "4b708d45be19a36c087af31eaa06591f00511aefdcef8f527273883086cce1a1",
+      "broker_hash": "6826c3c87a5ab1ece8a8ef23a7e6bf9c196da22bccda6e2f263938a6856e2d9b",
+      "actions_hash": "a3b0bb268f05ce9f8ccb7da5c9b3d03fdc4f9eb65464f3a1ccc9d858c8bd3bb4"
+    },
+    {
+      "step": 59,
+      "env_hash": "6e4b2e11fcf1c61f4788d4b948eba02ceabb2a6626c31aac2017a76f562b7fd0",
+      "broker_hash": "8380988ea2e6091c33b6f3ea57c73e66839e46d187c67692e02da99f8297735d",
+      "actions_hash": "a3b0bb268f05ce9f8ccb7da5c9b3d03fdc4f9eb65464f3a1ccc9d858c8bd3bb4"
+    },
+    {
+      "step": 60,
+      "env_hash": "82ddbc746e56434d6f4b29f0175a1c057c3b0d78a16423afc1f1b499952de7c4",
+      "broker_hash": "bed9fac516c22cc6b02e63d6628c3bbfa2eebd0689a2ce8e7f4ca4522bf03977",
+      "actions_hash": "1d15968d9d82d207c3beb769e147aadcffc6acfe557ce3f748d7cc124b77200f"
+    },
+    {
+      "step": 61,
+      "env_hash": "79655d152d7860571e095a2d1ebfc83a1d2d5831de6619ba25ae4074a3816a40",
+      "broker_hash": "20db90e27e49d3275af8396f3f5057ab46c459f2c87fa617aef707fbf51ed4c1",
+      "actions_hash": "5004056b25e85a1a6635777ffb5efcfa98392d7862f5318ca06103f9db7d3adb"
+    },
+    {
+      "step": 62,
+      "env_hash": "7244dd9d405c60d65197c831821a5b030d7f82948604d78ea9a4994441f4bed7",
+      "broker_hash": "9504007d2e89deae1412f7a21153b8e5ce940c65fe26640e6fa9de2f625d7e83",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 63,
+      "env_hash": "1ec1d944bfd8b5f1bb892b0de6c9572b2b343b739c195d601fbd0827fc75e728",
+      "broker_hash": "465a46e320465aeb47f2839d96ea636db1f5a8d02208ed096d2c1a52895f4f44",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 64,
+      "env_hash": "f5448a8eec18b5d79700b4e0315acd83971b70266e5906bfcc00fce7ceba0db9",
+      "broker_hash": "9504007d2e89deae1412f7a21153b8e5ce940c65fe26640e6fa9de2f625d7e83",
+      "actions_hash": "1ac6e237d2fe467d6705e1b03bcd21b277abf9caea237676a15ce187f421af72"
+    },
+    {
+      "step": 65,
+      "env_hash": "8cd1f4a28eb3918b630fe8f1d449488efc5a07f3990d4ac5ce892d2e48a5a824",
+      "broker_hash": "78c19e474f6ef81949375e3d56883d249bad7dff455736c4a8c56cfab04f0a44",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 66,
+      "env_hash": "558e843bcb1599e1af51629bc749c63771e0e5e764efdb6052827df8ec2b56b9",
+      "broker_hash": "4ae1a3b183090d66e423bcff0567c3d8b9ea986e4fae22434a0d44f36f3a27a1",
+      "actions_hash": "855d27c2673e6a97d49bf71d2e48fc0a3ed7a5b7bfc318b3cd5bb5df2aaf2062"
+    },
+    {
+      "step": 67,
+      "env_hash": "b8a6ac985f7700d8e482a39d6c05e2a4d04f5cd524177a5392c828da0def11b9",
+      "broker_hash": "3d8b3026150a6a017ebd297cf25c815ca83aded739ad2f3e67f54f832020e681",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 68,
+      "env_hash": "cc5a774af3f840ce1f1204410b1723623e7d9993720b4a88216758bd6518fe53",
+      "broker_hash": "bb38f5140a49d1e8ffcabeb14c372a7637f20372d8cbb4c42df805329f2e1023",
+      "actions_hash": "5004056b25e85a1a6635777ffb5efcfa98392d7862f5318ca06103f9db7d3adb"
+    },
+    {
+      "step": 69,
+      "env_hash": "10a0ca41a983601c76aeec9d11bf72ebe90a74ea16baa58ce48bb13486a69576",
+      "broker_hash": "98ad45e55674f86b9d614232c81c69e10c78c564de5e2cb4b34be31c3358ca8e",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 70,
+      "env_hash": "505ee97a23dafe0610406767d5fcce1a67489d01bef646a6956f5095761fb69e",
+      "broker_hash": "fe074b875705634d5703a49494df98931117ff0d52bc893de6475c7f299570b0",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 71,
+      "env_hash": "2bee9d3ae6756804b0a9917bbd9583f9954c05d0d323109e8e68eabaa6ad2693",
+      "broker_hash": "005a9c4a1d6cd80e51e929de35a62179f1b5949c4c48e2fc25212133d0399cd4",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 72,
+      "env_hash": "177678e6188c9ebe7a57d95f37f82ef204aef8c038b509057a4196e860be4c7e",
+      "broker_hash": "005a9c4a1d6cd80e51e929de35a62179f1b5949c4c48e2fc25212133d0399cd4",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 73,
+      "env_hash": "e54b943af7d8587791f2146661966c6a176f2bd89e4374f1e0d632b0e4acfec0",
+      "broker_hash": "005a9c4a1d6cd80e51e929de35a62179f1b5949c4c48e2fc25212133d0399cd4",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 74,
+      "env_hash": "82e5966c290e1b3c903fa62f41dfc6e3a3a202f0a1247ef2efd440a56af910ed",
+      "broker_hash": "005a9c4a1d6cd80e51e929de35a62179f1b5949c4c48e2fc25212133d0399cd4",
+      "actions_hash": "a39113183777df15cd7cb2fe939e8416debe474b97f6e65f52c5fe3fba2c0483"
+    },
+    {
+      "step": 75,
+      "env_hash": "a32ab17dc351a5b9ce9bd9b7c91226dbae43e868879f775dad38d7cc9eab8117",
+      "broker_hash": "e3f5ada2dc1659a7eb7534609fcc70c13e15252e5a2fb5696a381bdc106cfbc9",
+      "actions_hash": "5add6770e63f6daa0fc687f2ed7ae3047718f68289d5e9788835afd8aa961f2f"
+    },
+    {
+      "step": 76,
+      "env_hash": "02e77c3552bb358e44a0da53275f260603764fcadbe63943eff99ffe8e27068c",
+      "broker_hash": "55a47698a03b95cdff4192f8098e1944ec0aa155168876ec7bd16654185fbe6f",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 77,
+      "env_hash": "e9c779b0d10ff435177bcb4b000f4b064d9d6d65a8dbfe0927a3306a3b9d6ace",
+      "broker_hash": "55a47698a03b95cdff4192f8098e1944ec0aa155168876ec7bd16654185fbe6f",
+      "actions_hash": "892c24475f02e439355dc12ed92523ce3c958c3f0a09734a5301d2b54b5f1428"
+    },
+    {
+      "step": 78,
+      "env_hash": "d6699c52be69630ad7093b3f409b655da6e7ad956c509a837e8b0b986f418a95",
+      "broker_hash": "f6869d28780ebc5532854d9c3491c34a7b29011bb5d865eaebcf5913a70e412f",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 79,
+      "env_hash": "cd01c03ced9bfcce58a899e3eb12bac7c790f29e7b0265fbd234388294599622",
+      "broker_hash": "f6869d28780ebc5532854d9c3491c34a7b29011bb5d865eaebcf5913a70e412f",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 80,
+      "env_hash": "e801eb7b96c23c9be55fa3952aa6d7137ddc3fb09263230dc43a98b6a388b930",
+      "broker_hash": "95976846e0048a002a28bf7696149418145019316270121be34b9bac63cd85cd",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 81,
+      "env_hash": "8df3139430a715b9c653a60dae62ad3f3d18da4238b98c092996b5966cf0fa6f",
+      "broker_hash": "41a58b055818851f59b72c83c68c469a09bab298a27e53284cbda51f4dbe79a8",
+      "actions_hash": "656818be8dd520fb1474ee86fb9912a90dd99060bbbd936e64e2c8b440f3d068"
+    },
+    {
+      "step": 82,
+      "env_hash": "4b8d4363eaa14908513cac0ff23e9e722c924425f5c1f60dcb401323e91602ab",
+      "broker_hash": "3071bdccef7262b0e6052471df472481f68943e61b59f2a949a89f6bcf0d1ddb",
+      "actions_hash": "03d3cffcb2508ca0b542730ad6874c0519f3cbc2e8c29a1a0009036f12b40a4b"
+    },
+    {
+      "step": 83,
+      "env_hash": "184c921b4a316f4311f79a5bb37e707d611458bb4a82fbb43ee4b91c107f0348",
+      "broker_hash": "a8c24bbcf3602456a6064363516b2c1211f7c061e72e47d49d9917543e0f6d68",
+      "actions_hash": "656818be8dd520fb1474ee86fb9912a90dd99060bbbd936e64e2c8b440f3d068"
+    },
+    {
+      "step": 84,
+      "env_hash": "4252ce3f9fffb891b9ff6bc708c0303277e21fd5a5f0e63dbce84eeac05ccf9c",
+      "broker_hash": "a8c24bbcf3602456a6064363516b2c1211f7c061e72e47d49d9917543e0f6d68",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 85,
+      "env_hash": "e4b6ffbdf60754623eeefc6ccaba13ec6d083ac50ea8630397c11c47ba1af32f",
+      "broker_hash": "c6c87f335a1adb4b13a0c551508219e5a2292dc747b6db8110371109a71fe2a5",
+      "actions_hash": "ed3d62fc1e482b71b0a23d73897e35845a5cefe2b816b947c3df53a6bcf13f11"
+    },
+    {
+      "step": 86,
+      "env_hash": "17322db753cd7a44a5eba7b1c83ab1e8dcb0b62caf31f485dd87610a38a20b98",
+      "broker_hash": "8d5e45ac402d8a7aaed6330b358651c582b69d469b39a79532b90ac7e202f10a",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 87,
+      "env_hash": "912685116f8325163b3ff89757491ee4864c6b56da28c74e730fa97b2f500d58",
+      "broker_hash": "8d5e45ac402d8a7aaed6330b358651c582b69d469b39a79532b90ac7e202f10a",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 88,
+      "env_hash": "7988cf51b7e362900dd91c7f2958eb5bbf9d73599a5081bae11a62447ce5c273",
+      "broker_hash": "8d5e45ac402d8a7aaed6330b358651c582b69d469b39a79532b90ac7e202f10a",
+      "actions_hash": "ed3d62fc1e482b71b0a23d73897e35845a5cefe2b816b947c3df53a6bcf13f11"
+    },
+    {
+      "step": 89,
+      "env_hash": "dd2f634f870feeaab8682e50d2594978ae8f9222312c115c7a1c182c65dc0f62",
+      "broker_hash": "8d5e45ac402d8a7aaed6330b358651c582b69d469b39a79532b90ac7e202f10a",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 90,
+      "env_hash": "418d5a5cfaa979136fd54d7013a472f0ac0844dd8a943c9bf1bdcc18d094287e",
+      "broker_hash": "a9f4bce31f5ff2f9ccd64f397a12493a4416c22124d97c7e094718704f5a24b0",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 91,
+      "env_hash": "1c75640e0e4fb7611200decc6dcb1deb738c5816c6c85e1b53d5fbb87915e654",
+      "broker_hash": "32656968548be631266a80b00c3efefbf4f8592bb61453963c8f6c39001a506e",
+      "actions_hash": "f7ef89be83781f737281f19d2ec9377db2dca882f6bf232974492b01e1a23432"
+    },
+    {
+      "step": 92,
+      "env_hash": "dcd6a7de854529a7b119a913bc08e757edc4e835d7c6916945797d31bb8fa658",
+      "broker_hash": "84dfae2671e213dda10bd759a81c03c2543d20a8c9870ed0832a3c35ff9d9f18",
+      "actions_hash": "63e9932151e1aaf6f8d0c8023aa91c83763a5cca4b4df86a372676e90de6db29"
+    },
+    {
+      "step": 93,
+      "env_hash": "18b8db0e5b369e700110c628c5b48735a1ff884cb86a0cdbc2dc110527c2da9f",
+      "broker_hash": "09268a742ac35dea8022ea293814fa78d569f3e9ec60675946c2a7ee90ea31da",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 94,
+      "env_hash": "c19c442b000b23b7bf9c208fc148f63eaf030e57927d61e29d749aa96c488e09",
+      "broker_hash": "09268a742ac35dea8022ea293814fa78d569f3e9ec60675946c2a7ee90ea31da",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 95,
+      "env_hash": "b6d9b245a7aa556c9a0d6d828bbb6c73094262b78a89d167c9f2d1f29baf85ce",
+      "broker_hash": "f207d2e960e251802a555a7fc9388aaf73c01e1c12f34e00b9675f650c260071",
+      "actions_hash": "f7ef89be83781f737281f19d2ec9377db2dca882f6bf232974492b01e1a23432"
+    },
+    {
+      "step": 96,
+      "env_hash": "93f9153c1cad682da4019e7e64f90a100b8d75aa43dc0b8f838885bde8c89683",
+      "broker_hash": "3d8ae64115359dca4e1a26fed54279de6a7f45a091be26f23ff74e6f2bcd17d5",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 97,
+      "env_hash": "f59aad557305f202b2d32555cf505b2f4c05cbdae5a09f7ed6e24cb37ba0f209",
+      "broker_hash": "3d8ae64115359dca4e1a26fed54279de6a7f45a091be26f23ff74e6f2bcd17d5",
+      "actions_hash": "e14eaf7d122e2a42265d06fa317bdf8e0612f9f1d22fe0d350a4b40f2337fce3"
+    },
+    {
+      "step": 98,
+      "env_hash": "a24beab6833e02de15f4553718b5157009ef973b880b423f1c76a8d2963a173a",
+      "broker_hash": "ce5d6cac023508460ed302b3c8f48106ef1edb621ac0dd87427eb71a9ffdccd0",
+      "actions_hash": "ae3736b0c166b55e6c6e699bf702b82d7750703f4822d4440448767a74632908"
+    },
+    {
+      "step": 99,
+      "env_hash": "7434992497f3863af55236a4bd18d232365d73a130166caab5f01a91e5030e00",
+      "broker_hash": "073c70626f7c593ca937b42de08eb905b2567128361b3a67a45eaa0ed61a3bf1",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 100,
+      "env_hash": "f188505c1018ee56af4d1c1814f9b0a5d263210fdeac02c884460331ff0d0588",
+      "broker_hash": "eb59473b5f16253761aef7258802192cfcc9cb194c7bcbd473c498623d403627",
+      "actions_hash": "17a651434e1aab97dabdc89d9509a5f81ea50d2f208006171207c32a19a9da6f"
+    },
+    {
+      "step": 101,
+      "env_hash": "1830fa4bd55a9bb991350830807ed072a1a30292e261b3bbf6041489b93ee1ca",
+      "broker_hash": "fd1c4ff52dcad525b5eb30029749b6cbc57370a36f221dbff04df63bde23a050",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 102,
+      "env_hash": "db7f1abcc6301243c2ed037773dc2e84c415144c31da05bfb0602dcfd82c1eac",
+      "broker_hash": "fd1c4ff52dcad525b5eb30029749b6cbc57370a36f221dbff04df63bde23a050",
+      "actions_hash": "ae3736b0c166b55e6c6e699bf702b82d7750703f4822d4440448767a74632908"
+    },
+    {
+      "step": 103,
+      "env_hash": "33801ffee17e22c3612b7344bd43982ae0763eb8ba25c7e722be38087add4b2e",
+      "broker_hash": "fd1c4ff52dcad525b5eb30029749b6cbc57370a36f221dbff04df63bde23a050",
+      "actions_hash": "1ac6e237d2fe467d6705e1b03bcd21b277abf9caea237676a15ce187f421af72"
+    },
+    {
+      "step": 104,
+      "env_hash": "9509da77383b95ed9f6beb081dea98e55870e2f179c82ce19fe9fe2003e8774b",
+      "broker_hash": "fd1c4ff52dcad525b5eb30029749b6cbc57370a36f221dbff04df63bde23a050",
+      "actions_hash": "6599c74b6bd6a155b94e38e65cbf10a6c8a5b49170390e54d3be04e5bf47023b"
+    },
+    {
+      "step": 105,
+      "env_hash": "d11525c5dbd7bada95e6ae2d68f90a7e608169d2bc22038b9b68f3592d57ca39",
+      "broker_hash": "100d4f2a0dbedb4427e57d82f1584fb934fc06add62feef7395c9f4f287d5d27",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 106,
+      "env_hash": "da153cadd581e16da04e6ab73cccd012be5c52006f8cd585e0e3dc9e2eb2f770",
+      "broker_hash": "3676da644948b6fbf93f2c2360603b4e4bca4020f0eed84c904beb492fb14e32",
+      "actions_hash": "114e802f665f17978d2db50c0313089ed0849bd28bd5291a33f0e0edebc82079"
+    },
+    {
+      "step": 107,
+      "env_hash": "d6cf8272f22ef61e5ec8a3ae6ccd7d9a3888c592ecfc8e4daef9d989e1870b01",
+      "broker_hash": "2e8f40c25b15473d4fe6324dcb2b81fd210ac52ddd869b813b482020e184b2fb",
+      "actions_hash": "1ac6e237d2fe467d6705e1b03bcd21b277abf9caea237676a15ce187f421af72"
+    },
+    {
+      "step": 108,
+      "env_hash": "260bad0d3f636c8fe709ec30a0c636913cdadee60c9888a6f919689157c10f14",
+      "broker_hash": "f7c30087aed83cd3ccce08270bb2d5a98629d4bc9facfcf8c1ae865b284d6c92",
+      "actions_hash": "85212f25b6505668ec34415b54e8ab666ce327e7421d5020df29fca3d3ee3d39"
+    },
+    {
+      "step": 109,
+      "env_hash": "892df913ce8eefd44ff1db493c6ef71a84e407b35803aeaac6f546abd2a146f3",
+      "broker_hash": "f7c30087aed83cd3ccce08270bb2d5a98629d4bc9facfcf8c1ae865b284d6c92",
+      "actions_hash": "eb445e08e7792309f279fe2a002658b5a0473fde8b1f72f124b995b8acf36b0b"
+    },
+    {
+      "step": 110,
+      "env_hash": "ead1680009382a28b92b505be15de1daa2c739877ccc853b079ecaf5149b6eb4",
+      "broker_hash": "2288a08e97d9d58bb306dc5dcaeb02117b09ba49d883b440a584dfe77f50e9c2",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 111,
+      "env_hash": "bf2935714b6e540ff8d1855e9417a5e133105049fecc3cba0f1ff9318677f8cb",
+      "broker_hash": "5108ad7399e8f4d630865f8ff12db97476b9190631e93802be2187bf5264c87c",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 112,
+      "env_hash": "f1e32ccf62bb7ed33e34fd9ba8c4eddf16d2ffba818955e8a2e9c4799857ed43",
+      "broker_hash": "5108ad7399e8f4d630865f8ff12db97476b9190631e93802be2187bf5264c87c",
+      "actions_hash": "ff05ab56d00893a1f8117a9ff7e5aacd0a575921d83945d0f0c52d1036c42162"
+    },
+    {
+      "step": 113,
+      "env_hash": "7e31f03470dcfda128b74f3eb143c89a63fc202e08474e0d93e28edb1ac4bc7c",
+      "broker_hash": "dd071e81ab57a5698b505341983994e3f749cad5bade95a2908902cd74d65ce0",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 114,
+      "env_hash": "f88c889375b44a19f8728b953289d72c6e0c8542010bd0bb84ef58a31b56590c",
+      "broker_hash": "dd071e81ab57a5698b505341983994e3f749cad5bade95a2908902cd74d65ce0",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 115,
+      "env_hash": "3975e624f61a7dffcc3f5ff9d2f0e3d1a9eaaa009ca327717291364970189927",
+      "broker_hash": "896528c50cd5960f894eceef9912fcbf06d14beefa849bfd4938ad7acea4caeb",
+      "actions_hash": "ae3736b0c166b55e6c6e699bf702b82d7750703f4822d4440448767a74632908"
+    },
+    {
+      "step": 116,
+      "env_hash": "0ef8cefa3e66bb17885106d540db2d783cac9f0d86b68c02a43c6c959e966297",
+      "broker_hash": "940b75649bccca87fa8219bd85e2a04b2c46a66f8e2951c9c49d7f86d1817721",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 117,
+      "env_hash": "8b8c328375a8b1fb5e022a276d168e88788017037269ea90c92b979cdae4ebed",
+      "broker_hash": "940b75649bccca87fa8219bd85e2a04b2c46a66f8e2951c9c49d7f86d1817721",
+      "actions_hash": "1ebe0853a6788a8610be2ccf77820d6e06d13e1e83c693a4286883f2065e26df"
+    },
+    {
+      "step": 118,
+      "env_hash": "b366af9057ff90e2033cc926beeac156dcd937b624b2c133f800041e4810bacf",
+      "broker_hash": "940b75649bccca87fa8219bd85e2a04b2c46a66f8e2951c9c49d7f86d1817721",
+      "actions_hash": "c765b972fa7df0294070d7a2852b4ea3563505269d4fe00d4f87e82bd6b3d180"
+    },
+    {
+      "step": 119,
+      "env_hash": "05814d5fd5a4466b542cd80dc304ac4cb6f3650db2ec3452a14166511b2a11ee",
+      "broker_hash": "940b75649bccca87fa8219bd85e2a04b2c46a66f8e2951c9c49d7f86d1817721",
+      "actions_hash": "5004056b25e85a1a6635777ffb5efcfa98392d7862f5318ca06103f9db7d3adb"
+    },
+    {
+      "step": 120,
+      "env_hash": "da28ba5738e40a8466b5b16db9f393ae7f74fbc1b058599428c6313749843fcd",
+      "broker_hash": "0cc370816cfa57c1099ffe4cf92a0682b42c832d00334e170a6dcb560f0bc6dd",
+      "actions_hash": "25b946a924f743667ad0a51e244490efa68a45e3df235f76f0b683f0274f8004"
+    },
+    {
+      "step": 121,
+      "env_hash": "a03338ccecbcf13996d9025d143f93d7f3a0d02ee76fbb299453d2483e8d0897",
+      "broker_hash": "c8130ac02acc6c46f8f1ae7fa1b2e579e1022827af63585392af9c34f728cc43",
+      "actions_hash": "1ac6e237d2fe467d6705e1b03bcd21b277abf9caea237676a15ce187f421af72"
+    },
+    {
+      "step": 122,
+      "env_hash": "7dfdfcceeecb7655c41c0d8a782cb964575f70d30938c32d35d96467c658c764",
+      "broker_hash": "c8130ac02acc6c46f8f1ae7fa1b2e579e1022827af63585392af9c34f728cc43",
+      "actions_hash": "c52209918175e74c4d6a3b4eb7fbe86d62a6606fc37e385b8e2cc116ebadb97a"
+    },
+    {
+      "step": 123,
+      "env_hash": "8be1fde3268470af15cd9966d4b79ee32cb057f4258d1c542926484a51912978",
+      "broker_hash": "c8130ac02acc6c46f8f1ae7fa1b2e579e1022827af63585392af9c34f728cc43",
+      "actions_hash": "c39d60e3df5bda24907ca48299a037ea93471b1ab2369bae5c826b0dc470dcdc"
+    },
+    {
+      "step": 124,
+      "env_hash": "a059204fac9b9cbea0042920fa95deac312718c11013c1bc0f251ec8466d000b",
+      "broker_hash": "66c431ee0ad5f98efb8c326612e70c4a036964d809ab6b96f5cd7314a570bbad",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 125,
+      "env_hash": "89f0aa7ef01aa3d5144cde8327641592b05b148834b13cacd86286a82923117b",
+      "broker_hash": "1527a1694a7f0143bd94d9b938a15fd58bf608723d2a68eb40e074071bc869de",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 126,
+      "env_hash": "365b546201f0375360519f295ab98171c1e4eb19b1a9bd1a71f655ef82dfab3c",
+      "broker_hash": "15d67381e7b252c50fa003d1f67d5f6205a189dce0cffa4712dd10e82d4067c1",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 127,
+      "env_hash": "3f8d3d8346856f6c6a4aef289376c9ce5ae0e801fa8cdd8be2a4407e00cbd37f",
+      "broker_hash": "15d67381e7b252c50fa003d1f67d5f6205a189dce0cffa4712dd10e82d4067c1",
+      "actions_hash": "85212f25b6505668ec34415b54e8ab666ce327e7421d5020df29fca3d3ee3d39"
+    },
+    {
+      "step": 128,
+      "env_hash": "d0e434b5c04bfb5fc18867a256429d32eb7656bf65e2994510863ce824cb2c0c",
+      "broker_hash": "3d85b45cfa91825da55bf9ea463d34e21eec3b1f510e31c07c52325bfed6f72d",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 129,
+      "env_hash": "cfd20adce8069f18b10a3fc8148a95d876f2eb300eccc21efed402bce5edf952",
+      "broker_hash": "3d85b45cfa91825da55bf9ea463d34e21eec3b1f510e31c07c52325bfed6f72d",
+      "actions_hash": "85212f25b6505668ec34415b54e8ab666ce327e7421d5020df29fca3d3ee3d39"
+    },
+    {
+      "step": 130,
+      "env_hash": "1530d7abb9085fb44dfa985c969d2597abf52976bd08feda05ddad21a3baaad8",
+      "broker_hash": "76fd260f14777f86a54d33b647f0ffcfe172faee68857d60424b882f27a30ed4",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 131,
+      "env_hash": "ffb553193c79a6f8f34472ed8df0801b113aefb24e1b537b2f1ecb3cf92d64a9",
+      "broker_hash": "2fa78bf9ee7c9f4415461285c08312d1f2dd71e880322b5e45850a556106c14b",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 132,
+      "env_hash": "6ec582c40d6dc2a7114249cfb7cd66347ab59744dd7e959896b36bda6ed0845e",
+      "broker_hash": "2fa78bf9ee7c9f4415461285c08312d1f2dd71e880322b5e45850a556106c14b",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 133,
+      "env_hash": "37a6207c610b927c80ee2ca94820b3178596d2e480715cd3dd4aaeb61e436158",
+      "broker_hash": "2fa78bf9ee7c9f4415461285c08312d1f2dd71e880322b5e45850a556106c14b",
+      "actions_hash": "6c2ff63dc720fe339db99710dc69efc6e120899165e4c392a15d64ac86222e8d"
+    },
+    {
+      "step": 134,
+      "env_hash": "74573279cf9a9bd4e77fddf84c4340ec752f6ad8349306fc5ed4254b6e667e59",
+      "broker_hash": "6f84de6769bedf850d4899371a8c34db7ffbe22a516d9fa677d9916721187ca9",
+      "actions_hash": "6c2ff63dc720fe339db99710dc69efc6e120899165e4c392a15d64ac86222e8d"
+    },
+    {
+      "step": 135,
+      "env_hash": "f7ffa51a42eaa86cda47aa1380de8d44dae0bd08221c97085e0a611185ce1851",
+      "broker_hash": "d817f49c738fa310e7861cc25692c59d9327bedb4f3944f3fb683dc1015d6fc1",
+      "actions_hash": "656818be8dd520fb1474ee86fb9912a90dd99060bbbd936e64e2c8b440f3d068"
+    },
+    {
+      "step": 136,
+      "env_hash": "b074eb30f8afda3eca0b8087d80b5e2beb6794b651a28a6eeeac7d81d276622f",
+      "broker_hash": "6eaee97f478f5cf13dfdd5f43f69e6b9e7797c39d71bc6e732c7314f9cf37974",
+      "actions_hash": "85212f25b6505668ec34415b54e8ab666ce327e7421d5020df29fca3d3ee3d39"
+    },
+    {
+      "step": 137,
+      "env_hash": "e0abd656be6e32fe0e9a4fa9ae4830f60d8a178f2a6d335132fc6980dbf7df48",
+      "broker_hash": "6eaee97f478f5cf13dfdd5f43f69e6b9e7797c39d71bc6e732c7314f9cf37974",
+      "actions_hash": "6c2ff63dc720fe339db99710dc69efc6e120899165e4c392a15d64ac86222e8d"
+    },
+    {
+      "step": 138,
+      "env_hash": "14320233f0bc9952dd9f730b3b3afee986b5dc8d8416387566181f0e32790430",
+      "broker_hash": "6eaee97f478f5cf13dfdd5f43f69e6b9e7797c39d71bc6e732c7314f9cf37974",
+      "actions_hash": "5add6770e63f6daa0fc687f2ed7ae3047718f68289d5e9788835afd8aa961f2f"
+    },
+    {
+      "step": 139,
+      "env_hash": "f71b9a7cb6f15054fc6356d9faf53a39c3b3f58cf4f439d9f68181d6f2568fc6",
+      "broker_hash": "3aba0680c872c8cd24a2bb33a82cda3bb830fd6ae837820149bbbd03a2169a61",
+      "actions_hash": "5add6770e63f6daa0fc687f2ed7ae3047718f68289d5e9788835afd8aa961f2f"
+    },
+    {
+      "step": 140,
+      "env_hash": "7125136734656acd83a70d2ddef9058b855a6de5dd08746f6cb092f43f53f869",
+      "broker_hash": "55b3ee8f34e12635cfc265875d7f13d0e4761dea64255897d7c19e608b9aa338",
+      "actions_hash": "5add6770e63f6daa0fc687f2ed7ae3047718f68289d5e9788835afd8aa961f2f"
+    },
+    {
+      "step": 141,
+      "env_hash": "12ffe772fb15f2ec45eab51f923de1174b6fb55e8cc966a685499c487b17b276",
+      "broker_hash": "756c35ffd7456432e7a809c7bc9021ec07464f17e76cc9e88622ff2b2e09bdab",
+      "actions_hash": "7ef8432c8f1b1d83a3a4f005d24414441509f9e414d59315e6ff60e0afefe624"
+    },
+    {
+      "step": 142,
+      "env_hash": "4bab5aba07bbb6f5242909cfef7b39aa21e19775e7669290d932604598f9311f",
+      "broker_hash": "8d931ce8f80e675e4f2f0f9314e02d0b1fb17a769d4ca27e0037b9f9d78c2b6a",
+      "actions_hash": "124605d2ea981151114cdee56ab854eee873258e762f60f2e5e27855139f2e6b"
+    },
+    {
+      "step": 143,
+      "env_hash": "80ce1fe455e3ca713ce655d52b4f4f59e421c9da689cf5fa09cd46e45251a885",
+      "broker_hash": "7d85f4c557b4c405f2d5295a2db113f57099f5a96f412a685e93d140f6a8882d",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 144,
+      "env_hash": "38f7354098c41965c32e7707acad662d9563dd1480cf17f0b05af7754a951f10",
+      "broker_hash": "7d85f4c557b4c405f2d5295a2db113f57099f5a96f412a685e93d140f6a8882d",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    },
+    {
+      "step": 145,
+      "env_hash": "1e65c148bfc06b39004da87335c1737573bb63d7474db825cc812681c5bf818f",
+      "broker_hash": "9dc80b09294c46efe6d2470f830b1bb0cf05bdace747ad937bc8a099b9bfef63",
+      "actions_hash": "c765b972fa7df0294070d7a2852b4ea3563505269d4fe00d4f87e82bd6b3d180"
+    },
+    {
+      "step": 146,
+      "env_hash": "30e32af4f790b3abfadcd1f0cea64c35aa41243402457d9a3333ef1b50e30301",
+      "broker_hash": "ff84d4f49edcb1720197d007906c03fe3612c0008edb7bf812f06270a937357a",
+      "actions_hash": "d36fb78c7393d043f9c646834867a6bf325025ebd84bff7d8443b15b1171dc5e"
+    },
+    {
+      "step": 147,
+      "env_hash": "74bd0e3fbe41f5da9fa704e1c514684845241cc6d93c94646792a08724274f8b",
+      "broker_hash": "e369f05908eb259db737b7d8fa21b9e1e1e30d8a3eba4164ad4a1aeefc601196",
+      "actions_hash": "7ef8432c8f1b1d83a3a4f005d24414441509f9e414d59315e6ff60e0afefe624"
+    },
+    {
+      "step": 148,
+      "env_hash": "1a124c4ccd4a4660b7bcc926789ce7d464c68f8d24b873e1ccef201b4efae7d9",
+      "broker_hash": "14ea84405f99137a7e75cc2993f5e29b2ddd9492bda7d3556ea8970524044b3c",
+      "actions_hash": "0a599bcdef2cba55b48acd075e2336f7bb3e48aada10397d538ad515000b34c7"
+    },
+    {
+      "step": 149,
+      "env_hash": "a2dcf560d371fce427cb2c7dba9625e1d897eb254937f34224e42042c3bb4ca5",
+      "broker_hash": "14ea84405f99137a7e75cc2993f5e29b2ddd9492bda7d3556ea8970524044b3c",
+      "actions_hash": "627cbc5f6b32a9e18ee3d92a1455871fea41ed952cdb4f69a8004d8b22b3b71b"
+    },
+    {
+      "step": 150,
+      "env_hash": "83bfb2d20ee814e84831881a4ba32f81d09e101418e5d309159817eb521ee38c",
+      "broker_hash": "3666b927f822fd65c966ddd5d7e0fa1ad7ce9f2f1abbb3651d48e08efb05721b",
+      "actions_hash": "623ec5520c124b419902a52b526eafc91a1c152e4f5bb5ec3cdb88850339f0ed"
+    }
+  ],
+  "steps": 150,
+  "done": true,
+  "metrics": {
+    "mission_success": true,
+    "winner": "blue",
+    "steps": 150,
+    "task_mode": "continuous",
+    "blue_score": 1.0,
+    "red_score": 0.0,
+    "blue_alive": 3,
+    "blue_total": 3,
+    "red_combatants_alive": 0,
+    "red_combatants_total": 2,
+    "red_detected": 4,
+    "red_intercepted": 3,
+    "civilian_encounters": 2,
+    "civilian_intercepted": 1,
+    "rule_violation_rate": 0.5,
+    "ammo_used": 3,
+    "ammo_efficiency": 1.0,
+    "instruction_switches": 0,
+    "adaptation_latencies": [],
+    "port_penetrations": 0,
+    "intercept_lock_rate": 1.0,
+    "handover_latencies": [
+      6,
+      8
+    ],
+    "lock_maintenance_ratio": 0.7272727272727273,
+    "avg_lock_duration": 0.0,
+    "locks_acquired": 0,
+    "fuel_consumed": 105.8,
+    "fuel_efficiency": 0.9451795841209879,
+    "dyn_obstacle_collisions": 5,
+    "static_obstacle_bumps": 0,
+    "blue_bounce_events": 2,
+    "jam_events": 1,
+    "packets_dropped": 0,
+    "scout_track_bonuses": 1,
+    "intercept_events": [
+      {
+        "step": 33,
+        "target": "red_comb_w0_0",
+        "range": "standoff",
+        "locked": true
+      },
+      {
+        "step": 74,
+        "target": "red_comb_w1_0",
+        "range": "standoff",
+        "locked": true
+      },
+      {
+        "step": 123,
+        "target": "red_scout_w1_0",
+        "range": "standoff",
+        "locked": true
+      }
+    ]
+  },
+  "V": 1.0,
+  "replay_check": null,
+  "reference_optimality_independently_verified": false,
+  "trace_sha256": "3cb7d4e34e6c4e335864be35619fe15ca731e2b100de5b235d19a313e8e2818b",
+  "requests_sha256": null,
+  "fault_injection": {
+    "case": "action_hold",
+    "dose": 0.6,
+    "wrapper_sha256": "d7c516bca4682a7ca8f85256f864df454d555d2fa2bd4c81664c27a862b8fcff",
+    "fault_event_count": 259,
+    "fault_events_sha256": "4870f934c5f822ed4ae89007143d36c9d0866ca981109170929a3e8f1df92cba",
+    "replay_fault_spec_same_as_original": null
+  }
+}
