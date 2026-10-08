@@ -35,17 +35,34 @@ as evidence to inspect, and re-run any published analysis with the shipped scrip
 
 ---
 
-## 1a. Still missing — two appendix blocks
+## 1a. Appendix I.3 — FOUND and verified
+
+The real-stream counterfactual (seeds 601–610) was located and is now included as
+`data/collaborator_runs/p0-strengthening-20261001/inputs/P3a__llm_goal_causal__s601-610__confirm__v1/`.
+
+It reproduces `tab_p3a_seedgrid` **exactly**: per-seed LLM/hold/rule composites 10/10,
+`LLM − hold` mean +0.420 positive in 10/10, `LLM − rule` mean −0.260, and the LLM call
+counts 10/10. The intervention names itself in the data
+(`intervention.kind = "all_unit_goals_to_legal_hold"`). Run
+`python reproduce/verify_p3a.py`.
+
+It was missed on the first pass because the seed range is **reused**: seeds 601/602/603/
+605/607 also appear in `p0-strengthening-20261001/results/E3*/` as deception-detection
+`p_real` records. Searching by seed finds the wrong experiment; the batch is found by its
+intervention marker instead.
+
+---
+
+## 1b. Still missing
 
 Full mapping in [`../PAPER_COVERAGE.md`](../PAPER_COVERAGE.md). Briefly:
 
 | Block | Seeds | Status |
 |---|---|---|
-| Appendix I.3, real-stream counterfactual (`tab_p3a_seedgrid`) | 601–610 | **absent everywhere.** Seeds 601/602/603/605/607 exist in `p0-strengthening`'s E3 files, but those are deception-detection `p_real` records — a different experiment reusing the range. Do not substitute them. |
-| Appendix I.4, anchored critical-fault validation | 561–570 | present on the authoring machine at `server-experiments/g1-fault-dose/` (94 MB, 1,556 files) but not committed. Promote it into `data/` to close this row. |
-| Appendix G, `tab:nointel` legacy arm | — | the **legacy declared-intelligence episodes** (82/49/40 reports) are not in any tree; only the aggregated `DATASET_5SEEDS.json` references the mode. The no-intelligence column is present. |
+| Appendix I.4, anchored critical-fault validation | 561–570 | **no implementing experiment found.** Absent from every experiment inventory (20260930, 1003_1205, 1003_1439), and its terminology (`anchored critical`, `matched-prefix`, `critical-exposure`) has **0 hits** across e5_ascii, e5_easy, openmd/doc, role_c_toolkit/docs, server-experiments and the private archive. The nearest-named batch, `g1-fault-dose`, is experiment **G1** ("graded fault injection–recovery calibration"), whose own report concludes *terminate G1; the `5/5 graded faults` claim was deleted*, and whose costs do **not** reproduce 0.567/0.327 (every cost has |cost| < 0.25, frequently the wrong sign). |
+| Appendix G, `tab:nointel` legacy arm | — | **located but not the printed subset.** The archive `~/openmd_private_archive/declared_briefing_snapshot_20260927_1419/` holds the legacy episodes (0 of 864 files mention `briefing`, as expected pre-fix), but yields 83/142/80 episodes against the table's 82/49/40. Means are close (pure-LLM 0.526 vs 0.516) yet the Δ column cannot be recomputed as printed without the seed filter from `_w1_declared_delta.py`. |
 | Appendix I.4 degradation accounting, `figA4` ΔP/ΔE/ΔI table | — | the 12-case values are printed inline in the appendix but not stored as a JSON table. |
-| `figA2_replanning_sweep` | — | plotting data absent from every available source tree. |
+| `figA2_replanning_sweep` baseline row | — | the three sweep rows reproduce; the `pure RL` row (0.978) does not appear in any tree. |
 
 ### Still awaited from the co-author
 
