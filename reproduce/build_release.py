@@ -1,4 +1,4 @@
-﻿"""Build the submission release folder.
+"""Build the submission release folder.
 
 Design rules, learned from what is actually on disk:
 
@@ -57,14 +57,16 @@ JUNK_DIR_NAMES = {
 # Stray run logs are not release material, and they leak the authoring machine's
 # absolute home paths (measured: 69 occurrences, mostly in these files).
 #
-# `.jsonl` is deliberately NOT listed here. It is ambiguous: the withheld-grid analysis
-# wrote per-episode console logs as .jsonl, but the g1-fault-dose batch stores its
-# per-tick simulation traces as .jsonl too -- 76 MB of real evidence. Excluding the
-# suffix globally silently dropped that, so .jsonl is filtered by PATH instead
-# (see is_junk).
-JUNK_FILE_SUFFIXES = (".console.txt", ".log", ".log.lock")
+# Only `.console.txt` and lock files are dropped by SUFFIX. `.jsonl` and `.log` are not,
+# because the same suffix names both disposable logs and real evidence: g1-fault-dose
+# stores per-tick traces as .jsonl (76 MB), and the e1-2x2 batch's SHA-256 manifest
+# accounts for 594 files including 220 .log files. Excluding those two by suffix silently
+# dropped evidence twice, so they are filtered by PATH instead (see is_junk), and the
+# home paths that motivated the suffix rule in the first place are rewritten afterwards
+# by sanitize_data_paths().
+JUNK_FILE_SUFFIXES = (".console.txt", ".log.lock")
 
-# Directories whose .jsonl contents are logs rather than data.
+# Directories whose .jsonl/.log contents are logs rather than data.
 LOG_DIR_NAMES = {"logs", "log", "_w1_runs"}
 
 # Files that must NEVER be published, with the reason recorded in the build report.
@@ -108,13 +110,13 @@ def is_junk(p: Path) -> str | None:
     for part in p.parts:
         if part.lower() in JUNK_DIR_NAMES:
             return f"excluded dir ({part})"
-    # .jsonl is kept or dropped by location, because the same suffix names both
-    # per-episode console logs (drop) and per-tick simulation traces (keep).
-    if p.suffix == ".jsonl":
+    # .jsonl and .log are kept or dropped by LOCATION: the same suffix names both
+    # per-episode console logs (drop) and real batch evidence (keep).
+    if p.suffix in (".jsonl", ".log"):
         if any(part.lower() in LOG_DIR_NAMES for part in p.parts[:-1]):
-            return "run log (.jsonl under a log directory)"
-        if re.search(r"\.console\.jsonl$", p.name, re.I):
-            return "run log (.console.jsonl)"
+            return f"run log ({p.suffix} under a log directory)"
+        if re.search(r"\.console\.(jsonl|log)$", p.name, re.I):
+            return f"run log (.console{p.suffix})"
     if p.suffix in (".pyc", ".pyo", ".pyd", ".so", ".log.lock"):
         return f"build/bytecode artifact ({p.suffix})"
     return None
@@ -356,6 +358,12 @@ def main() -> int:
     print("      E6 source batches (four models)")
     copy_tree(SRC_ROOT / "release_assets" / "e6-sources",
               dest / "data" / "e6-sources", label="data/e6-sources")
+    # Appendix G "Experiment 2" -- the headroom-manipulation feasibility probe. The paper
+    # cites it as e1_2x2_option1/2.json and "Study 2 batch SHA-256-manifested (594 files)";
+    # this is that batch (594 files). It was on disk but outside the bundle.
+    print("      E1/Exp2 2x2 headroom probe (appendix G)")
+    copy_tree(SRC_ROOT / "release_assets" / "e4-headroom-2x2",
+              dest / "data" / "e4-headroom-2x2", label="data/e4-headroom-2x2")
     print("      e5 attribution records (appendix I.5)")
     copy_tree(SRC_ROOT / "release_assets" / "e5-attribution",
               dest / "data" / "e5-attribution", label="data/e5-attribution")
@@ -463,7 +471,7 @@ def main() -> int:
                      "verify_p3a.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
                      "verify_e6_four_models.py", "verify_g1_deltas.py",
-                     "verify_e5pilot.py",
+                     "verify_e5pilot.py", "verify_e2_2x2.py",
                      "verify_legacy_arm.py",
                      "compare_code.py",
                      "scan_for_secrets.py",
@@ -480,7 +488,7 @@ def main() -> int:
                      "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
                      "P3A_VERIFICATION.txt",
                      "COMPLEX_TIER_VERIFICATION.txt", "MODEL_INVARIANCE_VERIFICATION.txt",
-                     "E5PILOT_VERIFICATION.txt",
+                     "E5PILOT_VERIFICATION.txt", "E2_2X2_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "CODE_COMPARISON.txt",
@@ -562,6 +570,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 
