@@ -1,0 +1,63 @@
+== eval episode: scenario=COUNT-IE-05-MULTI-AXIS-N013 seed=64104 planner=rule max_ticks=1800
+== 过程日志: /mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/paired/COUNT-IE-05-MULTI-AXIS-N013/weak/seed-64104/episode.jsonl
+[tick    1] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=0
+[tick  100] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=0
+[tick  175] 开火[红] intruder.uav-01 -> sensor.contact.intruder.uav-01.facility.command (weapon.loitering-munition@2.0.0) status=executed
+[tick  175] 开火[红] intruder.uav-03 -> sensor.contact.intruder.uav-03.facility.command (weapon.loitering-munition@2.0.0) status=executed
+[tick  200] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=2
+[tick  202] 开火[红] intruder.uav-02 -> sensor.contact.intruder.uav-02.facility.command (weapon.loitering-munition@2.0.0) status=executed
+[tick  205] 开火[红] intruder.uav-94 -> sensor.contact.intruder.uav-94.facility.command (weapon.loitering-munition@2.0.0) status=executed
+[tick  210] 开火[红] intruder.uav-04 -> sensor.contact.intruder.uav-04.facility.command (weapon.loitering-munition@2.0.0) status=executed
+[tick  300] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=5
+[tick  400] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=5
+[tick  500] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=5
+[tick  600] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=5
+[tick  690] 开火[红] intruder.boat-02 -> sensor.contact.intruder.boat-02.defender.usv-03 (weapon.suicide-warhead@2.0.0) status=executed
+[tick  700] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=6
+[tick  701] 开火[红] intruder.boat-93 -> sensor.contact.intruder.boat-93.facility.berth (weapon.suicide-warhead@2.0.0) status=executed
+[tick  703] 终局达成，立即终止: intruder_success (rule.assets-lost)
+
+== 策略记分卡 ==
+  rule       overall=0.029 w=1.00 term=0.00 fac=0.00 depth=0.00 leak=0.29 exch=0.00 ammo=0.00 surf=0.00 | depth_mean=153.3 intercept=0.29 release=0.71
+  无人机损失 蓝 0/4  红 2/7
+  无人船损失 蓝 1/5  红 0/6
+  拦截纵深 mean=153.3 m  拦截率=0.2857  漏防率=0.7143
+  设施加权存活=0.0  摧毁=2  失能=2
+  总体策略评分 防守方=0.029  突防方=0.971
+[Taichi] version 1.7.3, llvm 15.0.4, commit 5ec301be, linux, python 3.11.16
+[Taichi] Starting on arch=x64
+== 终局结果 ==
+{
+  "aborted": null,
+  "elapsed_seconds": 439.88,
+  "mission_states": [
+    "state.active",
+    "state.assets-lost"
+  ],
+  "score_state": {
+    "score.facility-integrity": 2.0
+  },
+  "step_max_seconds": 2.792,
+  "step_mean_seconds": 0.349,
+  "terminal_result": {
+    "latched": true,
+    "outcome": "intruder_success",
+    "priority": 100,
+    "ranking": {
+      "coalition.defender": 2,
+      "coalition.intruder": 1
+    },
+    "result": "intruder_success",
+    "rule_id": "rule.assets-lost",
+    "tick": 703,
+    "trigger_evidence": {
+      "candidate_hash": "sha256:dd63f8485d1e399d6d26c5e717d331e9da800060becec02dae3f7cf124c67e35",
+      "event_id": "event.assets-lost",
+      "selection_policy": "priority_desc_rule_id_asc_event_id_asc"
+    }
+  },
+  "ticks_per_second": 1.6,
+  "ticks_run": 703,
+  "total_fires": 7
+}
+== 结果已写入 /mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/paired/COUNT-IE-05-MULTI-AXIS-N013/weak/seed-64104/report.json

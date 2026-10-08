@@ -1,0 +1,73 @@
+== eval episode: scenario=COUNT-IE-09-STAGGERED-WAVES-N008 seed=64101 planner=rule max_ticks=1800
+== 过程日志: /mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/scan/p0count_ie_09_staggered_waves_n008/episode.jsonl
+[tick    1] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=0
+[tick   10] 开火[蓝] defender.uav-04 -> sensor.contact.defender.uav-04.intruder.uav-01 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick   22] 开火[蓝] defender.uav-04 -> sensor.contact.defender.uav-04.intruder.uav-01 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick   50] 开火[蓝] defender.uav-03 -> sensor.contact.defender.uav-03.intruder.uav-02 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick   57] 开火[蓝] defender.usv-03 -> sensor.contact.defender.usv-03.intruder.boat-01 (weapon.surface-missile@2.0.0) status=executed
+[tick   62] 开火[蓝] defender.uav-03 -> sensor.contact.defender.uav-03.intruder.uav-02 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick   69] 开火[蓝] defender.usv-03 -> sensor.contact.defender.usv-03.intruder.boat-01 (weapon.surface-missile@2.0.0) status=executed
+[tick   90] 开火[蓝] defender.uav-01 -> sensor.contact.defender.uav-01.intruder.uav-01-p001 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick  100] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=7
+[tick  102] 开火[蓝] defender.uav-01 -> sensor.contact.defender.uav-01.intruder.uav-01-p001 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick  200] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=8
+[tick  257] 开火[红] intruder.boat-01 -> sensor.contact.intruder.boat-01.defender.usv-01 (weapon.suicide-warhead@2.0.0) status=executed
+[tick  262] 开火[蓝] defender.uav-02 -> sensor.contact.defender.uav-02.intruder.uav-03 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick  274] 开火[蓝] defender.uav-02 -> sensor.contact.defender.uav-02.intruder.uav-03 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick  300] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=11
+[tick  310] 开火[蓝] defender.uav-01 -> sensor.contact.defender.uav-01.intruder.uav-04 (weapon.air-interceptor-munition@2.0.0) status=executed
+[tick  400] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=12
+[tick  500] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=12
+[tick  540] 开火[红] intruder.boat-02 -> sensor.contact.intruder.boat-02.defender.usv-02 (weapon.suicide-warhead@2.0.0) status=rejected err=combat.envelope_denied
+[tick  600] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=12
+[tick  600] 开火[蓝] defender.usv-02 -> sensor.contact.defender.usv-02.intruder.boat-02 (weapon.surface-missile@2.0.0) status=executed
+[tick  612] 开火[蓝] defender.usv-02 -> sensor.contact.defender.usv-02.intruder.boat-02 (weapon.surface-missile@2.0.0) status=executed
+[tick  700] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=14
+[tick  800] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=14
+[tick  900] score={'score.facility-integrity': 2.0} states=('state.active',) fires_total=14
+[tick  999] 终局达成，立即终止: defender_success (rule.defence-success)
+
+== 策略记分卡 ==
+  rule       overall=0.853 w=1.00 term=1.00 fac=0.81 depth=0.69 leak=1.00 exch=1.00 ammo=0.92 surf=0.67 | depth_mean=13797.4 intercept=1.00 release=0.00
+  无人机损失 蓝 0/4  红 5/5
+  无人船损失 蓝 1/3  红 2/3
+  拦截纵深 mean=13797.4 m  拦截率=1.0  漏防率=0.0
+  设施加权存活=0.8078  摧毁=0  失能=1
+  总体策略评分 防守方=0.8528  突防方=0.1472
+[Taichi] version 1.7.3, llvm 15.0.4, commit 5ec301be, linux, python 3.11.16
+[Taichi] Starting on arch=x64
+== 终局结果 ==
+{
+  "aborted": null,
+  "elapsed_seconds": 264.32,
+  "mission_states": [
+    "state.active",
+    "state.defence-success"
+  ],
+  "score_state": {
+    "score.facility-integrity": 2.0
+  },
+  "step_max_seconds": 8.176,
+  "step_mean_seconds": 0.188,
+  "terminal_result": {
+    "latched": true,
+    "outcome": "defender_success",
+    "priority": 50,
+    "ranking": {
+      "coalition.defender": 1,
+      "coalition.intruder": 2
+    },
+    "result": "defender_success",
+    "rule_id": "rule.defence-success",
+    "tick": 999,
+    "trigger_evidence": {
+      "candidate_hash": "sha256:9dc7bb5242ca7363b25de09e6ea9f82e3b4fd395defa398ae1ff154a61309b10",
+      "event_id": "event.defence-success",
+      "selection_policy": "priority_desc_rule_id_asc_event_id_asc"
+    }
+  },
+  "ticks_per_second": 3.78,
+  "ticks_run": 999,
+  "total_fires": 14
+}
+== 结果已写入 /mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/scan/p0count_ie_09_staggered_waves_n008/report.json

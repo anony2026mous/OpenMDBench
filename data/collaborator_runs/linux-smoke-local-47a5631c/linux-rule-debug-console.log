@@ -1,0 +1,119 @@
+Process openmdbench-sim2sea-mmg:
+Traceback (most recent call last):
+  File "/root/openmd/tools/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/root/openmd/tools/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 403, in _worker_main
+    result = _worker_engine(engines, request).step_many(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 236, in step_many
+    core, action = self._prepare_substep(
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 189, in _prepare_substep
+    core = runtime.core_for(self, interval)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 330, in core_for
+    self._core = engine._build_core(dt_s=interval)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 81, in _build_core
+    import taichi as ti  # type: ignore[import-untyped]
+    ^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/__init__.py", line 1, in <module>
+    from taichi._funcs import *
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/_funcs.py", line 3, in <module>
+    from taichi.lang import impl, ops
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/lang/__init__.py", line 1, in <module>
+    from taichi.lang import impl, simt
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/lang/impl.py", line 6, in <module>
+    from taichi._lib import core as _ti_core
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/_lib/__init__.py", line 1, in <module>
+    from taichi._lib.utils import ti_python_core as core
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/_lib/utils.py", line 110, in <module>
+    ti_python_core = import_ti_python_core()
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/_lib/utils.py", line 57, in import_ti_python_core
+    raise e from None
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/_lib/utils.py", line 46, in import_ti_python_core
+    from taichi._lib.core import taichi_python as core  # pylint: disable=C0415
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ImportError: /usr/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by /root/openmd/releases/local-47a5631c/source-code-6.0/.venv/lib/python3.11/site-packages/taichi/_lib/core/taichi_python.cpython-311-x86_64-linux-gnu.so)
+[33mShare object taichi_python import failed, check this page for possible solutions:
+https://docs.taichi-lang.org/docs/install[39m
+[中止] exception: NativeDynamicsErrorV2: dynamics.state_invalid at step/defender.usv-01: native dynamics function rejected canonical state or parameters; suggestion: verify model-specific bounds and canonical SI units
+Traceback (most recent call last):
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 486, in _rpc_unlocked
+    response = self._connection.recv()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/tools/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+          ^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/tools/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/multiprocessing/connection.py", line 430, in _recv_bytes
+    buf = self._recv(4)
+          ^^^^^^^^^^^^^
+  File "/root/openmd/tools/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/multiprocessing/connection.py", line 399, in _recv
+    raise EOFError
+EOFError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 631, in step_many
+    result = self._rpc(
+             ^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 585, in _rpc
+    return self._worker.request(payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 505, in request
+    return self._rpc_unlocked(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 488, in _rpc_unlocked
+    raise RuntimeError("MMG worker connection failed") from error
+RuntimeError: MMG worker connection failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/native_v2.py", line 682, in _step_once
+    result = self._step_mmg(state, command, float(tick_seconds))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/native_v2.py", line 886, in _step_mmg
+    values = step_many(
+             ^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/sim2sea_mmg_worker.py", line 650, in step_many
+    raise ValueError(str(error)) from error
+ValueError: MMG worker connection failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/code/eval/run_episode.py", line 747, in run_episode
+    receipt = session.step(operation_id=f"eval.episode.tick.{tick:08d}",
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/sessions/lifecycle_v2.py", line 1973, in step
+    return actions.apply_tick(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/sessions/lifecycle_v2.py", line 1534, in apply_tick
+    world_receipt = self._world.advance_tick(merged_input)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/world/factory_v2.py", line 5028, in advance_tick
+    self._invoke_motion_provider(
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/world/factory_v2.py", line 3107, in _invoke_motion_provider
+    output = step(
+             ^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/native_v2.py", line 635, in step
+    return self._step_once(
+           ^^^^^^^^^^^^^^^^
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/source-code/openmd/source-code/source_codes/openmdbench/dynamics/native_v2.py", line 694, in _step_once
+    raise _error(
+openmdbench.dynamics.native_v2.NativeDynamicsErrorV2: dynamics.state_invalid at step/defender.usv-01: native dynamics function rejected canonical state or parameters; suggestion: verify model-specific bounds and canonical SI units
+
+{"run_id": "ie_10_dual_axis_pincer_rule_s9901_t1_linux-rule-debug", "ticks_run": 0, "llm_calls_captured": 0, "aborted": "exception: NativeDynamicsErrorV2: dynamics.state_invalid at step/defender.usv-01: native dynamics function rejected canonical state or parameters; suggestion: verify model-specific bounds and canonical SI units", "interface_ok": false, "not_a_terminal_score": true}
+Traceback (most recent call last):
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/role_c_toolkit/p0_6_smoke.py", line 167, in <module>
+    main()
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/role_c_toolkit/p0_6_smoke.py", line 161, in main
+    smoke(args)
+  File "/root/openmd/releases/local-47a5631c/source-code-6.0/role_c_toolkit/p0_6_smoke.py", line 144, in smoke
+    raise RuntimeError(f"P0 interface smoke did not satisfy its one/two-tick gate: {run_id}")
+RuntimeError: P0 interface smoke did not satisfy its one/two-tick gate: ie_10_dual_axis_pincer_rule_s9901_t1_linux-rule-debug
