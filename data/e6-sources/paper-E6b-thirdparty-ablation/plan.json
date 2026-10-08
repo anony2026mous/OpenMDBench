@@ -1,0 +1,95 @@
+{
+  "schema": "E6b-thirdparty-ablation-plan@1",
+  "scope": "E6b third-party model ablation: grid medium/continuous llm-rl, strong vs hold",
+  "created_utc": "2026-10-02T16:53:00.987455+00:00",
+  "not_before_utc": "2026-10-02T16:53:00.987455+00:00",
+  "snapshot": "C:\\Code\\source-code",
+  "checkpoint": "C:\\Code\\source-code\\role_c_toolkit\\assets\\mappo_medium_s42_best.pt",
+  "difficulty": "medium",
+  "task_mode": "continuous",
+  "stack": "llm-rl",
+  "plan_interval": 10,
+  "conditions": [
+    "strong",
+    "hold"
+  ],
+  "seeds": [
+    2026100401,
+    2026100402,
+    2026100403,
+    2026100404,
+    2026100405,
+    2026100406,
+    2026100407,
+    2026100408,
+    2026100409,
+    2026100410
+  ],
+  "reference_seeds": [
+    2026100401,
+    2026100402,
+    2026100403
+  ],
+  "smoke_seeds": [
+    2026100491
+  ],
+  "max_tokens": 8192,
+  "temperature": 0.1,
+  "enable_thinking": false,
+  "llm_retries": 0,
+  "provider_retries": 2,
+  "llm_timeout_seconds": 300.0,
+  "case_wall_budget_seconds": 7200,
+  "jobs_per_model": 1,
+  "max_tokens_measurement": "M3: ~130-175 output tokens with thinking disabled; M2.x: ~1500-1800 output tokens including reasoning, truncated at 1024 and complete from 4096 up",
+  "models": {
+    "m3": {
+      "kind": "remote-provider",
+      "served_name": "MiniMax-M3",
+      "filename": "m3",
+      "provider": "minimax",
+      "thinking_policy": "disabled",
+      "expect_no_thinking": true,
+      "min_interval_seconds": 0.0,
+      "endpoints": [
+        "https://api.minimaxi.com"
+      ],
+      "base_url": "https://api.minimaxi.com",
+      "api_path": "/anthropic/v1/messages",
+      "key_env": "MINIMAX_API_KEY",
+      "transcript": "anthropic-text-block",
+      "anthropic_version": "2023-06-01"
+    },
+    "m27h": {
+      "kind": "remote-provider",
+      "served_name": "MiniMax-M2.7-highspeed",
+      "filename": "m27h",
+      "provider": "minimax",
+      "thinking_policy": "disabled",
+      "expect_no_thinking": false,
+      "min_interval_seconds": 10.0,
+      "endpoints": [
+        "https://api.minimaxi.com"
+      ],
+      "base_url": "https://api.minimaxi.com",
+      "api_path": "/anthropic/v1/messages",
+      "key_env": "MINIMAX_API_KEY",
+      "transcript": "anthropic-text-block",
+      "anthropic_version": "2023-06-01"
+    }
+  },
+  "runner_sha256": "aaa7d4381f1531cbbccb767141438a3367fdafc5e3dddfa7503969a18c4ee013",
+  "adapter_sha256": "fb5845f2825bfc6a99bf1f550dcc1deb131be9d79288156df407d99a9289a016",
+  "frozen_files": {
+    "C:\\Code\\source-code\\role_c_toolkit\\grid_rolec6.py": "e8c09c9134f94a67ce6ff61281f37a10a90cbd992ab5330bfb68f675063c3411",
+    "C:\\Code\\source-code\\role_c_toolkit\\assets\\mappo_medium_s42_best.pt": "223dbf740163b652f221a6ef0885d69b8c975c53378a7e63c05388e1df8cd0a8"
+  },
+  "success_criteria": {
+    "interface_causal_necessity": "per model: mean(V_strong - V_hold) > 0 with the seed-bootstrap 95% CI lower bound > 0",
+    "deployment_behind_baseline": "per model: mean(V_strong - V_pure_rl_same_seed) < 0",
+    "validity_gate": "every case analysis_valid, zero planner fallbacks, zero thinking blocks where expect_no_thinking is true, no truncated responses",
+    "honest_failure": "a model failing any criterion is reported as a law boundary"
+  },
+  "no_cross_batch_merge": true,
+  "credential_policy": "the provider key is read from the named environment variable and is never written to the plan, the request log or any artefact"
+}

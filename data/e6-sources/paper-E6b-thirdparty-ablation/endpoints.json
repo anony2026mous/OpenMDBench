@@ -1,0 +1,70 @@
+{
+  "schema": "E6b-thirdparty-ablation-probe@1",
+  "plan_sha256": "024c525309c748af6a34c737fc8fc68701ed9875aea56902b8cc3de5e652d418",
+  "probed_utc": "2026-10-02T16:53:05.874112+00:00",
+  "records": [
+    {
+      "model": "m3",
+      "kind": "remote-provider",
+      "served_name": "MiniMax-M3",
+      "key_env": "MINIMAX_API_KEY",
+      "expect_no_thinking": true,
+      "base_url": "https://api.minimaxi.com",
+      "thinking_policy": "disabled",
+      "available_models": [
+        "MiniMax-M3",
+        "MiniMax-M2.7",
+        "MiniMax-M2.7-highspeed",
+        "MiniMax-M2.5",
+        "MiniMax-M2.5-highspeed",
+        "MiniMax-M2.1",
+        "MiniMax-M2.1-highspeed",
+        "MiniMax-M2"
+      ],
+      "served_model_present": true,
+      "blocks": [
+        "text"
+      ],
+      "thinking_blocks": 0,
+      "stop_reason": "end_turn",
+      "output_tokens": 6,
+      "answer_head": "{\"ready\": true}",
+      "answer_non_empty": true,
+      "protocol_errors": [],
+      "total_tokens": 50
+    },
+    {
+      "model": "m27h",
+      "kind": "remote-provider",
+      "served_name": "MiniMax-M2.7-highspeed",
+      "key_env": "MINIMAX_API_KEY",
+      "expect_no_thinking": false,
+      "base_url": "https://api.minimaxi.com",
+      "thinking_policy": "disabled",
+      "available_models": [
+        "MiniMax-M3",
+        "MiniMax-M2.7",
+        "MiniMax-M2.7-highspeed",
+        "MiniMax-M2.5",
+        "MiniMax-M2.5-highspeed",
+        "MiniMax-M2.1",
+        "MiniMax-M2.1-highspeed",
+        "MiniMax-M2"
+      ],
+      "served_model_present": true,
+      "blocks": [
+        "thinking",
+        "text"
+      ],
+      "thinking_blocks": 1,
+      "stop_reason": "end_turn",
+      "output_tokens": 43,
+      "answer_head": "{\"ready\": true}",
+      "answer_non_empty": true,
+      "protocol_errors": [
+        "thinking_block_returned"
+      ],
+      "total_tokens": 72
+    }
+  ]
+}

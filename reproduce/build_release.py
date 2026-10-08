@@ -349,6 +349,13 @@ def main() -> int:
     # Compact attribution records behind appendix I.5's per-case table. The raw batches
     # are ~9 GB of replay evidence; these 17 records (~47 KB) are the part carrying the
     # printed numbers, so only they travel.
+    # E6's two source batches (dense Qwen + third-party MiniMax MoE). The release
+    # previously carried only campaigns/e6-model-invariance, i.e. the dense half, and
+    # reported the MoE half as missing; both batches live under role_c_toolkit/artifacts/
+    # in the co-author's tarball.
+    print("      E6 source batches (four models)")
+    copy_tree(SRC_ROOT / "release_assets" / "e6-sources",
+              dest / "data" / "e6-sources", label="data/e6-sources")
     print("      e5 attribution records (appendix I.5)")
     copy_tree(SRC_ROOT / "release_assets" / "e5-attribution",
               dest / "data" / "e5-attribution", label="data/e5-attribution")
@@ -436,6 +443,7 @@ def main() -> int:
         # Root-level metadata: dotfiles must be copied explicitly by name.
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
                      "PAPER_COVERAGE.md", "PAPER_PROVENANCE.md", "GAP_OWNERS.md",
+                     "E6_G1_SOURCES.md",
                      "SERVER_SEARCH_RECORD.md",
                      "CODE_COMPARISON.md", ".gitignore"):
             s = assets / name
@@ -454,6 +462,7 @@ def main() -> int:
                      "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
                      "verify_p3a.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
+                     "verify_e6_four_models.py", "verify_g1_deltas.py",
                      "verify_e5pilot.py",
                      "verify_legacy_arm.py",
                      "compare_code.py",
@@ -553,6 +562,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 
