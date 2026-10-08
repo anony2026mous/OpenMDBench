@@ -1,0 +1,142 @@
+[
+  {
+    "id": "2084e26b7be88e00a807",
+    "seed": 603,
+    "gold_real": false,
+    "rule_p_real": 0.0,
+    "snapshot_p_real": 0.5,
+    "llm_p_real": 0.05,
+    "model": "Qwen3.8-27B",
+    "endpoint": "http://127.0.0.1:8102/v1",
+    "prompt_sha256": "9b8d64fea4ed903996cb12e275c4d50c7c3c89d7f3d045bf7677afb3092733d1",
+    "raw_response": {
+      "id": "chatcmpl-ba2b240abc97f044",
+      "object": "chat.completion",
+      "created": 1790847395,
+      "model": "Qwen3.8-27B",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"label\":\"feint\",\"p_real\":0.05}",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.27.1-tp2-e9a5fe74",
+      "usage": {
+        "prompt_tokens": 319,
+        "total_tokens": 334,
+        "completion_tokens": 15,
+        "prompt_tokens_details": null
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "raw_content": "{\"label\":\"feint\",\"p_real\":0.05}",
+    "request": {
+      "model": "Qwen3.8-27B",
+      "temperature": 0,
+      "max_tokens": 128,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "Classify an observed transport contact as feint or real. A real threat makes persistent progress toward the protected port at (1,18). Feints hold position or drift laterally without persistent port approach. Do not infer the answer from contact IDs or priors. Use only the supplied observable motion history. Return JSON only: {\"label\":\"feint\" or \"real\",\"p_real\":number from 0 to 1}."
+        },
+        {
+          "role": "user",
+          "content": "Anonymous contact. Port at (1,18). Observed motion history:\nt=99: position=(14,0); observed delta=(0,0); holding.\nt=147: position=(18,0); observed delta=(1,0); lateral or moving away.\nt=148: position=(18,0); observed delta=(0,0); holding.\nLocal unit grid snapshots (4 denotes transport; role is not encoded): {\"blue_0\":[[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[-1,-1,-1,-1,-1],[-1,-1,-1,-1,-1]],\"blue_1\":[[0,0,0,0,-2],[0,0,0,0,-2],[0,0,1,0,0],[0,0,0,0,0],[0,0,0,0,0]]}"
+        }
+      ]
+    },
+    "elapsed_seconds": 0.7855306565761566
+  },
+  {
+    "id": "93bf5e3dcfd847e187f2",
+    "seed": 607,
+    "gold_real": true,
+    "rule_p_real": 1.0,
+    "snapshot_p_real": 0.5,
+    "llm_p_real": 0.95,
+    "model": "Qwen3.8-27B",
+    "endpoint": "http://127.0.0.1:8101/v1",
+    "prompt_sha256": "1ba058a92f8294f3571d38e6012be4c6d79d8c28d04c44fba778493664d28f3e",
+    "raw_response": {
+      "id": "chatcmpl-83f94ada47437e14",
+      "object": "chat.completion",
+      "created": 1790847395,
+      "model": "Qwen3.8-27B",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"label\":\"real\",\"p_real\":0.95}",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.27.1-tp2-e9a5fe74",
+      "usage": {
+        "prompt_tokens": 457,
+        "total_tokens": 471,
+        "completion_tokens": 14,
+        "prompt_tokens_details": null
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "raw_content": "{\"label\":\"real\",\"p_real\":0.95}",
+    "request": {
+      "model": "Qwen3.8-27B",
+      "temperature": 0,
+      "max_tokens": 128,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "messages": [
+        {
+          "role": "system",
+          "content": "Classify an observed transport contact as feint or real. A real threat makes persistent progress toward the protected port at (1,18). Feints hold position or drift laterally without persistent port approach. Do not infer the answer from contact IDs or priors. Use only the supplied observable motion history. Return JSON only: {\"label\":\"feint\" or \"real\",\"p_real\":number from 0 to 1}."
+        },
+        {
+          "role": "user",
+          "content": "Anonymous contact. Port at (1,18). Observed motion history:\nt=72: position=(6,12); observed delta=(-1,0); closing toward the port.\nt=73: position=(6,13); observed delta=(0,1); closing toward the port.\nt=74: position=(5,13); observed delta=(-1,0); closing toward the port.\nLocal unit grid snapshots (4 denotes transport; role is not encoded): {\"blue_0\":[[0,0,0,2,0],[0,0,0,0,0],[0,0,1,1,0],[0,-2,-2,0,0],[0,-2,-2,0,0]],\"blue_1\":[[0,0,2,0,0],[0,0,0,0,0],[0,1,1,0,0],[-2,-2,0,0,0],[-2,-2,0,0,0]],\"blue_2\":[[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,6,0,0,0],[0,0,0,0,4,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,2,0,0,0,0]]}"
+        }
+      ]
+    },
+    "elapsed_seconds": 0.7712540030479431
+  }
+]

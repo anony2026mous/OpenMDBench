@@ -7,11 +7,28 @@ trees.
 
 ---
 
-## 1. Held by a collaborator
+## 1. Co-author data — RECEIVED
 
-The following are expected from a co-author. Add them under `data/campaigns/<name>/` when
-they arrive, and record `{files, bytes, sha256}` in `data/EXTERNAL_DATA_MANIFEST.json` so
-that manifest stays the single index of what exists.
+The co-author's run data has arrived and is included as
+[`collaborator_runs/`](collaborator_runs/README.md) (22 batch directories, 3,519 files,
+39.6 MB). It was verified against their live container (`hr-a6000-129-51`) by comparing a
+`(relpath, size)` manifest of all 77,411 server files: **0 size differences**, and the
+snapshot is a strict subset — nothing in it contradicts the server.
+
+That directory's own README records what it contains, how each result record is keyed
+(seed, source batch, prompt hash, model, endpoint), and the one large batch left out
+(`E10_HF_restricted-continuous_p01`, 287 MB, not referenced by the paper).
+
+Code version note: the tarball also carries the co-author's copy of the same 203
+`_w1_*.py` analysis scripts. All 203 filenames match ours; 34 are byte-identical and 169
+have diverged, because the two working copies evolved separately during the campaign.
+The versions shipped in `code/analysis/` are the newer ones. Treat the collaborator JSON
+as evidence to inspect, and re-run any published analysis with the shipped scripts.
+
+Seed scopes are disjoint (ours: 7/11/13/17/19; theirs: 500–14000), so the collaborator
+data does not mix into the reported high-fidelity statistics.
+
+### Still awaited from the co-author
 
 | Item | Expected content | Paper reference | Status |
 |---|---|---|---|

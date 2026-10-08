@@ -1,0 +1,17 @@
+{
+  "TASK_ID": "E1-v13-device-a-confirm-20261004",
+  "RF": "N/A: frozen research experiment, not platform refactor",
+  "goal": "Launch owner device-a count17 then count18, 3 stacks x 10 seeds each, using verified frozen handoff",
+  "inputs": ["checklist v13", "handoff-r01", "completed calibration960 and gate200", "MODEL_VERIFIED.json"],
+  "ALLOWED_READ": ["frozen handoff", "model assets and service health", "existing E1 state and process metadata"],
+  "ALLOWED_WRITE": ["/root/openmd/runs/e1-device-a-v13-20261004", "/root/openmd/runs/E1_confirm_device-a_p01_20261004", "handoff-r01/MODEL_VERIFIED.json"],
+  "PROHIBITED": ["engine/scenario/scoring/protocol changes", "dependency install or upgrade", "old run mutation", "model service restart", "device-b mutation", "score-selected retries", "git push"],
+  "TEST_LEVEL": "T1 launcher syntax and runtime preflight; user-authorized T5 concurrent official experiment",
+  "ALLOWED_COMMANDS": ["SSH/SCP", "frozen e1_split.py verify", "new launch_confirm.py", "read-only status and LLM log inspection"],
+  "single_command_budget_seconds": 7200,
+  "experiment_runtime_budget_hours": 24,
+  "acceptance": ["frozen bundle and checkpoint hashes match", "owner-a controller detached and running", "actual episode processes launched", "actual LLM responses observed", "separate output and durable launch record"],
+  "output_format": "JSON launch record and status; local Markdown startup report",
+  "stop_conditions": ["duplicate owner or pre-existing output", "input hash mismatch", "models unavailable", "engineering failure requiring review"],
+  "completion_scope": "Startup task complete when launch and real progress verified; official experiment remains running until all60 cases complete"
+}

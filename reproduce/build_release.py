@@ -228,9 +228,38 @@ def main() -> int:
     dest = Path(args.dest)
 
     if dest.exists():
-        print(f"removing existing {dest}")
-        shutil.rmtree(dest, ignore_errors=True)
+        # Wipe the contents but PRESERVE `.git`. Destroying it silently turns the bundle
+        # into an ordinary subdirectory of whatever repository encloses it, after which
+        # any `git` command run inside the bundle operates on the PARENT repo. That
+        # happened once and committed the whole bundle into the parent's history.
+        print(f"clearing existing {dest} (preserving .git)")
+        for child in dest.iterdir():
+            if child.name == ".git":
+                continue
+            if child.is_dir():
+                shutil.rmtree(child, ignore_errors=True)
+            else:
+                try:
+                    child.unlink()
+                except OSError:
+                    pass
     dest.mkdir(parents=True, exist_ok=True)
+
+    # Guard: refuse to build into a directory governed by an OUTER repository, because
+    # every later git operation would then target that outer repo.
+    try:
+        probe = subprocess.run(["git", "rev-parse", "--show-toplevel"],
+                               cwd=str(dest), capture_output=True, text=True,
+                               timeout=30)
+        top = (probe.stdout or "").strip()
+        if probe.returncode == 0 and top:
+            top_p = Path(top).resolve()
+            if top_p != dest.resolve():
+                print(f"\n  !! WARNING: `git` inside the destination resolves to {top_p}")
+                print( "     which is NOT the bundle. Run `git init` in the bundle, or the")
+                print( "     ignored/untracked state of the parent repo will be affected.\n")
+    except Exception:  # noqa: BLE001
+        pass
 
     print("=" * 92)
     print(f"BUILDING RELEASE  ->  {dest}")
@@ -284,6 +313,14 @@ def main() -> int:
     # omitting the directory leaves cited artefacts unresolvable in the release.
     print("      E5 results documents")
     copy_tree(SRC_ROOT / "e5_ascii", dest / "data" / "e5", label="data/e5")
+
+    # Co-author's run data (grid + LLM-channel batches), delivered as a tarball and
+    # verified file-by-file against their container. Staged as an asset rather than read
+    # from the delivery path so a rebuild does not depend on a WeChat download folder.
+    print("      collaborator run data")
+    copy_tree(SRC_ROOT / "release_assets" / "collaborator_runs",
+              dest / "data" / "collaborator_runs",
+              label="data/collaborator_runs")
 
     # the withheld grid dataset: OUR analysis outputs, scripts and result documents.
     # These live in EVAL itself (not in _w1_runs), which is why an earlier version of

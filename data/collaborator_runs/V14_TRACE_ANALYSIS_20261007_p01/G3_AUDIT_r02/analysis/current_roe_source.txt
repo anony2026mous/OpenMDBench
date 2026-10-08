@@ -1,0 +1,97 @@
+def _build_roe_notes(profile_data: Dict[str, Any], *,
+                     briefing: str = "withheld") -> str:
+    """Threat-classification / ROE guidance for the LLM planner.
+
+    修了两个问题（2026-09-27）：
+
+    1. **文本子串匹配会误分类。** 旧实现对 ``f"{label} {behavior}".lower()`` 做
+       ``"decoy" in blob`` 判定。IE-11 真正主攻那条的 behavior 恰好写着
+       "after the decoys have already drawn attention"，于是 **4 架有武器的主攻 UAV
+       被判为非威胁**，提示词里出现 "real air package ... declared NON-THREAT ...
+       do NOT intercept or fire at it"。现在改为按**声明的武器装订**分类
+       （``attack.weapon_policies``）：没有武器装订的波次才是诱饵/非威胁。
+       分类不再依赖任何自然语言措辞。
+
+    2. **未来真值泄漏。** 旧实现把每波的 ``spawn_tick / count / axis / behavior``
+       原样写进提示词，而 defender 在 tick 0 的观测接触数为 0 —— 等于把敌方作战计划
+       提前交给 LLM，且规则规划器与 RL 执行层拿不到同一文本（对照不对等）。
+       现在默认 ``briefing="withheld"``：**只给聚合事实**（武装来袭者总数、
+       已声明诱饵数、中立民用数），不给波次时刻/方位/意图。
+       ``briefing="declared"`` 保留旧行为，仅用于复现历史读数。
+
+    ``withheld`` 下 LLM 仍然知道"存在诱饵"这一事实（否则会退回历史上那个失效状态：
+    混合组把弹药全花在诱饵上），但**必须自己从实时观测里分辨哪个是哪个**。
+    """
+    attack = profile_data.get("attack") or {}
+    timeline = tuple(attack.get("timeline") or ())
+    armed_tags = _armed_intruder_tags(profile_data)
+    non_threat_tokens = ("decoy", "feint", "diversion", "civilian")
+
+    lines: List[str] = []
+
+    # ---- 敌方兵力情报：仅诊断档给出，主表口径完全不给 ----
+    #
+    # 为什么主表不能给：实测确认 `"armed vs decoy"` **不是观测字段**
+    # （Observation 只有位置/置信度/观测者/标签），所以"有几架武装、几架诱饵"
+    # 无法从观测推导，只能来自场景声明；而 rule-rule 与 rl 两臂从不读取该声明。
+    # 一旦给出就是特权信息，对照不再公平 —— 与措辞无关。
+    if briefing in ("aggregate", "declared"):
+        armed_uavs = armed_boats = decoys = 0
+        for item in timeline:
+            if not isinstance(item, dict):
+                continue
+            label = str(item.get("label", item.get("role", "wave")))
+            behavior = str(item.get("behavior", "") or "")
+            count = int(item.get("count") or 0)
+            blob = f"{label} {behavior}".lower()
+            declared_non_threat = any(t in blob for t in non_threat_tokens)
+            carries_weapon = bool(armed_tags) and any(t in blob for t in armed_tags)
+            if declared_non_threat and not carries_weapon:
+                decoys += count
+            elif carries_weapon:
+                if "boat" in blob or "usv" in blob:
+                    armed_boats += count
+                else:
+                    armed_uavs += count
+            else:
+                decoys += count
+        lines.append(
+            f"  * [aggregate briefing] Enemy order of battle: "
+            f"{armed_uavs + armed_boats} armed intruder platforms "
+            f"({armed_uavs} air, {armed_boats} surface) across all waves.")
+        if decoys:
+            lines.append(
+                f"  * [aggregate briefing] {decoys} additional intruder platform(s) are "
+                "UNARMED decoys/feints. Identify which contacts are armed from what "
+                "you observe.")
+
+    civ = profile_data.get("civilian_lane") or {}
+    civ_n = int(civ.get("count") or 0) if isinstance(civ, dict) else 0
+    if civ_n:
+        lines.append(
+            f"  * {civ_n} neutral civilian platform(s) share the area. The engine "
+            "enforces ROE: firing on a civilian contact is a violation. Treat any "
+            "contact the engine has not classified as hostile as non-engageable.")
+
+    lines.append(
+        "  * Engage hostile contacts as soon as the graph shows can_intercept=true or "
+        "prepare_intercept=true; do not hold fire waiting for a wave you have not seen.")
+
+    # ---- 未来波次简报：仅 declared 档（历史口径，复现用）----
+    if briefing == "declared":
+        for item in timeline:
+            if not isinstance(item, dict):
+                continue
+            label = str(item.get("label", item.get("role", "wave")))
+            lines.append(
+                f"  * [declared briefing] {label}: spawn_tick={item.get('spawn_tick', '?')} "
+                f"count={item.get('count', '?')} axis={item.get('axis', '?')}; "
+                f"{item.get('behavior', '')}")
+    elif briefing == "withheld":
+        lines.append(
+            "  * NO prior intelligence on the enemy is available: you are NOT told how "
+            "many waves will arrive, when, from which axis, or which contacts are "
+            "armed. Several waves and unarmed decoys are possible. Classify every "
+            "contact from your own observations and preserve missiles for real threats.")
+
+    return "\n".join(lines)

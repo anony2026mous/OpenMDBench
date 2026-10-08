@@ -1,0 +1,75 @@
+{
+  "dataset_sha256": "3bcf5d02b2bbaef222568e638efd5384702ec3fdcd4bb7372f459cd238501e6b",
+  "controls": {
+    "rule_p_real": {
+      "n": 400,
+      "total_attempts": 400,
+      "n_seed_clusters": 208,
+      "accuracy": 0.9275,
+      "accuracy_ci95": [
+        0.9019073569482289,
+        0.9507389162561576
+      ],
+      "auc": 0.9308625,
+      "auc_ci95": [
+        0.9052109368069942,
+        0.9535829163396128
+      ],
+      "bootstrap": "20,000 seed-cluster resamples, event-weighted within resampled clusters"
+    },
+    "continuous_projection": {
+      "n": 400,
+      "total_attempts": 400,
+      "n_seed_clusters": 208,
+      "accuracy": 0.9275,
+      "accuracy_ci95": [
+        0.9019073569482289,
+        0.9507389162561576
+      ],
+      "auc": 0.9699,
+      "auc_ci95": [
+        0.9537643752235426,
+        0.9833311419688217
+      ],
+      "bootstrap": "20,000 seed-cluster resamples, event-weighted within resampled clusters"
+    },
+    "continuous_cosine": {
+      "n": 400,
+      "total_attempts": 400,
+      "n_seed_clusters": 208,
+      "accuracy": 0.9275,
+      "accuracy_ci95": [
+        0.9019073569482289,
+        0.9507389162561576
+      ],
+      "auc": 0.964825,
+      "auc_ci95": [
+        0.9442200298774613,
+        0.9821627729478445
+      ],
+      "bootstrap": "20,000 seed-cluster resamples, event-weighted within resampled clusters"
+    },
+    "llm_p_real": {
+      "n": 400,
+      "total_attempts": 400,
+      "n_seed_clusters": 208,
+      "accuracy": 0.8925,
+      "accuracy_ci95": [
+        0.8574938574938575,
+        0.9232673267326733
+      ],
+      "auc": 0.974875,
+      "auc_ci95": [
+        0.9618656715242965,
+        0.98535451293596
+      ],
+      "bootstrap": "20,000 seed-cluster resamples, event-weighted within resampled clusters"
+    }
+  },
+  "definitions": {
+    "continuous_projection": "p=.5+.5*projection/(1+abs(projection)); monotone ranking, no fitted scale",
+    "continuous_cosine": "p=(1+cos(mean_observed_heading, port_minus_last_position))/2; zero-norm ->.5"
+  },
+  "interpretation": "Same numeric observations, no tuned threshold; continuous controls preserve projection-sign decisions. LLM AUC advantage over a binary rule may partly reflect score resolution.",
+  "scope": "Post hoc untuned robustness diagnostic; original primary gate, all events and all original responses unchanged"
+}
