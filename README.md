@@ -49,6 +49,7 @@ OpenMDBench-Release/
 │   ├── engine/                   OpenMDBench simulation platform (declarative, V2)
 │   ├── analysis/                 evaluation harness + the withheld-grid analysis stack
 │   ├── role_c_toolkit/           attribution / calibration toolchain
+│   ├── collaborator_snapshot/    co-author's code state that produced their runs
 │   └── tools/                    remote-validation helper
 │
 ├── data/
@@ -60,14 +61,11 @@ OpenMDBench-Release/
 │   │   ├── THE_WITHHELD_RESULTS.md       results tables A–F
 │   │   ├── LLMRL_WITHHELD_TABLE.md       claim tables
 │   │   └── WITHHELD_BRIEFING_EVIDENCE.md fairness and boundary audit
+│   ├── collaborator_runs/        co-author's 22 batch directories (grid + LLM channel)
 │   ├── e5/                       E5 conclusion documents and their data tables
-│   │   ├── E5_consolidated.md    consolidated E5 report
-│   │   ├── e5_ascii/ equivalents: D1prime_*, D2_*, e1_2x2_* (cited by the appendix)
-│   │   └── E5_kappa_report.md    human–machine agreement report
 │   ├── campaigns/                server-side campaign records (small ones)
 │   ├── EXTERNAL_DATA_MANIFEST.json   the large trees that are NOT in git
-│   └── PENDING.md                material still held by a collaborator, plus the
-│                                 items deliberately withheld (see §Withheld)
+│   └── PENDING.md                coverage: what is received, awaited, or withheld
 │
 └── reproduce/
     ├── verify_paper_table.py     recomputes the main table and diffs it
@@ -160,6 +158,28 @@ lived, so a reviewer can request them.
 
 The paper's main table does **not** depend on any of them: it is reproduced from the 213
 episode reports committed here.
+
+---
+
+## Two halves of the evidence
+
+The project's results come from two working copies that were developed in parallel. This
+release merges both:
+
+| Half | Where | Scope |
+|---|---|---|
+| This repository's high-fidelity suite | `data/grid_withheld_5seeds/` | 14 scenarios × 5 stacks × 5 seeds; **the paper's main table, 70/70 reproducible** |
+| Co-author's grid + LLM-channel batches | `data/collaborator_runs/` | 22 batch directories, results for the appendix tables; seed range 500–14000 |
+
+The two seed scopes are **disjoint** (ours: 7/11/13/17/19), so the co-author's data does
+not mix into the reported high-fidelity statistics. Their code state is preserved under
+`code/collaborator_snapshot/` so those results stay attributable; per its README, it is a
+frozen historical copy and must not be merged back — `code/analysis/` ships the newer,
+fixed versions.
+
+The co-author snapshot was verified against their live container by diffing a
+`(relpath, size)` manifest of all 77,411 server files: **0 size differences**. See
+`data/collaborator_runs/README.md`.
 
 ---
 
