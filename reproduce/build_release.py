@@ -407,7 +407,7 @@ def main() -> int:
         rep.mkdir(parents=True, exist_ok=True)
         # Root-level metadata: dotfiles must be copied explicitly by name.
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
-                     ".gitignore"):
+                     "PAPER_COVERAGE.md", ".gitignore"):
             s = assets / name
             if s.is_file():
                 shutil.copy2(s, dest / name)
@@ -417,9 +417,18 @@ def main() -> int:
             shutil.copy2(s, dest / "data" / "PENDING.md")
             copied_log.append(("asset data/PENDING.md", 1, s.stat().st_size))
         n = size = 0
-        for name in ("verify_paper_table.py", "scan_for_secrets.py",
+        for name in ("verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
+                     "scan_for_secrets.py",
                      "build_dataset.py", "_w1_common.py", "build_release.py",
                      "extract_paper_refs.py"):
+            s = assets / name
+            if s.is_file():
+                shutil.copy2(s, rep / name)
+                n += 1
+                size += s.stat().st_size
+        # Recorded verification output ships beside the scripts that produced it.
+        for name in ("PAPER_TABLE_VERIFICATION.txt", "P1_GRID_VERIFICATION.txt",
+                     "P2_DOSE_VERIFICATION.txt", "SECRET_SCAN.txt"):
             s = assets / name
             if s.is_file():
                 shutil.copy2(s, rep / name)

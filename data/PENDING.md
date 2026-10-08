@@ -10,14 +10,22 @@ trees.
 ## 1. Co-author data — RECEIVED
 
 The co-author's run data has arrived and is included as
-[`collaborator_runs/`](collaborator_runs/README.md) (22 batch directories, 3,519 files,
-39.6 MB). It was verified against their live container (`hr-a6000-129-51`) by comparing a
-`(relpath, size)` manifest of all 77,411 server files: **0 size differences**, and the
-snapshot is a strict subset — nothing in it contradicts the server.
+[`collaborator_runs/`](collaborator_runs/README.md) (22 batch directories + a curated
+`e2-delivery-20261003/`, 3,673 files, 45.6 MB). It was verified against their live
+container (`hr-a6000-129-51`) by comparing a `(relpath, size)` manifest of all 77,411
+server files: **0 size differences**, and the snapshot is a strict subset — nothing in it
+contradicts the server.
 
-That directory's own README records what it contains, how each result record is keyed
-(seed, source batch, prompt hash, model, endpoint), and the one large batch left out
-(`E10_HF_restricted-continuous_p01`, 287 MB, not referenced by the paper).
+The `e2-delivery-20261003/` export turns out to be the **only** source of the appendix's
+per-seed grid tables, and both reproduce from it:
+
+| Appendix table | Check | Result |
+|---|---|---|
+| `tab_p1_seedgrid` (six-arm, seeds 501–510) | `reproduce/verify_p1_grid.py` | **0/60 cells differ** |
+| `tab_p2_seedgrid` + dose-gain (seeds 512–521) | `reproduce/verify_p2_dose.py` | **0/8 means mismatch** |
+
+That directory's own README records what it contains, how each episode is keyed (seed,
+arm, goal mode, checkpoint hash, per-file source hashes), and what it does **not** cover.
 
 Code version note: the tarball also carries the co-author's copy of the same 203
 `_w1_*.py` analysis scripts. All 203 filenames match ours; 34 are byte-identical and 169
@@ -25,8 +33,19 @@ have diverged, because the two working copies evolved separately during the camp
 The versions shipped in `code/analysis/` are the newer ones. Treat the collaborator JSON
 as evidence to inspect, and re-run any published analysis with the shipped scripts.
 
-Seed scopes are disjoint (ours: 7/11/13/17/19; theirs: 500–14000), so the collaborator
-data does not mix into the reported high-fidelity statistics.
+---
+
+## 1a. Still missing — two appendix blocks
+
+Full mapping in [`../PAPER_COVERAGE.md`](../PAPER_COVERAGE.md). Briefly:
+
+| Block | Seeds | Status |
+|---|---|---|
+| Appendix I.3, real-stream counterfactual (`tab_p3a_seedgrid`) | 601–610 | **absent everywhere.** Seeds 601/602/603/605/607 exist in `p0-strengthening`'s E3 files, but those are deception-detection `p_real` records — a different experiment reusing the range. Do not substitute them. |
+| Appendix I.4, anchored critical-fault validation | 561–570 | present on the authoring machine at `server-experiments/g1-fault-dose/` (94 MB, 1,556 files) but not committed. Promote it into `data/` to close this row. |
+| Appendix G, `tab:nointel` legacy arm | — | the **legacy declared-intelligence episodes** (82/49/40 reports) are not in any tree; only the aggregated `DATASET_5SEEDS.json` references the mode. The no-intelligence column is present. |
+| Appendix I.4 degradation accounting, `figA4` ΔP/ΔE/ΔI table | — | the 12-case values are printed inline in the appendix but not stored as a JSON table. |
+| `figA2_replanning_sweep` | — | plotting data absent from every available source tree. |
 
 ### Still awaited from the co-author
 

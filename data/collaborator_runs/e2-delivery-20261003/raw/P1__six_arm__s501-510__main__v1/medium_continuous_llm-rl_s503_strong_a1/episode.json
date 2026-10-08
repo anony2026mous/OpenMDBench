@@ -1,0 +1,1400 @@
+{
+  "schema": "grid-role-c-6-episode@1",
+  "config": {
+    "seed": 503,
+    "difficulty": "medium",
+    "task_mode": "continuous",
+    "arm": "llm-rl",
+    "goal_mode": "strong",
+    "plan_interval": 10,
+    "pure_call_interval": 1,
+    "max_steps": 150,
+    "checkpoint": "D:\\Harness workspace\\source-code-6.0\\role_c_toolkit\\assets\\mappo_medium_s42_best.pt",
+    "checkpoint_sha256": "223dbf740163b652f221a6ef0885d69b8c975c53378a7e63c05388e1df8cd0a8",
+    "base_url": "http://172.18.116.170:8000/v1",
+    "model": "Qwen3.8-27B",
+    "pure_llm_schedule": null
+  },
+  "source_hashes": {
+    "code\\attribution.py": "4f4c424a439feb16d009c14946f8eeeef54a9fdb1ae507ad3487080bf05ba61d",
+    "code\\grid_env\\__init__.py": "9d6896b368d7894e771192918519bb3438be634ce31421affe971cbc3c806557",
+    "code\\grid_env\\agents\\__init__.py": "78b3062af3016d2b4fc9beea22a102fd97967aaf419692cae38a8746f9fe1d59",
+    "code\\grid_env\\agents\\base_agent.py": "296ec3887202e1003cf37c033c4f41e220b21ef57b23eabb3f0f08112a31c8b5",
+    "code\\grid_env\\agents\\hybrid_agent.py": "a5a10ce43e0b140e91d1901df8940c750e4f42e5b11c1e98fa287617455bb444",
+    "code\\grid_env\\agents\\llm_client.py": "2f705e5800c04b15ee7697f68bc7d96fb5e39124c15474bda76cea042878c14e",
+    "code\\grid_env\\agents\\mappo_agent.py": "3379258ec606efbad68a29ad33953e0af74fc13dc289708c8681f2fb1573bfd8",
+    "code\\grid_env\\agents\\ppo_agent.py": "ad60daaa0a4c8808af68a4553fa0edd039c0665d2370f04f00de97a3438e868a",
+    "code\\grid_env\\agents\\pure_llm_agent.py": "2f60ef7f40a1b74dbf1f6d8ad99fee42cba68d8a33c206c3c90958cd9c35cef0",
+    "code\\grid_env\\agents\\pure_rl_agent.py": "941a2316368dc08d88954cebde510d457baafa0a200157fe19f8cb25005c5c39",
+    "code\\grid_env\\agents\\random_agent.py": "ccc2658a58539e4f5e72d0a9a7d62d89eb59b59e0a7701ab6f5453af7562afb7",
+    "code\\grid_env\\agents\\rule_agent.py": "a621b0baaf51b64bec3cf6a51f04dea131a57fcc8a0f9fc7275732679c1b3777",
+    "code\\grid_env\\goai.py": "1c2dfbe7126f4b85708b0b8924a788670ae9b99ced21a26d79bd8aef2cd5821a",
+    "code\\grid_env\\grid_env.py": "fceac8f3dda9d1f0334f685809d6f5c2201d17fa8812039341514a0a691e1659",
+    "code\\grid_env\\grid_env_v1_backup.py": "681a59f1e85ce5ac2b762e2b8e236b8c4be579aadc4364891ab856b5565e2810",
+    "code\\grid_env\\instruction_generator.py": "ed955f5ea170c69f6562aac4a7da1091ca1c67ed9526dd84cba91105b7ef1c3a",
+    "code\\grid_env\\server.py": "6b5e490af3d2c338bda4909343bf8b3f7439f224403009064bd3f7188eedfb7d"
+  },
+  "instrumentation_sha256": "e8c09c9134f94a67ce6ff61281f37a10a90cbd992ab5330bfb68f675063c3411",
+  "complete": true,
+  "aborted": null,
+  "steps": 150,
+  "elapsed_seconds": 144.312,
+  "V": 0.9333333333333333,
+  "metrics": {
+    "mission_success": true,
+    "winner": "blue",
+    "steps": 150,
+    "task_mode": "continuous",
+    "blue_score": 0.9333333333333333,
+    "red_score": 0.06666666666666665,
+    "blue_alive": 2,
+    "blue_total": 3,
+    "red_combatants_alive": 0,
+    "red_combatants_total": 2,
+    "red_detected": 4,
+    "red_intercepted": 1,
+    "civilian_encounters": 0,
+    "civilian_intercepted": 0,
+    "rule_violation_rate": 0.0,
+    "ammo_used": 8,
+    "ammo_efficiency": 0.125,
+    "instruction_switches": 0,
+    "adaptation_latencies": [],
+    "port_penetrations": 0,
+    "intercept_lock_rate": 0.0,
+    "handover_latencies": [],
+    "lock_maintenance_ratio": 0.48148148148148145,
+    "avg_lock_duration": 0.0,
+    "locks_acquired": 0,
+    "fuel_consumed": 74.4,
+    "fuel_efficiency": 1.3440860215053752,
+    "dyn_obstacle_collisions": 0,
+    "static_obstacle_bumps": 15,
+    "blue_bounce_events": 1,
+    "jam_events": 0,
+    "packets_dropped": 0,
+    "scout_track_bonuses": 0,
+    "intercept_events": [
+      {
+        "step": 87,
+        "target": "red_comb_w1_0",
+        "range": "direct",
+        "locked": false
+      }
+    ]
+  },
+  "agent_stats": {
+    "plan_calls": 15,
+    "fallback_count": 0,
+    "goai_rejected": 2,
+    "broker": {
+      "goals_accepted": 33,
+      "goals_rejected": 2
+    },
+    "executor": {
+      "goals_accepted": 0,
+      "goals_completed": 0,
+      "goals_infeasible": 2,
+      "goals_timeout": 0,
+      "goals_failed": 1,
+      "safe_mode_steps": 0
+    },
+    "llm_stats": {
+      "total_calls": 15,
+      "total_tokens": 18257,
+      "total_latency": 144.08,
+      "avg_latency": 9.61,
+      "avg_tokens_per_call": 1217.1,
+      "errors": 0,
+      "model": "Qwen3.8-27B"
+    }
+  },
+  "d1": {
+    "input_role_truth_leaks": [],
+    "prompt_role_truth_leaks": [],
+    "observed_contact_ids": [
+      "red_comb_w0_0",
+      "red_comb_w1_0",
+      "red_scout_w1_0",
+      "red_trans_w1_0"
+    ],
+    "feint_hits": 0,
+    "real_hits": 1,
+    "scout_hits": 0,
+    "feint_total": 1,
+    "real_transport_total": 0,
+    "feint_observed": 1,
+    "real_transport_observed": 0,
+    "intercepts_labeled_offline": [
+      {
+        "step": 87,
+        "target": "red_comb_w1_0",
+        "range": "direct",
+        "locked": false,
+        "is_real_threat": true
+      }
+    ],
+    "truth_labeled_offline_only": {
+      "red_comb_w0_0": {
+        "is_real_threat": true,
+        "type": "red_combatant",
+        "team": "red"
+      },
+      "red_comb_w1_0": {
+        "is_real_threat": true,
+        "type": "red_combatant",
+        "team": "red"
+      },
+      "red_scout_w1_0": {
+        "is_real_threat": false,
+        "type": "red_scout",
+        "team": "red"
+      },
+      "red_trans_w1_0": {
+        "is_real_threat": false,
+        "type": "red_transport",
+        "team": "red"
+      }
+    },
+    "interpretation": "Behavioral selectivity proxy, not a classifier accuracy."
+  },
+  "goal_submissions": [
+    {
+      "step": 1,
+      "proposed": [
+        {
+          "task_id": "patrol_port_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_port_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              2,
+              18
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "recon_sweep_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_port_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              2,
+              18
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "recon_sweep_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_001",
+          "patrol_port_002",
+          "recon_sweep_001"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 11,
+      "proposed": [
+        {
+          "task_id": "patrol_port_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              3,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_port_004",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              7,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "recon_sweep_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              16
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              3,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_port_004",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              7,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "recon_sweep_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              16
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_003",
+          "patrol_port_004",
+          "recon_sweep_002"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 21,
+      "proposed": [
+        {
+          "task_id": "patrol_port_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              15
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_port_006",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "recon_sweep_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              15
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_port_006",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              5,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "recon_sweep_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_2",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_005",
+          "patrol_port_006"
+        ],
+        "rejected": [
+          {
+            "task_id": "recon_sweep_003",
+            "reason": "negotiation_violation: goal identical to infeasible recon_sweep_001; modify parameters before reissuing"
+          }
+        ]
+      }
+    },
+    {
+      "step": 31,
+      "proposed": [
+        {
+          "task_id": "intercept_combatant_001",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.95,
+          "constraints": [],
+          "deadline": 45.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "hold_position_001",
+          "goal_type": "hold",
+          "parameters": {
+            "unit_id": "blue_0",
+            "duration": 5
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 35.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "maintain_lock_001",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 45.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "intercept_combatant_001",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.95,
+          "constraints": [],
+          "deadline": 45.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "hold_position_001",
+          "goal_type": "hold",
+          "parameters": {
+            "unit_id": "blue_0",
+            "duration": 5
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 35.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "maintain_lock_001",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 45.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "intercept_combatant_001",
+          "hold_position_001",
+          "maintain_lock_001"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 41,
+      "proposed": [
+        {
+          "task_id": "reposition_blue0_001",
+          "goal_type": "waypoint",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              2,
+              15
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 50.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_blue1_001",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 45.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "maintain_lock_001",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.95,
+          "constraints": [],
+          "deadline": 40.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "reposition_blue0_001",
+          "goal_type": "waypoint",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              2,
+              15
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 50.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "intercept_blue1_001",
+          "goal_type": "intercept",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 45.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "maintain_lock_001",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_2",
+            "target_id": "red_comb_w0_0"
+          },
+          "priority": 0.95,
+          "constraints": [],
+          "deadline": 40.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "reposition_blue0_001",
+          "intercept_blue1_001",
+          "maintain_lock_001"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 51,
+      "proposed": [
+        {
+          "task_id": "patrol_blue0_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 60.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 60.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_blue0_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 60.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_001",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 60.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_blue0_001",
+          "patrol_blue1_001"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 61,
+      "proposed": [
+        {
+          "task_id": "patrol_blue0_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 65.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 65.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_blue0_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 65.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_002",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 65.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_blue0_002",
+          "patrol_blue1_002"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 71,
+      "proposed": [
+        {
+          "task_id": "patrol_blue0_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 100.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 100.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_blue0_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 100.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_003",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 100.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_blue0_003",
+          "patrol_blue1_003"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 81,
+      "proposed": [
+        {
+          "task_id": "patrol_blue0_004",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_004",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_blue0_004",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_004",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              9,
+              7
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_blue0_004",
+          "patrol_blue1_004"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 91,
+      "proposed": [
+        {
+          "task_id": "patrol_blue0_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              10,
+              8
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_blue0_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              8,
+              12
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_blue1_005",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              10,
+              8
+            ]
+          },
+          "priority": 0.5,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_blue0_005",
+          "patrol_blue1_005"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 101,
+      "proposed": [
+        {
+          "task_id": "track_scout_101",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0",
+            "distance": 5
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_scout_102",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_scout_w1_0",
+            "distance": 5
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "track_scout_101",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_0",
+            "target_id": "red_scout_w1_0",
+            "distance": 5
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "track_scout_102",
+          "goal_type": "track",
+          "parameters": {
+            "unit_id": "blue_1",
+            "target_id": "red_scout_w1_0",
+            "distance": 5
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "track_scout_101",
+          "track_scout_102"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 111,
+      "proposed": [
+        {
+          "task_id": "patrol_port_111",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_111",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_111",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_111",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_111",
+          "patrol_sector_111"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 121,
+      "proposed": [
+        {
+          "task_id": "patrol_port_121",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_121",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              15,
+              11
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_121",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_121",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              15,
+              11
+            ]
+          },
+          "priority": 0.8,
+          "constraints": [],
+          "deadline": 30.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_121",
+          "patrol_sector_121"
+        ],
+        "rejected": []
+      }
+    },
+    {
+      "step": 131,
+      "proposed": [
+        {
+          "task_id": "patrol_port_131",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_131",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_131",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_131",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              10,
+              10
+            ]
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": 150.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_131"
+        ],
+        "rejected": [
+          {
+            "task_id": "patrol_sector_131",
+            "reason": "negotiation_violation: goal identical to infeasible patrol_sector_111; modify parameters before reissuing"
+          }
+        ]
+      }
+    },
+    {
+      "step": 141,
+      "proposed": [
+        {
+          "task_id": "patrol_port_141",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_141",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              15,
+              11
+            ]
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "issued": [
+        {
+          "task_id": "patrol_port_141",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_0",
+            "position": [
+              1,
+              17
+            ]
+          },
+          "priority": 0.9,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        },
+        {
+          "task_id": "patrol_sector_141",
+          "goal_type": "patrol",
+          "parameters": {
+            "unit_id": "blue_1",
+            "position": [
+              15,
+              11
+            ]
+          },
+          "priority": 0.7,
+          "constraints": [],
+          "deadline": 10.0,
+          "issued_at": 0
+        }
+      ],
+      "receipt": {
+        "accepted": [
+          "patrol_port_141",
+          "patrol_sector_141"
+        ],
+        "rejected": []
+      }
+    }
+  ],
+  "events_sha256": "65cc4bfa99a977492c0654b95847a0e2b2675d5fd13e1dcb90b3b1bcb3086727",
+  "requests_sha256": "2bdcd307c9680cae86fbfa7d29a80d6021166b8eff948d9aef2ab03aaf08e055"
+}

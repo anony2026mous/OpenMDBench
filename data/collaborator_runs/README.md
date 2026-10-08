@@ -22,14 +22,40 @@ different on the server**.
 
 ## What is here
 
-22 batch directories, 3,519 files, 39.6 MB:
+22 batch directories, 3,673 files, 45.6 MB, plus one curated delivery:
+
+### `e2-delivery-20261003/` — the appendix I.1/I.2 dataset (verified)
+
+The co-author's curated export of the two grid batches, and the **only** source of the
+appendix's per-seed grid tables. 516 files, 9.9 MB:
+
+| Batch | Episodes | What it is | Verification |
+|---|---|---|---|
+| `raw/P1__six_arm__s501-510__main__v1/` | 60 | six-arm accounting, continuous task-authorization mode | reproduces `tab_p1_seedgrid`: **0/60 cells differ** |
+| `raw/P2__goal_dose__s512-521__hold__v1/` | 20 | goal-dose, hold condition | — |
+| `raw/P2__goal_dose__s512-521__mask1__v1/` | 20 | goal-dose, mask1 | — |
+| `raw/P2__goal_dose__s512-521__mask2__v1/` | 20 | goal-dose, mask2 | — |
+| `raw/P2__goal_dose__s512-521__strong__v1/` | 20 | goal-dose, strong | 4 conditions together reproduce appendix I.2's eight means: **0/8 mismatch** |
+
+Each episode carries its own provenance in `config` (seed, arm, `goal_mode`,
+`task_mode: continuous`, model, endpoint, checkpoint hash) and in `source_hashes` (a
+per-file SHA-256 map of the code that produced it). The composite utility is the
+top-level `V` field, equal to `metrics.blue_score`.
+
+Verify with:
+```bash
+python reproduce/verify_p1_grid.py     # tab_p1_seedgrid
+python reproduce/verify_p2_dose.py     # appendix I.2 dose-gain means
+```
+
+### The 22 batch directories
 
 | Batch | Files | MB | What it holds |
 |---|---|---|---|
 | `p0-next-20261002` | 2023 | 21.8 | largest batch: LLM channel predictions, development-window audits, reports |
-| `E1_partial-direction_split_p01_20261003` | 611 | 5.4 | direction-split confirmation |
-| `p0-strengthening-20261001` | 81 | 3.3 | P0 strengthening payload |
-| `E1_combined_confirmation_p01_20261004` | 198 | 2.1 | combined confirmation |
+| `E1_partial-direction_split_p01_20261003` | 611 | 5.4 | direction-split confirmation; also E1 calibration + gate seeds |
+| `p0-strengthening-20261001` | 81 | 3.3 | P0 strengthening payload, incl. the E3 deception predictions |
+| `E1_combined_confirmation_p01_20261004` | 198 | 2.1 | combined confirmation (E1 seeds 4201–4210) |
 | `E1_confirm_device-a_p01_20261004` | 187 | 1.5 | device-A confirmation |
 | `E10_HF_restricted-continuous_p02_20261003` | 102 | 1.2 | restricted-continuous HF |
 | `E14_Grid_complex-baseline_p01_20261003` | 68 | 1.1 | grid complex baseline (**E14 is cited by name in the appendix**) |
@@ -52,9 +78,21 @@ different on the server**.
 Plus `V14_TRACE_ANALYSIS_20261007_server1_v1.zip` — the zipped companion to the `.p01`
 trace-analysis directory, fetched from the server so both forms are present.
 
-Composition: 3,298 JSON (36 MB of results), 115 Python (batch launcher / analysis
-scripts living inside the runs, e.g. `e1_analyze.py`, `inspect_run.py`), 44 Markdown
-reports, 14 CSV, 11 PNG, 8 SVG.
+Composition: results in JSON, batch launcher / analysis scripts living inside the runs
+(e.g. `e1_analyze.py`, `inspect_run.py`), Markdown reports, CSV, PNG and SVG.
+
+## What this data does NOT cover
+
+Two appendix blocks are **not** here, and matching on seed range alone would
+mis-attribute them:
+
+| Appendix block | Seeds | Status |
+|---|---|---|
+| I.3 real-stream counterfactual | 601–610 | **absent.** Seeds 601/602/603/605/607 do appear in `p0-strengthening`'s E3 files, but those are `p_real` **deception-detection** records, a different experiment that reuses the range. |
+| I.4 anchored critical-fault | 561–570 | not here; the data is on the user's machine under `server-experiments/g1-fault-dose/` (94 MB) |
+
+See `PAPER_COVERAGE.md` at the repository root for the full paper-to-data mapping.
+
 
 ## How the numbers are keyed
 
