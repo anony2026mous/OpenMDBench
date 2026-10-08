@@ -1,6 +1,6 @@
 # G1（分级注入故障–恢复校准）最终报告：**判据 2 不可达成**
 
-> 对象：`OpenMDBench_实验清单_肖棹_20261007_1738.md` 第 18–50 行的 G1。
+> 对象：`OpenMDBench_实验清单_<author-C>_20261007_1738.md` 第 18–50 行的 G1。
 > 执行：pilot（2 seed）→ 全量（10 seed），两段式按清单第 43 行要求执行。
 > 底座：grid `medium/continuous`、rule planner + heuristic executor、interval 5、**无 LLM**。
 > 规模：**110 局**（10 clean + 10 seed × 2 故障类 × 5 剂量档），全部 `done`。
@@ -196,7 +196,7 @@ complex 的 headroom 明显更大（8/10 未满分，且取值更细）。
 
 | 内容 | 位置 |
 |---|---|
-| 全量 110 局 | `/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose/full/` |
+| 全量 110 局 | `/mnt/<lab>/<user>-codex/experiments/g1-fault-dose/full/` |
 | pilot 28 局 | `…/g1-fault-dose/pilot/` |
 | 重放门核对 | `…/g1-fault-dose/replaygate/` |
 | 判据核对 JSON | `…/full/criterion_check.json` |

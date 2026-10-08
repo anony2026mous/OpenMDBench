@@ -124,7 +124,7 @@ cd role_c_toolkit && python e1_2x2_option2.py
 
 ### A.2 原始数据位置
 
-- 服务器根目录：`/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/`
+- 服务器根目录：`/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/`
   - `scan/<package>/`：每档 `report.json`（完整结果 JSON）、`episode.jsonl`（过程日志）
   - `paired/<tier>/<dose>/seed-<n>/`：`report.json`、`episode.jsonl`、
     `action_batches.jsonl`、`defender_states.jsonl`、`stdout.log`、`stderr.log`

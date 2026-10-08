@@ -13,7 +13,7 @@ import json
 import random
 from pathlib import Path
 
-DEFAULT_ROOT = Path("/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1")
+DEFAULT_ROOT = Path("/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1")
 
 
 def read_v(report: Path) -> float | None:

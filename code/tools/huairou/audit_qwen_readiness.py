@@ -9,7 +9,7 @@ import urllib.request
 
 from probe_qwen_service import cache_labels, compare_cache
 
-BASE = Path('/mnt/QTJC/chenyi-codex')
+BASE = Path('/mnt/<lab>/<user>-codex')
 SCENES = {'IE-04-COMBINED-ARMS', 'IE-10-DUAL-AXIS-PINCER', 'IE-11-DECOY-SCREEN'}
 
 

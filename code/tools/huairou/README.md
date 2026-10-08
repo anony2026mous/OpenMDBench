@@ -4,8 +4,8 @@
 
 - **本地窗口**打开 `C:/Code/source-code`：Codex 在这里编辑、保存代码并调用同步测试工具。
 - **Remote-SSH 窗口**连接 `huairou`：查看服务器文件、进程、GPU 和运行结果。它不会自动同步本地文件。
-- 远端专属工作区：`/mnt/QTJC/chenyi-codex/source-code`。不改动 `/root` 的现有项目，也不改动他人的目录。
-- 可在远程窗口“文件 → 打开文件夹”中打开 `/mnt/QTJC/chenyi-codex/source-code/current`。每次发布后刷新或重新打开目录；真实测试路径以本地日志中的固定 `snapshot` 为准。
+- 远端专属工作区：`/mnt/<lab>/<user>-codex/source-code`。不改动 `/root` 的现有项目，也不改动他人的目录。
+- 可在远程窗口“文件 → 打开文件夹”中打开 `/mnt/<lab>/<user>-codex/source-code/current`。每次发布后刷新或重新打开目录；真实测试路径以本地日志中的固定 `snapshot` 为准。
 
 ## 日常操作（在本地 PowerShell 执行）
 
@@ -72,12 +72,12 @@ VS Code 的**本地窗口**中也可以使用“终端 → 运行任务”，选
 
 ## 服务器项目环境
 
-- 系统 Python 3.8 保持不变；项目使用隔离环境 `/mnt/QTJC/chenyi-codex/envs/openmd-py311`（Python 3.11.16）。
+- 系统 Python 3.8 保持不变；项目使用隔离环境 `/mnt/<lab>/<user>-codex/envs/openmd-py311`（Python 3.11.16）。
 - `config.json` 的 `remote_python` 已指向该环境，`test`、`smoke` 使用它。`sync` 只同步文件；`run --command` 原样执行命令，运行 Python 脚本时应明确写出该解释器的绝对路径，不要默认 `python3` 已切换。
 - 已安装项目 core/dev/server 依赖、训练辅助依赖和 CPU 版 `torch 2.14.0`。Taichi 使用 `1.7.3`，因为 `1.7.4` 要求比服务器 Ubuntu 20.04 更高的 GLIBC。
 - 主实验 CPU 仿真还需要 SciPy；已按 `role_c_toolkit/requirements-windows-py311.snapshot.txt` 补齐 `scipy==1.17.1`。需要验证的是策略推理与仿真，不启动策略训练。测试可限制 `OMP_NUM_THREADS`、`OPENBLAS_NUM_THREADS`、`MKL_NUM_THREADS` 防止多进程过度占用 CPU。
 - 当前验证环境安装的是 CPU 版 Torch，尚未验证 GPU 项目测试或大模型服务。不能仅凭驱动 535 和 `nvidia-smi` 显示 CUDA 12.2 就判定所有较新 CUDA 12.x 软件不可运行：NVIDIA 提供有条件的小版本兼容，具体还受 PTX、内核、运行时等限制。模型推理应使用独立环境并验证实际依赖与 CUDA 工作负载；不要替换系统 Python、驱动或系统 Torch。
-- VS Code Remote-SSH 如果当前打开 `/root`，可直接打开快捷目录 `/root/huairou-project`；它指向 `/mnt/QTJC/chenyi-codex/source-code/current`。`current` 会随每次同步切换到新快照，所以测试日志中的固定 `snapshot` 路径才是某次测试的精确代码版本。
+- VS Code Remote-SSH 如果当前打开 `/root`，可直接打开快捷目录 `/root/huairou-project`；它指向 `/mnt/<lab>/<user>-codex/source-code/current`。`current` 会随每次同步切换到新快照，所以测试日志中的固定 `snapshot` 路径才是某次测试的精确代码版本。
 
 版本不满足时，`test` 明确返回退出码 **86**，不会假装 pytest 已经运行。
 
@@ -107,7 +107,7 @@ VS Code 的**本地窗口**中也可以使用“终端 → 运行任务”，选
 | Mamba SSM cache 精度 | float32；Mamba cache dtype 为 auto |
 | Role-C 冻结消融请求 | temperature=0.1、max_tokens=1024、enable_thinking=false |
 
-用户提供原服务信息：主权重 BF16、不做权重量化、18 分片、约 54 GB，宿主机目录 `/home/taizun/.cache/modelscope/models/Qwen--Qwen3.8-27B`；原硬件为两张 A100-PCIE-40GB，TP=2。该目录不在怀柔主机上。官方 ModelScope 清单也列出 18 个权重分片，总字节数为 55,563,006,776；下载按每文件固定修订和 SHA256 校验，但尚未与原主机文件哈希逐一比对。
+用户提供原服务信息：主权重 BF16、不做权重量化、18 分片、约 54 GB，宿主机目录 `/home/<user>/.cache/modelscope/models/Qwen--Qwen3.8-27B`；原硬件为两张 A100-PCIE-40GB，TP=2。该目录不在怀柔主机上。官方 ModelScope 清单也列出 18 个权重分片，总字节数为 55,563,006,776；下载按每文件固定修订和 SHA256 校验，但尚未与原主机文件哈希逐一比对。
 
 权重/分词器修订、实际 KV scales、未指定采样参数的服务端默认值、实际内核等仍需进一步比对。原服务没有公开 `/server_info` 路由。A100 与 A6000 是不同硬件，不能直接把两台机器的延迟差解释成消融算法效果；所有新实验臂需保持同一服务与调度条件。
 
@@ -126,11 +126,11 @@ GGUF 是模型文件格式，不代表无损量化。F16/BF16 GGUF 仍为 16 位
 
 ### 单份权重下载与双实例复用
 
-- 唯一共享模型目录：`/mnt/QTJC/chenyi-codex/models/Qwen3.8-27B-BF16`。两个独立进程使用同一路径，不下载两次，也无需复制目录。只有磁盘文件共享，GPU 权重与运行缓存仍分开。
-- 下载脚本：`tools/huairou/download_qwen_weights.py`，远程副本位于 `/mnt/QTJC/chenyi-codex/services/qwen/`。使用文件锁避免重复下载，支持 `.partial` 续传，逐文件校验 SHA256，已存在但哈希不符的文件会拒绝覆盖。
+- 唯一共享模型目录：`/mnt/<lab>/<user>-codex/models/Qwen3.8-27B-BF16`。两个独立进程使用同一路径，不下载两次，也无需复制目录。只有磁盘文件共享，GPU 权重与运行缓存仍分开。
+- 下载脚本：`tools/huairou/download_qwen_weights.py`，远程副本位于 `/mnt/<lab>/<user>-codex/services/qwen/`。使用文件锁避免重复下载，支持 `.partial` 续传，逐文件校验 SHA256，已存在但哈希不符的文件会拒绝覆盖。
 - 清单：远程服务目录的 `qwen-modelscope-source-manifest.json`；来源记录为原仓库候选快照，不冒充已比对的原主机权重。
-- 进度日志：`/mnt/QTJC/chenyi-codex/services/qwen/logs/model-download.log`。只有模型目录的 `download-complete.json` 显示 `all_files_sha256_verified`，才能称下载完整；服务是否可用还要另行检查。
-- 初始推理环境 `qwen-vllm0271`（Python 3.11）已完成安装，双卡 BF16 矩阵运算通过，但实际 vLLM 启动被 FlashInfer 的 `array.array[int]` 类型注解兼容问题阻止。已验证 Python 3.12.14 支持该表达式，后续推理环境改为 `/mnt/QTJC/chenyi-codex/envs/qwen-vllm0271-py312`，不修改第三方库源码，也不改项目 CPU 测试环境。
+- 进度日志：`/mnt/<lab>/<user>-codex/services/qwen/logs/model-download.log`。只有模型目录的 `download-complete.json` 显示 `all_files_sha256_verified`，才能称下载完整；服务是否可用还要另行检查。
+- 初始推理环境 `qwen-vllm0271`（Python 3.11）已完成安装，双卡 BF16 矩阵运算通过，但实际 vLLM 启动被 FlashInfer 的 `array.array[int]` 类型注解兼容问题阻止。已验证 Python 3.12.14 支持该表达式，后续推理环境改为 `/mnt/<lab>/<user>-codex/envs/qwen-vllm0271-py312`，不修改第三方库源码，也不改项目 CPU 测试环境。
 - 官方 vLLM 0.27.1 CUDA 12.9 轮子已在本机与服务器核对 SHA256。核心依赖版本从初始环境冻结复用；Python 3.12 的 setuptools 约束按轮子要求改为 `>=77.0.3,<81`。相应安装日志为服务目录的 `logs/install-cu129-py312.log`；依赖安装成功不等于推理服务已验收。
 - `start_qwen_service.py --replica a` / `--replica b` 分别启动 GPU 0/1、2/3 上的独立进程，绑定服务器本机 `127.0.0.1:8001/8002`，共享权重目录。启动器检查完整下载标记、清单身份和文件大小，不覆盖活跃实例；实际健康、非思考输出和缓存一致性仍需验收。
 - 启动器显式设置虚拟环境 `PATH`/`VIRTUAL_ENV`，使 JIT 能找到已安装的 ninja；CUDA_HOME 指向项目独立的 `tools/cuda-12.9`，不再使用缺失 nvcc 的 `/usr/local/cuda`。`install_cuda129.py` 从 NVIDIA 官方固定组件包安装 nvcc 12.9.86、cudart 12.9.79、CCCL 12.9.27，校验 SHA256 并编译 sm_86 小内核；不安装或更改驱动。
@@ -166,7 +166,7 @@ ssh -N -L 127.0.0.1:18001:127.0.0.1:8001 -L 127.0.0.1:18002:127.0.0.1:8002 huair
 .\huairou.cmd test --profile engine -- -q tests/unit/test_training_smoke.py
 ```
 
-`run` 执行评估脚本时使用 `/mnt/QTJC/chenyi-codex/envs/openmd-py311/bin/python` 的绝对路径；脚本路径和参数必须来自当前实际任务，不能直接触发未审核的长实验。服务端 vLLM 日志并不自动包含在测试日志里，需要另外通过 SSH 读取对应服务日志；推理服务也不会因为代码同步自动重启。
+`run` 执行评估脚本时使用 `/mnt/<lab>/<user>-codex/envs/openmd-py311/bin/python` 的绝对路径；脚本路径和参数必须来自当前实际任务，不能直接触发未审核的长实验。服务端 vLLM 日志并不自动包含在测试日志里，需要另外通过 SSH 读取对应服务日志；推理服务也不会因为代码同步自动重启。
 
 ## 本地工具自检
 

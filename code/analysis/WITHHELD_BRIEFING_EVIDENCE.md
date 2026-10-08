@@ -32,7 +32,7 @@
 
 ## 2. 硬边界：改了什么、没改什么
 
-归档快照：`%USERPROFILE%\openmd_private_archive\declared_briefing_snapshot_20260927_1419\code`
+归档快照：`%USERPROFILE%\<private-archive>\declared_briefing_snapshot_20260927_1419\code`
 （2026-09-27 14:19 采集，含 22 个 eval 文件）
 
 ### 2.1 未改动的文件（SHA256 逐位一致）

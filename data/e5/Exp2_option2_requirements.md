@@ -37,7 +37,7 @@
 |---|---|
 | **档位场景包** `p0count_ie_05_multi_axis_n0xx` | 本机只有结果目录、没有场景包。但 `original_variants.json` 给了每个档位的 `scene_hash`/`profile_hash`，配合 `bundle/frozen/code/` 的构建脚本可**本地重建**；若合作者直接给包则更省事。 |
 | **`.venv`** `/root/openmd/releases/gitlab-ccabad00154e/.venv` | 本机 `openmd-py311` 环境可替代；若引擎依赖特殊版本才需要它。 |
-| **seed 段约定** | 需与武昊确认新跑用哪段 seed（现有 4 档用 4151–4160），避免跨批拼接。 |
+| **seed 段约定** | 需与<author-B>确认新跑用哪段 seed（现有 4 档用 4151–4160），避免跨批拼接。 |
 
 ---
 

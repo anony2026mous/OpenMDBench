@@ -12,7 +12,7 @@ import argparse
 import json
 from pathlib import Path
 
-DEFAULT_PILOT = Path("/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose/pilot")
+DEFAULT_PILOT = Path("/mnt/<lab>/<user>-codex/experiments/g1-fault-dose/pilot")
 DOSES = ("0.05", "0.10", "0.20", "0.40", "0.60")
 CASES = ("planner_wrong_contact", "action_hold")
 

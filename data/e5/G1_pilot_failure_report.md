@@ -6,7 +6,7 @@
 > tier 均值几乎全是种子噪声，因此当时的「3/4」无法与「4/4」区分——
 > 全量 n=10 才给出可判定结果。本文的「终止」判断当时下得过早。
 
-> 对象：`OpenMDBench_实验清单_肖棹_20261007_1738.md` 第 18–50 行的 G1。
+> 对象：`OpenMDBench_实验清单_<author-C>_20261007_1738.md` 第 18–50 行的 G1。
 > 两段式设计的第一步：2 seeds × 2 故障类 × 5 剂量档 + clean + 反事实参考。
 > 底座：grid `medium/continuous`、rule planner + heuristic executor、interval 5、**无 LLM**。
 > 结论：**建议按清单第 44 行终止 G1，不扩 10 seeds。** 理由见 §3。
@@ -141,7 +141,7 @@ clean 基线在两个 seed 上分别是 **1.0 与 0.30**——
 
 ```bash
 # 服务器
-P=/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose
+P=/mnt/<lab>/<user>-codex/experiments/g1-fault-dose
 ls $P/pilot/{clean,planner_wrong_contact,action_hold,counterfactual}
 ls $P/replaygate          # 重放门核对
 

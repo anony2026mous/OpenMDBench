@@ -24,7 +24,7 @@ import traceback
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-REMOTE_BASE = Path('/mnt/QTJC/chenyi-codex')
+REMOTE_BASE = Path('/mnt/<lab>/<user>-codex')
 
 def now():
     return datetime.now(timezone.utc).isoformat()

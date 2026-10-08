@@ -9,9 +9,9 @@ was searched, because a negative is only useful with its scope attached.
 | Host / area | Path | What it holds |
 |---|---|---|
 | Local machine | `C:\Code\source-code` | working tree |
-| Local machine | `~/openmd_private_archive/declared_briefing_snapshot_20260927_1419/` | 864 archived pre-fix episode reports |
+| Local machine | `~/<private-archive>/declared_briefing_snapshot_20260927_1419/` | 864 archived pre-fix episode reports |
 | Local machine | `~/Downloads/openmd-paper/` | manuscript sources |
-| **Server A** (user's, `<server-host>`) | `/mnt/QTJC/chenyi-codex/` | 133 GB source-code + 23 GB experiments; 61 sync snapshots |
+| **Server A** (user's, `<server-host>`) | `/mnt/<lab>/<user>-codex/` | 133 GB source-code + 23 GB experiments; 61 sync snapshots |
 | **Server A** | every snapshot's `openmd/code/eval/_w1_runs` | 56 snapshots carry the directory |
 | **Server B** (co-author's, `<server-host>`) | `/root/openmd/{runs,exports,cache,releases,services,tools}` | 32 runs, 11 GB; 5 export packages |
 | Server B | `runs/*.tar.gz` (6 delivery archives) | 338 MB of packaged deliveries |
@@ -33,7 +33,7 @@ ones.
 
 ### Where
 
-`~/openmd_private_archive/declared_briefing_snapshot_20260927_1419/results/`, 864 files —
+`~/<private-archive>/declared_briefing_snapshot_20260927_1419/results/`, 864 files —
 the archive written by `_w1_snapshot_declared.ps1`, whose own comment reads "Snapshot the
 current (declared-briefing / pre-fix) state before changing anything".
 

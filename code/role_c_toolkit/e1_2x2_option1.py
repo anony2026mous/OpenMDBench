@@ -36,7 +36,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import d2_headroom  # noqa: E402  (project bootstrap convention)
 
-DEFAULT_SCREEN = Path("/mnt/QTJC/chenyi-codex/experiments/E1_device-b_v13_p01_20261004"
+DEFAULT_SCREEN = Path("/mnt/<lab>/<user>-codex/experiments/E1_device-b_v13_p01_20261004"
                       "/bundle/data/gate-screening")
 DEFAULT_OUT = HERE / "artifacts/e4-scenario-family/analysis"
 ARM_INFORMATION = "rule-strong-g1"   # goal dose supplied

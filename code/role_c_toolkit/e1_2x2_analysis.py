@@ -17,7 +17,7 @@ import json
 import random
 from pathlib import Path
 
-SCREEN = Path("/mnt/QTJC/chenyi-codex/experiments/E1_device-b_v13_p01_20261004"
+SCREEN = Path("/mnt/<lab>/<user>-codex/experiments/E1_device-b_v13_p01_20261004"
               "/bundle/data/gate-screening")
 ARM_INFO = "rule-strong-g1"
 ARM_BASE = "rule-strong-g0"

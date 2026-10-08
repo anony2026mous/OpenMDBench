@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_SOURCE = Path("/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/option2_result.json")
+DEFAULT_SOURCE = Path("/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/option2_result.json")
 DEFAULT_DOC = HERE / "artifacts/e4-scenario-family/实验2_选项2_真交互结果.md"
 
 APPENDIX = """
@@ -31,7 +31,7 @@ APPENDIX = """
 
 ### A.2 原始数据位置
 
-- 服务器根目录：`/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/`
+- 服务器根目录：`/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/`
   - `scan/<package>/`：每档 `report.json`（完整结果 JSON）、`episode.jsonl`（过程日志）
   - `paired/<tier>/<dose>/seed-<n>/`：`report.json`、`episode.jsonl`、
     `action_batches.jsonl`、`defender_states.jsonl`、`stdout.log`、`stderr.log`

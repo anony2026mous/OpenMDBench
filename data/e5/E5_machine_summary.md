@@ -83,7 +83,7 @@ V0 = 原局评分；后三列为把对应层换成参照组件后的评分。
 
 ## 6. 文件位置
 
-服务器 `/mnt/QTJC/chenyi-codex/experiments/`：
+服务器 `/mnt/<lab>/<user>-codex/experiments/`：
 
 | 内容 | 目录 |
 |---|---|
@@ -107,10 +107,10 @@ V0 = 原局评分；后三列为把对应层换成参照组件后的评分。
    ```bash
    cd role_c_toolkit
    python e5_annotation.py summary \
-     --campaign /mnt/QTJC/chenyi-codex/experiments/e5-hifi-natural-failures-20261001T1920Z \
-     --campaign /mnt/QTJC/chenyi-codex/experiments/e5-hifi-natural-failures-r2-20261002T0220Z \
-     --campaign /mnt/QTJC/chenyi-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z \
-     --grid-summary /mnt/QTJC/chenyi-codex/experiments/e5-grid-natural-failures-20261002T0640Z/e5_grid_summary.json \
+     --campaign /mnt/<lab>/<user>-codex/experiments/e5-hifi-natural-failures-20261001T1920Z \
+     --campaign /mnt/<lab>/<user>-codex/experiments/e5-hifi-natural-failures-r2-20261002T0220Z \
+     --campaign /mnt/<lab>/<user>-codex/experiments/e5-hifi-attribution-r3b-20261002T0715Z \
+     --grid-summary /mnt/<lab>/<user>-codex/experiments/e5-grid-natural-failures-20261002T0640Z/e5_grid_summary.json \
      --key annotation-final/KEY_DO_NOT_SHARE.json \
      --human annotation_form.csv \
      --output annotation-final/kappa_summary.json

@@ -138,7 +138,7 @@ grep -n "communication.competition-dispatch|communication.competition-tracking-d
   catalog/v2/competition_four_categories.yaml
 
 # 试点原始数据
-ls /mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/
+ls /mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/
 
 # 策略是闭环控制器（不读计划）
 sed -n '49,60p' tools/competition_four_categories/tracking_policy.py

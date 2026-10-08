@@ -104,7 +104,7 @@ give identical scenario means (rule-rule 0.723, RL 0.632).
 
 ```bash
 git clone https://github.com/anony2026mous/OpenMDBench.git
-cd anonymous
+cd OpenMDBench
 
 # 1. verify the paper's main table against the released episodes
 python reproduce/verify_paper_table.py

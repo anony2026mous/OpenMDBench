@@ -17,7 +17,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-SNAP = (Path(os.path.expanduser("~")) / "openmd_private_archive"
+SNAP = (Path(os.path.expanduser("~")) / "<private-archive>"
         / "declared_briefing_snapshot_20260927_1419" / "results")
 
 KEYS = ("checkpoint_meta", "decision_interval", "decision_interval_ticks",

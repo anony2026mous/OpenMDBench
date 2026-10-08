@@ -2,7 +2,7 @@
 # MOVE (not delete) into a private archive outside the repo, then untrack the
 # ones git was tracking. Writes a manifest for one-command restore.
 $root  = 'C:\Code\source-code\openmd'
-$arch  = Join-Path $env:USERPROFILE 'openmd_private_archive\internal_docs'
+$arch  = Join-Path $env:USERPROFILE '<private-archive>\internal_docs'
 
 New-Item -ItemType Directory -Force -Path $arch | Out-Null
 

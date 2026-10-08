@@ -11,7 +11,7 @@
 
 | 问题 | 答案 |
 |---|---|
-| 谁做的 | 本角色（肖棹），E4 交付项「场景族构建与入场 + D1′ 属性标注」 |
+| 谁做的 | 本角色（<author-C>），E4 交付项「场景族构建与入场 + D1′ 属性标注」 |
 | 什么时候 | 2026-10-03～04 的标定批次（seeds 2001–2005 → 2101–2105 → 2201–2205 → 2301–2305） |
 | 名单在哪 | `role_c_toolkit/artifacts/e4-scenario-family/admission_ledger.json`（schema `e4-admission-ledger@2`） |
 | 每条含什么 | `public_id`、`package`、`package_sha256`、`gates.*.verdict`、`gates.*.evidence`、`note`、`success_rate`、`ci95` |
@@ -23,7 +23,7 @@
 |---|---|
 | 「原冻结门禁筛查记录未提供」 | 记录存在且为机读 JSON，55 条逐场景，每条带证据文件路径 |
 | 「当前只核实到 24 个独立正式包」 | 24 是 `formal` 树的包数；D2 判定覆盖的是 `competition_v1` 的 30 个包 |
-| 「在 2 号服务器 `/root/huairou-project`」 | 本项目在怀柔机 `/mnt/QTJC/chenyi-codex/`，无 `/root/huairou-project` 路径 |
+| 「在 2 号服务器 `/root/huairou-project`」 | 本项目在怀柔机 `/mnt/<lab>/<user>-codex/`，无 `/root/huairou-project` 路径 |
 
 ## 2. 55 个条目是怎么构成的
 
@@ -31,7 +31,7 @@
 
 | 来源 | 包数 | 明细 |
 |---|---|---|
-| `competition_v1`（本次重标定，肖棹） | **30** | 侦察搜索 10、持续跟踪 8、区域拒止 6、应急响应 6 |
+| `competition_v1`（本次重标定，<author-C>） | **30** | 侦察搜索 10、持续跟踪 8、区域拒止 6、应急响应 6 |
 | `formal` 正式 IE（早期实验，非本次） | **14** | IE-01…IE-14 |
 | `formal` 演示包（不计入正式实验） | **10** | MD-INT-002、MD-INT-003×3、MD-INT-005、MD-INT-006、MD-AD-002×3、MD-AD-004 |
 | **合计** | **54** | |
@@ -72,18 +72,18 @@
 
 | 被检对象 | 场景引用 | 是否命中黑名单 |
 |---|---|---|
-| `figA4_natural_failure_pilot_12.csv`（肖棹） | IE-03、IE-08、grid | **否** |
-| `figA2_replanning_sweep.csv`（肖棹） | 无 | **否** |
-| `make_figs_A2_A4.py` / `设计说明_A2_A4.md`（肖棹） | 无 | **否** |
-| `fig3_hifi_gap.csv`（武昊） | **正好 IE-01…IE-14** | **否** |
-| `figA1_model_invariance.csv`（武昊） | 无（模型 × 指标） | **否** |
-| `figA3_dose_gain.csv`（武昊） | 无（stack × dose） | **否** |
+| `figA4_natural_failure_pilot_12.csv`（<author-C>） | IE-03、IE-08、grid | **否** |
+| `figA2_replanning_sweep.csv`（<author-C>） | 无 | **否** |
+| `make_figs_A2_A4.py` / `设计说明_A2_A4.md`（<author-C>） | 无 | **否** |
+| `fig3_hifi_gap.csv`（<author-B>） | **正好 IE-01…IE-14** | **否** |
+| `figA1_model_invariance.csv`（<author-B>） | 无（模型 × 指标） | **否** |
+| `figA3_dose_gain.csv`（<author-B>） | 无（stack × dose） | **否** |
 | Fig.1 / Fig.2（阚思颖） | 无数据（纯示意） | **否** |
 | v11 实验强化清单 | 仅 IE-05、MD-AD-001、MD-TRK-002、MD-TRK-005 | **否** |
 
 **结论：论文图与数据没有用到任何不该计入的场景。**
 
-补充核查（武昊数据内部一致性）：
+补充核查（<author-B>数据内部一致性）：
 
 | README 声称 | 从 CSV 复算 | 结论 |
 |---|---|---|

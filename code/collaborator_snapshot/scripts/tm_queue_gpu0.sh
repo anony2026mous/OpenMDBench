@@ -1,6 +1,6 @@
 #\!/bin/bash
-cd /home/taizun/zrz/test_jidi/openMD/code
-PY=/home/taizun/anaconda3/envs/jidi/bin/python
+cd /home/<user>/zrz/test_jidi/openMD/code
+PY=/home/<user>/anaconda3/envs/jidi/bin/python
 for seed in 42 43 44; do
   CUDA_VISIBLE_DEVICES=0 $PY train_mappo.py --difficulty medium --seed $seed --task_mode independent --save_dir checkpoints/v214 >> logs/mappo_medium_tm-ind_s${seed}_v214.log 2>&1
 done

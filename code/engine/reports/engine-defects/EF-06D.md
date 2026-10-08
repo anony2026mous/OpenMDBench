@@ -5,7 +5,7 @@ STATUS: DONE
 OBJECTIVE: 让 delivered `send_message` 及 controller/faction recipient scope 进入 controller-scoped、只读、有界 inbox。
 REQ_IDS: EF-06D §12.4；S5D-01–S5D-06；ADR-ENGINE-DEFECTS-001 决定四；CHK-001
 CURRENT_COMMIT: `cb8924bc097729fcc5f5c4222a32065fd1fdeea9`
-WORKTREE: `/home/taizun/Competition_projects/source_codes/source_codes`
+WORKTREE: `/home/<user>/Competition_projects/source_codes/source_codes`
 
 ## OUTPUTS_AND_EVIDENCE
 

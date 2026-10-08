@@ -99,7 +99,7 @@ def main() -> None:
     lines.append("")
     lines.append("| 问题 | 答案 |")
     lines.append("|---|---|")
-    lines.append("| 谁做的 | 本角色（肖棹），E4 交付项「场景族构建与入场 + D1′ 属性标注」 |")
+    lines.append("| 谁做的 | 本角色（<author-C>），E4 交付项「场景族构建与入场 + D1′ 属性标注」 |")
     lines.append("| 什么时候 | 2026-10-03～04 的标定批次（seeds 2001–2005 → 2101–2105 → "
                  "2201–2205 → 2301–2305） |")
     lines.append("| 名单在哪 | `role_c_toolkit/artifacts/e4-scenario-family/admission_ledger.json`"
@@ -118,7 +118,7 @@ def main() -> None:
     lines.append("| 「当前只核实到 24 个独立正式包」 | 24 是 `formal` 树的包数；"
                  "D2 判定覆盖的是 `competition_v1` 的 30 个包 |")
     lines.append("| 「在 2 号服务器 `/root/huairou-project`」 | 本项目在怀柔机 "
-                 "`/mnt/QTJC/chenyi-codex/`，无 `/root/huairou-project` 路径 |")
+                 "`/mnt/<lab>/<user>-codex/`，无 `/root/huairou-project` 路径 |")
     lines.append("")
 
     # ---------------------------------------------------------------- 2
@@ -129,7 +129,7 @@ def main() -> None:
     lines.append("")
     lines.append("| 来源 | 包数 | 明细 |")
     lines.append("|---|---|---|")
-    lines.append(f"| `competition_v1`（本次重标定，肖棹） | **{len(competition)}** | "
+    lines.append(f"| `competition_v1`（本次重标定，<author-C>） | **{len(competition)}** | "
                  f"侦察搜索 10、持续跟踪 8、区域拒止 6、应急响应 6 |")
     lines.append(f"| `formal` 正式 IE（早期实验，非本次） | **{len(formal_ie)}** | IE-01…IE-14 |")
     lines.append(f"| `formal` 演示包（不计入正式实验） | **{len(formal_demo)}** | "
@@ -191,20 +191,20 @@ def main() -> None:
     lines.append("")
     lines.append("| 被检对象 | 场景引用 | 是否命中黑名单 |")
     lines.append("|---|---|---|")
-    lines.append("| `figA4_natural_failure_pilot_12.csv`（肖棹） | IE-03、IE-08、grid | "
+    lines.append("| `figA4_natural_failure_pilot_12.csv`（<author-C>） | IE-03、IE-08、grid | "
                  "**否** |")
-    lines.append("| `figA2_replanning_sweep.csv`（肖棹） | 无 | **否** |")
-    lines.append("| `make_figs_A2_A4.py` / `设计说明_A2_A4.md`（肖棹） | 无 | **否** |")
-    lines.append("| `fig3_hifi_gap.csv`（武昊） | **正好 IE-01…IE-14** | **否** |")
-    lines.append("| `figA1_model_invariance.csv`（武昊） | 无（模型 × 指标） | **否** |")
-    lines.append("| `figA3_dose_gain.csv`（武昊） | 无（stack × dose） | **否** |")
+    lines.append("| `figA2_replanning_sweep.csv`（<author-C>） | 无 | **否** |")
+    lines.append("| `make_figs_A2_A4.py` / `设计说明_A2_A4.md`（<author-C>） | 无 | **否** |")
+    lines.append("| `fig3_hifi_gap.csv`（<author-B>） | **正好 IE-01…IE-14** | **否** |")
+    lines.append("| `figA1_model_invariance.csv`（<author-B>） | 无（模型 × 指标） | **否** |")
+    lines.append("| `figA3_dose_gain.csv`（<author-B>） | 无（stack × dose） | **否** |")
     lines.append("| Fig.1 / Fig.2（阚思颖） | 无数据（纯示意） | **否** |")
     lines.append("| v11 实验强化清单 | 仅 IE-05、MD-AD-001、MD-TRK-002、MD-TRK-005 | "
                  "**否** |")
     lines.append("")
     lines.append("**结论：论文图与数据没有用到任何不该计入的场景。**")
     lines.append("")
-    lines.append("补充核查（武昊数据内部一致性）：")
+    lines.append("补充核查（<author-B>数据内部一致性）：")
     lines.append("")
     lines.append("| README 声称 | 从 CSV 复算 | 结论 |")
     lines.append("|---|---|---|")

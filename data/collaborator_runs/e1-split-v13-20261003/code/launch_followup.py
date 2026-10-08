@@ -23,7 +23,7 @@ def main():
     with (BASE / 'runtime/freeze.log').open('x') as log:
         subprocess.run([sys.executable, '-B', '-u', str(script), 'freeze', *common,
                         '--checklist', str(BASE / 'code/checklist_v13.md'),
-                        '--model-dir', '/mnt/QTJC/chenyi-codex/models/Qwen3.8-27B-BF16'],
+                        '--model-dir', '/mnt/<lab>/<user>-codex/models/Qwen3.8-27B-BF16'],
                        stdout=log, stderr=subprocess.STDOUT, check=True)
     with (BASE / 'runtime/supervisor.log').open('x') as log:
         subprocess.run([sys.executable, '-B', '-u', str(script), 'screen-export', *common,

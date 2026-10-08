@@ -26,7 +26,7 @@ from collections import defaultdict
 from pathlib import Path
 
 HOME = Path(os.path.expanduser("~"))
-SNAP = HOME / "openmd_private_archive" / "declared_briefing_snapshot_20260927_1419" / "results"
+SNAP = HOME / "<private-archive>" / "declared_briefing_snapshot_20260927_1419" / "results"
 RUNS = Path(r"C:\Code\source-code\openmd\code\eval\_w1_runs")
 
 LAYERS = ("terminal", "leak", "exchange", "facilities", "depth", "ammo", "surface")

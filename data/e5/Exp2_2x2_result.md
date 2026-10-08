@@ -9,7 +9,7 @@
 
 ## 1. 数据来源与臂定义
 
-`E1_device-b_v13_p01_20261004/bundle/data/gate-screening/`（武昊 E1 campaign，已冻结在服务器）
+`E1_device-b_v13_p01_20261004/bundle/data/gate-screening/`（<author-B> E1 campaign，已冻结在服务器）
 
 每个数量条件 5 个臂 × 10 seeds：
 
@@ -100,4 +100,4 @@
 
 - 逐 seed 原始值 + 交互效应：`role_c_toolkit/artifacts/e4-scenario-family/analysis/e1_2x2_planning_information.json`
 - 复算：`python role_c_toolkit/e1_2x2_analysis.py`（读 E1 gate-screening，bootstrap 20000 draws）
-- 数据源：`/mnt/QTJC/chenyi-codex/experiments/E1_device-b_v13_p01_20261004/bundle/data/gate-screening/`
+- 数据源：`/mnt/<lab>/<user>-codex/experiments/E1_device-b_v13_p01_20261004/bundle/data/gate-screening/`

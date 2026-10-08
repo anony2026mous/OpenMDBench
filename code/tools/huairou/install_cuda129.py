@@ -9,7 +9,7 @@ import tarfile
 import tempfile
 import urllib.request
 
-BASE = Path('/mnt/QTJC/chenyi-codex/tools')
+BASE = Path('/mnt/<lab>/<user>-codex/tools')
 TARGET = BASE / 'cuda-12.9'
 SOURCE = 'https://developer.download.nvidia.com/compute/cuda/redist/'
 COMPONENTS = [

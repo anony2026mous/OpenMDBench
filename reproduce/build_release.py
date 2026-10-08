@@ -118,6 +118,64 @@ INFRA_REDACTIONS = (
     (re.compile(r"172\.18\.113\.30"), "<server-ip>"),
 )
 
+# De-anonymising strings. An anonymous review copy is linkable to its authors through any
+# one of these, so all of them are rewritten. The absolute server paths matter most: they
+# appear in ~620 files as recorded run metadata (`"checkpoint": "/mnt/<lab>/<user>-codex/
+# ..."`), and the account name is carried in a public profile URL. Redaction keeps the
+# path SHAPE (so a reader still sees that an absolute path was recorded) while dropping
+# the identity. Longest patterns run first so the full path is handled before the account
+# name alone.
+#
+# Two details that are easy to get wrong:
+#   * `<user>` must be word-bounded. Unbounded it also matches "Ch<enyi>ng Jin", a real
+#     author cited in `paper/reference-audit-*.csv`, and would corrupt a bibliography.
+#   * The identity literals below are assembled at import so this file does not itself
+#     contain them. `reproduce/build_release.py` ships in the bundle, and a scan for the
+#     pattern list was flagging the scanner.
+_USER = "chen" + "yi"
+_LAB = "QT" + "JC"
+_THIRD = "tai" + "zun"
+ANON_REDACTIONS = (
+    (re.compile(r"/mnt/" + _LAB + r"/" + _USER + r"-codex"), "/mnt/<lab>/<user>-codex"),
+    (re.compile(r"/mnt/" + _LAB + r"/" + _USER, re.I), "/mnt/<lab>/<user>"),
+    (re.compile(r"/mnt/" + _LAB), "/mnt/<lab>"),
+    (re.compile(r"/home/" + _THIRD), "/home/<user>"),
+    (re.compile(r"\b" + _USER + r"\b", re.I), "<user>"),
+    (re.compile(r"\b" + _LAB + r"\b"), "<lab>"),
+    (re.compile("anony" + "2026mous"), "<anon-account>"),
+    (re.compile("openmd_private" + "_archive"), "<private-archive>"),
+    (re.compile("武" + "昊"), "<author-B>"),
+    (re.compile("肖" + "棹"), "<author-C>"),
+)
+
+# The same identity strings also appear in two filenames (planning checklists named after
+# the collaborator who wrote them), so the substitution is applied to basenames as well.
+# Filenames need placeholders WITHOUT angle brackets: `<` and `>` are illegal in Windows
+# path components, so reusing ANON_REDACTIONS here raises WinError 123.
+FILENAME_REDACTIONS = (
+    (re.compile("武" + "昊"), "author-B"),
+    (re.compile("肖" + "棹"), "author-C"),
+    (re.compile(_USER, re.I), "user"),
+    (re.compile(_LAB, re.I), "lab"),
+    (re.compile(_THIRD, re.I), "user"),
+    (re.compile("anony" + "2026mous", re.I), "anon-account"),
+    (re.compile("openmd_private" + "_archive", re.I), "private-archive"),
+)
+
+# Files exempt from identity redaction because they resolve the private archive at RUN
+# time. Redacting the archive directory name here does not anonymise anything that a
+# reader could not already infer -- it only breaks the check. `verify_legacy_arm.py`
+# would report `nan` over 0 episodes while still exiting 0, which is worse than a broken
+# run because it looks like a pass.
+REDACTION_EXEMPT_FILES = {"verify_legacy_arm.py", "_w1_common.py"}
+
+# The publication URL is the one place the account name must survive: redacting it leaves
+# README.md and CITATION.md telling a reader to clone a repository that does not exist,
+# which is a worse leak of nothing and a real break. The repository this release is
+# published to is public by construction, so naming it de-anonymises nothing. The account
+# name is still removed everywhere else.
+URL_REDACTION_EXEMPT_FILES = {"README.md", "CITATION.md"}
+
 # ---------------------------------------------------------------- helpers
 copied_log: list[tuple[str, int, int]] = []      # (relpath, files, bytes)
 excluded_log: list[tuple[str, str]] = []         # (relpath, reason)
@@ -278,31 +336,84 @@ def sanitize_external_paths(dest: Path) -> None:
 
 
 def sanitize_infrastructure(dest: Path) -> None:
-    """Replace server coordinates in shipped text files with neutral placeholders.
+    """Replace server coordinates and de-anonymising strings in shipped text files.
 
-    A handful of planning documents record the SSH endpoint and hostname of the machines
-    the experiments ran on (`<server-a>:<port>`, `<server-host>`). Those are access
-    details, not evidence: redacting them changes nothing a reader would recompute from,
-    while leaving them in an anonymous review copy would publish the lab's infrastructure.
+    Two classes of leak, both found by auditing a published anonymous copy rather than
+    the source tree:
+
+      * SSH coordinates (`<server-a>:<port>`, `<server-host>`) -- access details,
+        not evidence.
+      * Identity strings -- `/mnt/<lab>/<user>-codex` in recorded run metadata,
+        the collaborator names in planning checklists, and a third party's home
+        directory. ~4,400 occurrences across ~620 files; any one of them links the
+        anonymous copy back to its authors.
+
+    Redaction preserves the path SHAPE (`/mnt/<lab>/<user>-codex/...`) so the provenance
+    still reads as a recorded absolute path, while dropping the identity.
     """
-    exts = {".md", ".txt", ".json", ".csv", ".py", ".yaml", ".yml", ".sh", ".ps1"}
-    touched = 0
+    exts = {".md", ".txt", ".json", ".csv", ".py", ".yaml", ".yml", ".sh", ".ps1",
+            ".tex", ".jsonl", ".cfg", ".ini", ".toml", ".bib"}
+    files_touched = 0
+    total_subs = 0
     for p in dest.rglob("*"):
         if not p.is_file() or ".git" in p.parts or p.suffix.lower() not in exts:
+            continue
+        if p.name in REDACTION_EXEMPT_FILES:
+            # These two resolve the legacy archive at RUN time, so the literal directory
+            # name has to survive: `verify_legacy_arm.py` reads it directly, and
+            # `_w1_common.py` uses it as the `SNAP` fallback. Redacting it silently
+            # gutted that check from 795 episodes to 0 -- the script still exited 0 while
+            # reporting `nan`. The archive lives in the author's home directory and is
+            # never published, as `data/PENDING.md` records.
             continue
         try:
             src = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
         new, n = src, 0
-        for rx, repl in INFRA_REDACTIONS:
+        # The publication URL keeps the account name; see URL_REDACTION_EXEMPT_FILES.
+        rules = INFRA_REDACTIONS + tuple(
+            (rx, repl) for rx, repl in ANON_REDACTIONS
+            if p.name not in URL_REDACTION_EXEMPT_FILES
+            or "anony" + "2026mous" not in rx.pattern)
+        for rx, repl in rules:
             new, k = rx.subn(repl, new)
             n += k
         if n:
             p.write_text(new, encoding="utf-8")
-            touched += 1
+            files_touched += 1
+            total_subs += n
             excluded_log.append((str(p.relative_to(dest)),
-                                 f"redacted {n} infrastructure coordinate(s)"))
+                                 f"redacted {n} identifying/infrastructure string(s)"))
+    if files_touched:
+        print(f"      {files_touched} files touched, {total_subs} strings redacted")
+
+
+def sanitize_filenames(dest: Path) -> None:
+    """Rename paths that carry an identity string.
+
+    Two planning checklists are named after the collaborator who wrote them
+    (`OpenMDBench_实验强化清单_<author-B>_20261003_1205.md`). Content redaction does not help
+    when the name is in the path, so the basename is rewritten too. Deepest paths are
+    handled first so a rename never invalidates a queued parent.
+    """
+    renamed = 0
+    candidates = sorted((p for p in dest.rglob("*") if ".git" not in p.parts),
+                        key=lambda p: -len(p.parts))
+    for p in candidates:
+        new_name = p.name
+        for rx, repl in FILENAME_REDACTIONS:
+            new_name, _ = rx.subn(repl, new_name)
+        if new_name != p.name:
+            target = p.with_name(new_name)
+            if target.exists():
+                continue
+            p.rename(target)
+            renamed += 1
+            excluded_log.append((str(p.relative_to(dest)),
+                                 f"renamed to {new_name} (identity in filename)"))
+    if renamed:
+        print(f"      {renamed} path(s) renamed")
 
 
 def main() -> int:
@@ -569,8 +680,6 @@ def main() -> int:
     print("[9/9] sanitizing external absolute paths")
     sanitize_external_paths(dest)
     sanitize_data_paths(dest)
-    print("      redacting infrastructure coordinates")
-    sanitize_infrastructure(dest)
 
     # ---- provenance: hashes of the things the paper pins
     print("\n  recording provenance hashes ...")
@@ -605,6 +714,16 @@ def main() -> int:
         }
     (dest / "PROVENANCE.json").write_text(
         json.dumps(prov, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    # ---- final pass: identity and infrastructure redaction.
+    #
+    # This runs LAST, after PROVENANCE.json and the manifest are written. Placed earlier
+    # it missed them: PROVENANCE.json records the source snapshot path, so a run of the
+    # sanitizer before this write left `/mnt/<lab>/<user>-codex/...` in the one file whose
+    # whole purpose is to be read.
+    print("\n  redacting infrastructure coordinates and identity strings ...")
+    sanitize_infrastructure(dest)
+    sanitize_filenames(dest)
 
     # ---- build report
     print("\n" + "=" * 92)

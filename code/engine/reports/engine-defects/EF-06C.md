@@ -5,7 +5,7 @@ STATUS: DONE
 OBJECTIVE: 将 controller action 从提交队列转换为 endpoint-backed transport；仅 delivered action 进入 authoritative World tick，endpoint self-control 为 zero-hop。
 REQ_IDS: EF-06C §12.3；S5C-01–S5C-06；ADR-ENGINE-DEFECTS-001 决定三；CHK-001
 CURRENT_COMMIT: `cb8924bc097729fcc5f5c4222a32065fd1fdeea9`
-WORKTREE: `/home/taizun/Competition_projects/source_codes/source_codes`
+WORKTREE: `/home/<user>/Competition_projects/source_codes/source_codes`
 
 ## OUTPUTS_AND_EVIDENCE
 

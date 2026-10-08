@@ -6,7 +6,7 @@ $stamp  = Get-Date -Format 'yyyyMMdd_HHmm'
 $root   = 'C:\Code\source-code\openmd'
 $eval   = Join-Path $root 'code\eval'
 $runs   = Join-Path $eval '_w1_runs'
-$arch   = Join-Path $env:USERPROFILE ("openmd_private_archive\declared_briefing_snapshot_$stamp")
+$arch   = Join-Path $env:USERPROFILE ("<private-archive>\declared_briefing_snapshot_$stamp")
 
 New-Item -ItemType Directory -Force -Path $arch | Out-Null
 if (-not (Test-Path -LiteralPath $arch -PathType Container)) { throw "archive dir failed: $arch" }

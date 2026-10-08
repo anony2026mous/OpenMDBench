@@ -115,7 +115,7 @@ def main() -> None:
                  "**同一场景的三个难度水平**，合并计 1 → **28 个场景**。")
     lines.append("> 数据来源：`admission_ledger.json` + `analysis/d2_graded_final2.json`"
                  f"（5-seed 实测）；已逐行核对两者一致（{len(kept)} 行，{len(mismatches)} 处不符）。")
-    lines.append("> 这批场景由本角色（肖棹）在 E4 场景族重标定中建立与标定；"
+    lines.append("> 这批场景由本角色（<author-C>）在 E4 场景族重标定中建立与标定；"
                  "`formal` 树的 14 个 IE 场景属**更早的**实验，不在本表。")
     lines.append("")
     lines.append("## 0. 两个口径的总览（先说清，避免与附录 A 的 16/19/20 混淆）")

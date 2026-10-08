@@ -2,8 +2,8 @@
 # auto-chain after grid-info: merge results -> A3 complex (heuristic
 # executor) -> P0-D two-role tournament. Launched 8/28 while the two
 # grid-info LLM processes (2-concurrency cap) were still running.
-cd /home/taizun/zrz/test_jidi/openMD/code
-PY=/home/taizun/anaconda3/envs/jidi/bin/python
+cd /home/<user>/zrz/test_jidi/openMD/code
+PY=/home/<user>/anaconda3/envs/jidi/bin/python
 export OPENAI_BASE_URL=http://172.18.116.170:8000/v1
 export LLM_DEFAULT_MODEL=Qwen3.8-27B
 

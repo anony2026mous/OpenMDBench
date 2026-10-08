@@ -106,7 +106,7 @@ def render(artifacts: Path) -> str:
         "> 本文件由 `role_c_toolkit/e5_consolidated.py` 从原始产物自动生成，**所有数字均来自"
         "机器写入的文件**（批次 manifest、逐案例归因 JSON、κ 计算结果），未手工抄录；"
         "可随时重新生成，不会与数据漂移。",
-        "> 数据来源目录：服务器 `/mnt/QTJC/chenyi-codex/experiments/e5-*`，本地副本见文末。",
+        "> 数据来源目录：服务器 `/mnt/<lab>/<user>-codex/experiments/e5-*`，本地副本见文末。",
         "",
         "## 1. 一句话结论",
         "",

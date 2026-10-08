@@ -5,7 +5,7 @@ STATUS: DONE
 OBJECTIVE: 将 confirmed organic contact 以发送时刻不可变 snapshot 经既有通信 route/delay/TTL/loss/jamming transport 投递到指定 controller 的 shared contacts。
 REQ_IDS: EF-06B §12.2；S5B-01–S5B-04；ADR-ENGINE-DEFECTS-001 决定三；CHK-001
 CURRENT_COMMIT: `cb8924bc097729fcc5f5c4222a32065fd1fdeea9`
-WORKTREE: `/home/taizun/Competition_projects/source_codes/source_codes`
+WORKTREE: `/home/<user>/Competition_projects/source_codes/source_codes`
 
 ## BOUNDARY
 

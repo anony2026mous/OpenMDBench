@@ -20,7 +20,7 @@ from collections import defaultdict
 from pathlib import Path
 
 HOME = Path(os.path.expanduser("~"))
-SNAP = HOME / "openmd_private_archive" / "declared_briefing_snapshot_20260927_1419" / "results"
+SNAP = HOME / "<private-archive>" / "declared_briefing_snapshot_20260927_1419" / "results"
 
 # measured seconds/tick (this session):
 #   llm/llm-rule 2.49   pure-llm 1.77   llm-rl 2.58  (rule 0.385, rl 0.32)

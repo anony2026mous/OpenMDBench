@@ -33,7 +33,7 @@ def port_open(port: int) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--service', type=Path, default=Path('/mnt/QTJC/chenyi-codex/services/qwen'))
+    parser.add_argument('--service', type=Path, default=Path('/mnt/<lab>/<user>-codex/services/qwen'))
     parser.add_argument('--replica', default='b')
     parser.add_argument('--reason', required=True)
     parser.add_argument('--allow-connected', action='store_true',

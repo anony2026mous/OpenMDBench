@@ -5,7 +5,7 @@ STATUS: DONE
 OBJECTIVE: 将 controller claim、Observation own-state 与 action scope 统一为严格、显式且可编译验证的契约，并要求 formal V2 controller 声明显式通信 endpoint。
 REQ_IDS: EF-06A §12.1；S5A-01–S5A-06；ADR-ENGINE-DEFECTS-001 决定三；CHK-001
 CURRENT_COMMIT: `cb8924bc097729fcc5f5c4222a32065fd1fdeea9`
-WORKTREE: `/home/taizun/Competition_projects/source_codes/source_codes`
+WORKTREE: `/home/<user>/Competition_projects/source_codes/source_codes`
 
 ## PRECONDITIONS_AND_AUTHORIZATION
 

@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_SOURCE = Path("/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/option2_result.json")
+DEFAULT_SOURCE = Path("/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/option2_result.json")
 DEFAULT_OUT = HERE / "artifacts/e4-scenario-family/实验2_选项2_真交互结果.md"
 
 

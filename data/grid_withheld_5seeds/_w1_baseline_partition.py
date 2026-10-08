@@ -21,7 +21,7 @@ from collections import defaultdict
 from pathlib import Path
 
 HOME = Path(os.path.expanduser("~"))
-SNAP = HOME / "openmd_private_archive" / "declared_briefing_snapshot_20260927_1419" / "results"
+SNAP = HOME / "<private-archive>" / "declared_briefing_snapshot_20260927_1419" / "results"
 RUNS = Path(r"C:\Code\source-code\openmd\code\eval\_w1_runs")
 SCEN = ["IE-01-SINGLE-TARGET", "IE-02-DUAL-THREAT", "IE-03-SURFACE-RAID",
         "IE-04-COMBINED-ARMS", "IE-05-MULTI-AXIS", "IE-06-DECOY-MIXED",

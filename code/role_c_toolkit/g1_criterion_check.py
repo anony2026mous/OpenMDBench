@@ -23,7 +23,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import d2_headroom  # noqa: E402
 
-DEFAULT_ROOT = Path("/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose/full")
+DEFAULT_ROOT = Path("/mnt/<lab>/<user>-codex/experiments/g1-fault-dose/full")
 DOSES = ("0.05", "0.10", "0.20", "0.40", "0.60")
 CASES = ("planner_wrong_contact", "action_hold")
 MISSION = ("V", "blue_score")

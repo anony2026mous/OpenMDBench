@@ -4,38 +4,38 @@ Read off the team's own planning documents in `~/Downloads`, not inferred:
 
 | Document | Owner | Latest |
 |---|---|---|
-| `OpenMDBench_实验强化清单_武昊_20261003_2128.md（v13…）` | 武昊 | v13, 10-03 |
-| `OpenMDBench_实验强化清单_肖棹_20261003_2128.md（v10…）` | 肖棹 | v10, 10-03 |
-| `OpenMDBench_实验强化清单_肖棹_20261004_1501.md（v11，E4完成）` | 肖棹 | v11, 10-04 |
-| `OpenMDBench_实验清单_肖棹_20261007_1738.md` | 肖棹 | v1, 10-07 |
+| `OpenMDBench_实验强化清单_<author-B>_20261003_2128.md（v13…）` | <author-B> | v13, 10-03 |
+| `OpenMDBench_实验强化清单_<author-C>_20261003_2128.md（v10…）` | <author-C> | v10, 10-03 |
+| `OpenMDBench_实验强化清单_<author-C>_20261004_1501.md（v11，E4完成）` | <author-C> | v11, 10-04 |
+| `OpenMDBench_实验清单_<author-C>_20261007_1738.md` | <author-C> | v1, 10-07 |
 | `OpenMDBench_实验强化清单_20261002_1801（v4）` | 全体 | v4, 10-02 |
 
 ## The division of labour, as stated
 
-**武昊 — 定律证据核心**
+**<author-B> — 定律证据核心**
 `E10 ✅ · E1 ⏳顺序执行中 · E2 ✅ · E11 ✅ · E14 ✅` / optional: `E12 ⏸`
 
-**肖棹 — 平台泛化与诊断 + E1 承接**
+**<author-C> — 平台泛化与诊断 + E1 承接**
 `E4 ✅ · E5 ✅ · E6 ✅ · E13 ⏸ · G1 🆕待启动` / plus `E1 承接（数量 19/27）⏳`
 
 ## Gaps, with owners
 
 | Gap in the release | Code | Owner | Status the documents state |
 |---|---|---|---|
-| **I.4** anchored critical-fault — numbers do not reproduce | **G1 分级注入故障-恢复校准** | **肖棹** | `🆕 待启动（先 pilot）` — never completed |
-| **tab:modelinvariance** — ~~MM-M3 / MM-M2.7-hs absent~~ **RESOLVED** | **E6b 第三方模型消融** | **肖棹** | **found and in the bundle.** All four columns reproduce exactly: Qwen3.8-27B +0.431, Qwen3-8B +0.464, MM-M3 +0.313, MM-M2.7-hs +0.450, against the paper's +0.431 / +0.464 / +0.313 / +0.450. See finding 2 below. |
-| **E13** positive-region model reproduction — never run | **E13 正区模型复现** | **肖棹** | `⏸ 可选，视时间线` |
-| **E12** key-contrast seed extension (5→10) | **E12** | **武昊** | `⏸ 可选，视时间线` |
-| **E1** confirmation tiers 19/27 | **E1 承接** | **肖棹** (transferred from 武昊) | `🆕 新增，待启动` |
-| **tab:e5pilot** — 3 grid cases lack attribution records | **E5 自然故障盲归因 pilot** | **肖棹** | `✅ 完成` |
-| **I.3** real-stream counterfactual (601–610) — ~~no data anywhere~~ **RESOLVED** | real-stream batch | 肖棹 | **found and now in the bundle.** Located on the co-author's server as `runs/p0-strengthening-20261001/inputs/P3a__llm_goal_causal__s601-610__confirm__v1` and verified 0/10 cell mismatches by `reproduce/verify_p3a.py`. It was missed because the seed range is reused by the E3 deception files; the batch is found by its intervention marker (`all_unit_goals_to_legal_hold`). |
+| **I.4** anchored critical-fault — numbers do not reproduce | **G1 分级注入故障-恢复校准** | **<author-C>** | `🆕 待启动（先 pilot）` — never completed |
+| **tab:modelinvariance** — ~~MM-M3 / MM-M2.7-hs absent~~ **RESOLVED** | **E6b 第三方模型消融** | **<author-C>** | **found and in the bundle.** All four columns reproduce exactly: Qwen3.8-27B +0.431, Qwen3-8B +0.464, MM-M3 +0.313, MM-M2.7-hs +0.450, against the paper's +0.431 / +0.464 / +0.313 / +0.450. See finding 2 below. |
+| **E13** positive-region model reproduction — never run | **E13 正区模型复现** | **<author-C>** | `⏸ 可选，视时间线` |
+| **E12** key-contrast seed extension (5→10) | **E12** | **<author-B>** | `⏸ 可选，视时间线` |
+| **E1** confirmation tiers 19/27 | **E1 承接** | **<author-C>** (transferred from <author-B>) | `🆕 新增，待启动` |
+| **tab:e5pilot** — 3 grid cases lack attribution records | **E5 自然故障盲归因 pilot** | **<author-C>** | `✅ 完成` |
+| **I.3** real-stream counterfactual (601–610) — ~~no data anywhere~~ **RESOLVED** | real-stream batch | <author-C> | **found and now in the bundle.** Located on the co-author's server as `runs/p0-strengthening-20261001/inputs/P3a__llm_goal_causal__s601-610__confirm__v1` and verified 0/10 cell mismatches by `reproduce/verify_p3a.py`. It was missed because the seed range is reused by the E3 deception files; the batch is found by its intervention marker (`all_unit_goals_to_legal_hold`). |
 | **tab:interface** — NL vs JSON modality | — | **unassigned** | see below |
 
 ## Three findings that matter
 
 ### 1. I.4's metric was never V — which is why the numbers did not reproduce
 
-肖棹's 10-07 G1 design specifies the measurement:
+<author-C>'s 10-07 G1 design specifies the measurement:
 
 > 输出：每档 **ΔP（规划）/ ΔE（执行）** 均值 + seed-bootstrap 95% CI；层定位在 goal/action 记录边界
 
@@ -53,7 +53,7 @@ never produced.
 
 ### 2. "E6 complete" is accurate — the MoE half ships as a separate batch
 
-肖棹's lists mark E6 `✅ 完成` with `四模型 4/4`, and that is right, but the four models
+<author-C>'s lists mark E6 `✅ 完成` with `四模型 4/4`, and that is right, but the four models
 are split across **two** batches that must not be pooled:
 
 | Batch | Models | Where |
@@ -100,7 +100,7 @@ The boundary finding is also intact: MM-M2.7-highspeed reaches parity with pure 
 
 | Ask | Who |
 |---|---|
-| I.4 / G1 — is any run behind 0.567 and 0.327, and where? | 肖棹 |
-| E13 batch, if the appendix's "positive-region model" claim is to stand | 肖棹 |
+| I.4 / G1 — is any run behind 0.567 and 0.327, and where? | <author-C> |
+| E13 batch, if the appendix's "positive-region model" claim is to stand | <author-C> |
 | The real-stream batch (601–610) and its owner | the PI / whoever kept the master checklist |
 | Whether `tab:interface` was ever run, and under what code | the PI |

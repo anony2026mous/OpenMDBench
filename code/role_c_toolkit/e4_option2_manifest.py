@@ -12,8 +12,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-DEFAULT_ROOT = Path("/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1")
-MATERIALS = Path("/mnt/QTJC/chenyi-codex/experiments"
+DEFAULT_ROOT = Path("/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1")
+MATERIALS = Path("/mnt/<lab>/<user>-codex/experiments"
                  "/E1_Exp2_option2_runner_materials_20261006_v1")
 
 

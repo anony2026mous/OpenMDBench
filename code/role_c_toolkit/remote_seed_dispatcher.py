@@ -24,7 +24,7 @@ import time
 import traceback
 
 VERSION = "seed-major-prefetch-dispatch@1"
-BASE = Path("/mnt/QTJC/chenyi-codex/experiments")
+BASE = Path("/mnt/<lab>/<user>-codex/experiments")
 
 
 def now():

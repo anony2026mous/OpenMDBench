@@ -12,7 +12,7 @@ import shutil
 import socket
 import subprocess
 
-BASE = Path('/mnt/QTJC/chenyi-codex')
+BASE = Path('/mnt/<lab>/<user>-codex')
 MODELS = BASE / 'models'
 MODEL = MODELS / 'Qwen3.8-27B-BF16'
 EIGHT_B_MODEL = MODELS / 'Qwen3-8B-BF16'

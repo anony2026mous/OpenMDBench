@@ -45,7 +45,7 @@ Each row cites how the paper identifies its own source.
 | `tab:complexlayered` | **P0-1** | "a frozen five-seed paired batch (seeds 63101--63105) … frozen scenario parameters" | `P0_GRID_COMPLEX_LAYERED_20261006_p01` — 0/3 |
 | `tab:frequency` + `figA2` | appendix H | "Exploratory sweep on grid medium … 3 seeds/condition; new batch, not pooled with Appendix I" | `campaigns/paper-e5-e7-priority/E7-frequency-stage1` — 0/3 |
 | `tab:e5pilot` + `figA4` | appendix I.5 | "first 9 high-fidelity failures from IE-03/IE-08 LLM+RL runs, seeds 5101--5112; first 3 grid failures … seeds 5201--5212" | `data/e5-attribution/` — 9/12 exact |
-| `tab:nointel` | appendix G | "no-intelligence vs. legacy wave-by-wave opponent intelligence" | withheld arm in-tree; legacy arm in `~/openmd_private_archive/declared_briefing_snapshot_20260927_1417` |
+| `tab:nointel` | appendix G | "no-intelligence vs. legacy wave-by-wave opponent intelligence" | withheld arm in-tree; legacy arm in `~/<private-archive>/declared_briefing_snapshot_20260927_1417` |
 | `tab:modelinvariance` + `figA1` | (appendix, "Model-invariance scan") | "two dense (Qwen3.8-27B, Qwen3-8B; local vLLM) and two MoE (MiniMax-M3, MiniMax-M2.7-highspeed; third-party API)" | `campaigns/e6-model-invariance` — 2 of 4 models |
 | E1 calibration / gates / confirmation | **E1** | "IE-05 at four frozen quantities (17/18/19/27 units). Calibration (960 episodes, seeds 4101--4110), gate checks (4151--4160), confirmation (4201--4210)" | `E1_*` batches — seeds present |
 | appendix I.4 critical-fault | — | "planner-side injection costs 0.567 … (10 seeds)" | `data/g1-fault-dose/` — does not reproduce |

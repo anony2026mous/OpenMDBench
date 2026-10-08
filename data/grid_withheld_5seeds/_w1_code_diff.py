@@ -11,7 +11,7 @@ import os
 import pathlib
 import sys
 
-SNAP = pathlib.Path(os.path.expanduser("~")) / "openmd_private_archive" / \
+SNAP = pathlib.Path(os.path.expanduser("~")) / "<private-archive>" / \
     "declared_briefing_snapshot_20260927_1419" / "code"
 LIVE = pathlib.Path(r"C:\Code\source-code\openmd\code\eval")
 

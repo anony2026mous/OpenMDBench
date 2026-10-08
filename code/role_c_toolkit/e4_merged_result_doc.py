@@ -20,7 +20,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ART = HERE / "artifacts/e4-scenario-family"
 A1 = ART / "analysis/e1_2x2_option1.json"
-A2 = Path("/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/option2_result.json")
+A2 = Path("/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/option2_result.json")
 A2_FALLBACK = ART / "analysis/e1_2x2_option2.json"
 OUT = ART / "实验2_选项1与2合并报告.md"
 
@@ -267,8 +267,8 @@ def build(o1: dict, o2: dict) -> str:
     L.append("")
     L.append("### 数据位置")
     L.append("")
-    L.append("- Study 1 源：E1 门禁 `bundle/data/gate-screening/`（武昊 campaign，已冻结）")
-    L.append("- Study 2 源：`/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/`")
+    L.append("- Study 1 源：E1 门禁 `bundle/data/gate-screening/`（<author-B> campaign，已冻结）")
+    L.append("- Study 2 源：`/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/`")
     L.append("  （本地归档 `server-experiments/e4-headroom-2x2-P1/`，594 文件，")
     L.append("  清单 `MANIFEST.json` 含逐局 SHA-256）")
     L.append("- 分析产物：`analysis/e1_2x2_option1.json`、`analysis/e1_2x2_option2.json`")

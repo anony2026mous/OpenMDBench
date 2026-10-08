@@ -9,8 +9,8 @@ import argparse
 import json
 from pathlib import Path
 
-PILOT = Path("/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose/pilot")
-GATE = Path("/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose/replaygate")
+PILOT = Path("/mnt/<lab>/<user>-codex/experiments/g1-fault-dose/pilot")
+GATE = Path("/mnt/<lab>/<user>-codex/experiments/g1-fault-dose/replaygate")
 DEFAULT_OUT = (Path(__file__).resolve().parent / "artifacts/e4-scenario-family"
                / "G1_pilot_失败报告.md")
 
@@ -44,7 +44,7 @@ def main() -> None:
     L.append("> tier 均值几乎全是种子噪声，因此当时的「3/4」无法与「4/4」区分——")
     L.append("> 全量 n=10 才给出可判定结果。本文的「终止」判断当时下得过早。")
     L.append("")
-    L.append("> 对象：`OpenMDBench_实验清单_肖棹_20261007_1738.md` 第 18–50 行的 G1。")
+    L.append("> 对象：`OpenMDBench_实验清单_<author-C>_20261007_1738.md` 第 18–50 行的 G1。")
     L.append("> 两段式设计的第一步：2 seeds × 2 故障类 × 5 剂量档 + clean + 反事实参考。")
     L.append("> 底座：grid `medium/continuous`、rule planner + heuristic executor、interval 5、**无 LLM**。")
     L.append("> 结论：**建议按清单第 44 行终止 G1，不扩 10 seeds。** 理由见 §3。")
@@ -196,7 +196,7 @@ def main() -> None:
     L.append("")
     L.append("```bash")
     L.append("# 服务器")
-    L.append("P=/mnt/QTJC/chenyi-codex/experiments/g1-fault-dose")
+    L.append("P=/mnt/<lab>/<user>-codex/experiments/g1-fault-dose")
     L.append("ls $P/pilot/{clean,planner_wrong_contact,action_hold,counterfactual}")
     L.append("ls $P/replaygate          # 重放门核对")
     L.append("")

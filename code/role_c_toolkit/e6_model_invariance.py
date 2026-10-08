@@ -630,7 +630,7 @@ def main() -> int:
     make.add_argument("--replicas-27b", nargs="+", default=["a"])
     make.add_argument("--replicas-8b", nargs="+", default=["c"])
     make.add_argument("--service-dir", type=Path,
-                      default=Path('/mnt/QTJC/chenyi-codex/services/qwen'))
+                      default=Path('/mnt/<lab>/<user>-codex/services/qwen'))
     make.add_argument("--seeds", type=int, nargs="+", required=True)
     make.add_argument("--reference-seeds", type=int, nargs="+", required=True)
     make.add_argument("--extended-from", default="",
@@ -647,7 +647,7 @@ def main() -> int:
     check.add_argument("--output", type=Path, required=True)
     check.add_argument("--model", action="append", choices=sorted(SERVED))
     check.add_argument("--service-dir", type=Path,
-                       default=Path('/mnt/QTJC/chenyi-codex/services/qwen'))
+                       default=Path('/mnt/<lab>/<user>-codex/services/qwen'))
 
     one = sub.add_parser("case", help="run exactly one preregistered case")
     one.add_argument("--plan", type=Path, required=True)

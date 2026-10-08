@@ -196,8 +196,8 @@
 
 ### 数据位置
 
-- Study 1 源：E1 门禁 `bundle/data/gate-screening/`（武昊 campaign，已冻结）
-- Study 2 源：`/mnt/QTJC/chenyi-codex/experiments/e4-headroom-2x2/P1/`
+- Study 1 源：E1 门禁 `bundle/data/gate-screening/`（<author-B> campaign，已冻结）
+- Study 2 源：`/mnt/<lab>/<user>-codex/experiments/e4-headroom-2x2/P1/`
   （本地归档 `server-experiments/e4-headroom-2x2-P1/`，594 文件，
   清单 `MANIFEST.json` 含逐局 SHA-256）
 - 分析产物：`analysis/e1_2x2_option1.json`、`analysis/e1_2x2_option2.json`

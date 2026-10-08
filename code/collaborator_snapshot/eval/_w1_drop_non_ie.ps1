@@ -3,7 +3,7 @@
 # NOTE: keep this file pure ASCII - the host reads it as GBK and mangles literals.
 $sub  = 'C:\Code\source-code\openmd\source-code'
 $f    = Join-Path $sub 'source_codes\scenarios\formal'
-$arch = Join-Path $env:USERPROFILE 'openmd_private_archive\scenario_cleanup_20260205'
+$arch = Join-Path $env:USERPROFILE '<private-archive>\scenario_cleanup_20260205'
 
 $pkgs = @('md_ad_002_easy','md_ad_002_medium','md_ad_002_hard',
           'md_int_003_easy','md_int_003_medium','md_int_003_hard',

@@ -7,7 +7,7 @@
 #     plus a diff-vs-HEAD so the uncommitted edits are preserved exactly
 $sub  = 'C:\Code\source-code\openmd\source-code'
 $sc   = Join-Path $sub 'source_codes'
-$arch = Join-Path $env:USERPROFILE 'openmd_private_archive\scenario_cleanup_20260205'
+$arch = Join-Path $env:USERPROFILE '<private-archive>\scenario_cleanup_20260205'
 
 New-Item -ItemType Directory -Force -Path $arch | Out-Null
 if (-not (Test-Path -LiteralPath $arch -PathType Container)) { throw "archive dir not created: $arch" }
