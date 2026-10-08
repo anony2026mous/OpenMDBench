@@ -102,19 +102,34 @@ LABEL_ABBR = {"execution": "exec", "planning": "planning",
 matched = missing = 0
 for cid, (grp, seed, pP, pE, pI, plabel) in PAPER.items():
     if grp == "grid":
-        print(f"  {cid}  grid s{seed:<6} MISSING -- grid attribution records not located")
-        missing += 1
-        continue
-    rec = find(ROOTS, SCEN[grp], seed)
-    if not rec:
-        print(f"  {cid}  {grp} s{seed:<6} MISSING (no attribution.json found)")
-        missing += 1
-        continue
-    dP = rec.get("delta_planning")
-    dE = rec.get("delta_execution")
-    dI = rec.get("delta_interface")
-    ml = rec.get("machine_label")
-    ml_abbr = LABEL_ABBR.get(ml, ml)
+        # The grid batch stores its counterfactual under different field names than the
+        # high-fidelity batch: `reference_improvement_planning/_execution` and
+        # `reference_nonadditivity`, in each seed's summary.json. An earlier version of
+        # this script looked only for `attribution.json` and wrongly reported all three
+        # grid cases as missing records.
+        sp = REL / "data" / "campaigns" / "e5-grid-natural-failures" / f"seed-{seed}" / "summary.json"
+        if not sp.is_file():
+            print(f"  {cid}  grid s{seed:<6} MISSING (no summary.json)")
+            missing += 1
+            continue
+        g = json.loads(sp.read_text(encoding="utf-8"))
+        dP = g.get("reference_improvement_planning")
+        dE = g.get("reference_improvement_execution")
+        dI = g.get("reference_nonadditivity")
+        # the grid batch stores no label; derive it by the same rule the toolchain uses
+        cand = {"planning": dP, "execution": dE, "interface": dI}
+        ml_abbr = max(cand, key=lambda k: abs(cand[k] or 0.0))
+    else:
+        rec = find(ROOTS, SCEN[grp], seed)
+        if not rec:
+            print(f"  {cid}  {grp} s{seed:<6} MISSING (no attribution.json found)")
+            missing += 1
+            continue
+        dP = rec.get("delta_planning")
+        dE = rec.get("delta_execution")
+        dI = rec.get("delta_interface")
+        ml = rec.get("machine_label")
+        ml_abbr = LABEL_ABBR.get(ml, ml)
     okP = isinstance(dP, (int, float)) and abs(dP - pP) <= 0.006
     okE = isinstance(dE, (int, float)) and abs(dE - pE) <= 0.006
     okI = isinstance(dI, (int, float)) and abs(dI - pI) <= 0.006
