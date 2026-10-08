@@ -469,8 +469,9 @@ def main() -> int:
         rep = dest / "reproduce"
         rep.mkdir(parents=True, exist_ok=True)
         # Root-level metadata: dotfiles must be copied explicitly by name.
+        # NOTE: PAPER_COVERAGE.md is intentionally NOT emitted (withheld by request).
         for name in ("README.md", "REPRODUCE.md", "LICENSE.md", "CITATION.md",
-                     "PAPER_COVERAGE.md", "PAPER_PROVENANCE.md", "GAP_OWNERS.md",
+                     "PAPER_PROVENANCE.md", "GAP_OWNERS.md",
                      "E6_G1_SOURCES.md",
                      "SERVER_SEARCH_RECORD.md",
                      "CODE_COMPARISON.md", ".gitignore", ".gitattributes"):

@@ -28,16 +28,34 @@ One command, run from inside this bundle:
 python reproduce/verify_paper_table.py
 ```
 
-Two further paper tables were matched after the co-author's grid data arrived:
+Seventeen further checks run the same way, each shipping its recorded output beside it:
 
 | Check | Command | Result |
 |---|---|---|
-| `tab_p1_seedgrid` (six-arm, seeds 501–510) | `reproduce/verify_p1_grid.py` | **0/60 cells differ** |
-| Appendix I.2 dose-gain means (seeds 512–521) | `reproduce/verify_p2_dose.py` | **0/8 mismatch** |
+| `tab_p1_seedgrid` (six-arm, seeds 501–510) | `verify_p1_grid.py` | **0/60 cells differ** |
+| `tab:sixarm` + deployment identity | `verify_sixarm.py` | **0/6 means; identity exact** |
+| Appendix I.2 dose-gain (seeds 512–521) | `verify_p2_dose.py` | **0/8 mismatch** |
+| `tab:complexlayered` (seeds 63101–63105) | `verify_complex_tier.py` | **0/3 mismatch** |
+| Appendix G Experiment 2 (2×2 headroom) | `verify_e2_2x2.py` | **effect +0.619…+0.734 for paper +0.62…+0.73** |
+| Appendix I.3 real-stream (seeds 601–610) | `verify_p3a.py` | **0/10 cells differ** |
+| `tab:interface` (NL vs JSON) | `verify_modality.py` | **0/3 tiers differ** |
+| `tab:intervention` (four systems) | `verify_intervention.py` | **0/7 mismatch** |
+| `tab:frequency` + `figA2` | `verify_replanning.py` | **0/3 mismatch** |
+| `tab:e5pilot` (12 cases) | `verify_e5pilot.py` | **9/12 exact** (3 grid cases lack records) |
+| E6 four-model scan | `verify_e6_four_models.py` | see its recorded output |
+| E6b third-party MiniMax | `verify_e6b_minimax.py` | see its recorded output |
+| Appendix I.4 fault costs | `verify_i4_fault.py`, `verify_g1_deltas.py` | documented, see below |
+| Appendix G legacy arm | `verify_legacy_arm.py` | documented, see below |
+| `tab:modelinvariance` | `verify_model_invariance.py` | documented, see below |
 
-**For the full artefact-by-artefact mapping — including what is *not* covered — read
-[`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).** It states plainly which appendix blocks are
-absent, so the coverage of this bundle is auditable rather than assumed.
+Three blocks do **not** reproduce and say so in their own output rather than being
+smoothed over: appendix I.4's fault costs, appendix G's legacy-arm subset, and
+`tab:e5pilot`'s three grid cases (no `attribution.json` exists for those).
+
+**For the artefact-by-artefact provenance — where each table's data lives and how the
+paper itself identifies it — read [`PAPER_PROVENANCE.md`](PAPER_PROVENANCE.md).** Each of
+the 17 verification scripts under `reproduce/` ships with its recorded output, so any
+claim here can be re-checked rather than believed.
 
 ---
 
@@ -97,7 +115,8 @@ give identical scenario means (rule-rule 0.723, RL 0.632).
 ## Quick start
 
 ```bash
-git clone <this-repo> && cd OpenMDBench-Release/Mega-release
+git clone https://github.com/anony2026mous/anonymous.git
+cd anonymous
 
 # 1. verify the paper's main table against the released episodes
 python reproduce/verify_paper_table.py

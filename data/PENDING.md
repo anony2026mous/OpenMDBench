@@ -53,16 +53,20 @@ intervention marker instead.
 
 ---
 
-## 1b. Still missing
+## 1b. Still unverified
 
-Full mapping in [`../PAPER_COVERAGE.md`](../PAPER_COVERAGE.md). Briefly:
+Where each remaining item stands, after locating the source for every one of them:
 
 | Block | Seeds | Status |
 |---|---|---|
-| Appendix I.4, anchored critical-fault validation | 561–570 | **no implementing experiment found.** Absent from every experiment inventory (20260930, 1003_1205, 1003_1439), and its terminology (`anchored critical`, `matched-prefix`, `critical-exposure`) has **0 hits** across e5_ascii, e5_easy, openmd/doc, role_c_toolkit/docs, server-experiments and the private archive. The nearest-named batch, `g1-fault-dose`, is experiment **G1** ("graded fault injection–recovery calibration"), whose own report concludes *terminate G1; the `5/5 graded faults` claim was deleted*, and whose costs do **not** reproduce 0.567/0.327 (every cost has |cost| < 0.25, frequently the wrong sign). |
+| Appendix I.4, anchored critical-fault validation | 561–570 | **source located, numbers do not reproduce.** The implementing scripts are in `code/role_c_toolkit/experimental_hifi/` (`hifi_fault_campaign.py`, `hifi_llm_fault_campaign.py`, audits, traces, `hifi_replay_campaign.py`), and the batch is `data/g1-fault-dose/`. Running the loss accounting on the 10-seed data gives per-dose costs of −0.080…+0.230 with signs frequently inverted, against the printed 0.567 planner / 0.327 executor. The appendix also says "20/20 paired seeds" where the batch has 10. Note this block belongs to experiment **G1** in the team's checklist, which is marked `🆕 待启动` — the pieces exist, the published aggregate does not follow from them. |
 | Appendix G, `tab:nointel` legacy arm | — | **located but not the printed subset.** The archive `~/openmd_private_archive/declared_briefing_snapshot_20260927_1419/` holds the legacy episodes (0 of 864 files mention `briefing`, as expected pre-fix), but yields 83/142/80 episodes against the table's 82/49/40. Means are close (pure-LLM 0.526 vs 0.516) yet the Δ column cannot be recomputed as printed without the seed filter from `_w1_declared_delta.py`. |
-| Appendix I.4 degradation accounting, `figA4` ΔP/ΔE/ΔI table | — | the 12-case values are printed inline in the appendix but not stored as a JSON table. |
+| `tab:e5pilot`, the three grid cases | 5201/5202/5204 | **component runs present, no attribution record.** The 9 high-fidelity cases reproduce exactly from `data/e5-attribution/` (17 `attribution.json` files). E5-04/08/09 are the grid cases and have no such record — only the component episode runs, so the ΔP/ΔE/ΔI contrasts are derivable but were never stored. |
 | `figA2_replanning_sweep` baseline row | — | the three sweep rows reproduce; the `pure RL` row (0.978) does not appear in any tree. |
+
+Everything else is verified. The tables that were previously listed here as absent —
+appendix I.3, `tab:interface`, `tab:intervention`, the E6b MiniMax half — have all been
+located and now reproduce; see `README.md` for the full check list.
 
 ### Still awaited from the co-author
 
@@ -81,7 +85,7 @@ environment variables, so they will run unchanged once the data is placed:
 
 ---
 
-## 1b. Deliberately withheld — do not add
+## 1c. Deliberately withheld — do not add
 
 | Item | Why it must stay out |
 |---|---|

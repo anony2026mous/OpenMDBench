@@ -81,17 +81,26 @@ trace-analysis directory, fetched from the server so both forms are present.
 Composition: results in JSON, batch launcher / analysis scripts living inside the runs
 (e.g. `e1_analyze.py`, `inspect_run.py`), Markdown reports, CSV, PNG and SVG.
 
-## What this data does NOT cover
+## Coverage of the Appendix I batches
 
-Two appendix blocks are **not** here, and matching on seed range alone would
-mis-attribute them:
+All four batches are accounted for. Three ship inside this delivery; the fourth ships at
+the repository root.
 
-| Appendix block | Seeds | Status |
+| Appendix block | Seeds | Where it is |
 |---|---|---|
-| I.3 real-stream counterfactual | 601–610 | **absent.** Seeds 601/602/603/605/607 do appear in `p0-strengthening`'s E3 files, but those are `p_real` **deception-detection** records, a different experiment that reuses the range. |
-| I.4 anchored critical-fault | 561–570 | not here; the data is on the user's machine under `server-experiments/g1-fault-dose/` (94 MB) |
+| I.1 six-arm accounting | 501–510 | `e2-delivery-20261003/raw/P1__six_arm__s501-510__main__v1/` |
+| I.2 goal-dose | 512–521 | `e2-delivery-20261003/raw/P2__goal_dose__s512-521__{hold,mask1,mask2,strong}__v1/` |
+| **I.3 real-stream counterfactual** | **601–610** | **`p0-strengthening-20261001/inputs/P3a__llm_goal_causal__s601-610__confirm__v1/`** — verified: 0/10 cells differ from the paper |
+| I.4 anchored critical-fault | 561–570 | `data/g1-fault-dose/` at the repository root |
 
-See `PAPER_COVERAGE.md` at the repository root for the full paper-to-data mapping.
+**On I.3, and why it was missed at first.** The seed range is **reused**: seeds
+601/602/603/605/607 also appear here under `p0-strengthening-20261001/results/E3*/` as
+deception-detection `p_real` records — a different experiment. Searching by seed finds the
+wrong one and concludes the batch is absent. The real-stream batch is identified by its
+intervention marker (`intervention.kind = "all_unit_goals_to_legal_hold"`), not by its
+seeds.
+
+See `PAPER_PROVENANCE.md` at the repository root for the full paper-to-data mapping.
 
 
 ## How the numbers are keyed
