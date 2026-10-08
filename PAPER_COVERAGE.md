@@ -28,6 +28,7 @@ and reproduces exactly. Nine checks now run from this bundle:
 | `reproduce/verify_sixarm.py` | `tab:sixarm` + P/E/I identity | **0/6 means; identity exact** |
 | `reproduce/verify_complex_tier.py` | `tab:complexlayered` | **0/3 mismatch** |
 | `reproduce/verify_replanning.py` | appendix H sweep / `figA2` | **0/3 mismatch** |
+| `reproduce/verify_e5pilot.py` | `tab:e5pilot` ΔP/ΔE/ΔI | **9/12 exact**; 3 grid cases lack records (§2.4) |
 | `reproduce/verify_legacy_arm.py` | appendix G legacy arm | runs; values **differ** (§2.2) |
 | `reproduce/verify_i4_fault.py` | appendix I.4 fault costs | **not reproduced** (§2.1) |
 | `reproduce/verify_model_invariance.py` | `tab:modelinvariance` | 2 of 4 models; **differ** (§2.3) |
@@ -42,7 +43,7 @@ and reproduces exactly. Nine checks now run from this bundle:
 | `tab_p2_seedgrid` + `tab:dosegain` + `figA3` | appendix I.2 (appendix.tex 323–356) | reproducible |
 | `tab:complexlayered` | appendix (appendix.tex 140–150), seeds 63101–63105 | reproducible |
 | `tab:frequency` + `figA2_replanning_sweep` | **appendix H** (appendix.tex 260–288) | reproducible; baseline row present |
-| `tab:e5pilot` + `figA4` | appendix I.5 (appendix.tex 366–402) | machine labels present; Δ table partial |
+| `tab:e5pilot` + `figA4` | appendix I.5 (appendix.tex 366–402) | **9 of 12 cases exact**; 3 grid cases lack attribution records |
 | `tab_scenario_params` | appendix A (`\input`) | shipped; content not re-derived |
 | E1 headroom calibration | appendix K (appendix.tex 404–475) | reproducible |
 | `tab:modelinvariance` + `figA1` | appendix (appendix.tex 178–205) | **2 of 4 models; contrast differs** |

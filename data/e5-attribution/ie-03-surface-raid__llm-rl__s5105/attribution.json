@@ -1,0 +1,82 @@
+{
+  "schema": "hifi-attribution@1",
+  "case": {
+    "id": "ie-03-surface-raid__llm-rl__s5105",
+    "scenario": "IE-03-SURFACE-RAID",
+    "seed": 5105,
+    "planner": "llm-rl"
+  },
+  "started_utc": "2026-10-02T02:18:42.577287+00:00",
+  "runs": {
+    "self_replay": {
+      "planner": "llm-rl",
+      "replay_mode": "self",
+      "returncode": 0,
+      "status": "complete",
+      "score": 0.2857,
+      "outcome": "intruder_success",
+      "divergence": []
+    },
+    "reference_executor": {
+      "planner": "llm",
+      "replay_mode": "frozen-planner",
+      "returncode": 0,
+      "status": "complete",
+      "score": 0.2952,
+      "outcome": "intruder_success",
+      "divergence": []
+    },
+    "reference_planner": {
+      "planner": "rule-rl",
+      "replay_mode": null,
+      "returncode": 0,
+      "status": "complete",
+      "score": 0.2857,
+      "outcome": "intruder_success",
+      "divergence": []
+    },
+    "reference_full": {
+      "planner": "rule",
+      "replay_mode": null,
+      "returncode": 0,
+      "status": "complete",
+      "score": 0.6978,
+      "outcome": "defender_success",
+      "divergence": []
+    }
+  },
+  "rule": {
+    "min_effect": 0.05,
+    "tie_margin": 0.05,
+    "definition": "dP=V(rule-rl)-V0, dE=V(frozen LLM goals + GOAI rule executor)-V0, dI=V(rule)-V(rule-rl)-V(frozen+GOAI)+V0; label = largest of dP, dE, |dI|; balanced if top two within tie_margin; undetermined if largest < min_effect"
+  },
+  "recorder_sha256": "e6aaef7f7e2d5ff8b1c86af15e4dafb205c1408a3b3d839fe09c711c15a5c367",
+  "reference_components_certified_oracles": false,
+  "replay_gate": {
+    "trajectory.jsonl": {
+      "identical": true,
+      "first_divergent_tick": null,
+      "matched_lines": 499
+    },
+    "decisions.jsonl": {
+      "identical": true,
+      "first_divergent_tick": null,
+      "matched_lines": 498
+    },
+    "report": {
+      "ticks_run": true,
+      "terminal_result": true,
+      "strategy_scorecard": true,
+      "total_fires": true,
+      "damage_by_kind": true
+    },
+    "exact_match": true
+  },
+  "status": "complete",
+  "finished_utc": "2026-10-02T03:06:34.776520+00:00",
+  "original_score": 0.2857,
+  "delta_planning": 0.0,
+  "delta_execution": 0.009500000000000008,
+  "delta_interface": 0.40259999999999996,
+  "machine_label": "interface"
+}

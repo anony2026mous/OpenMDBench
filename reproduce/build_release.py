@@ -346,6 +346,12 @@ def main() -> int:
 
     # Anchored critical-fault validation batch (appendix I.4). Lives only on this
     # machine -- absent from both servers -- so it must travel with the release.
+    # Compact attribution records behind appendix I.5's per-case table. The raw batches
+    # are ~9 GB of replay evidence; these 17 records (~47 KB) are the part carrying the
+    # printed numbers, so only they travel.
+    print("      e5 attribution records (appendix I.5)")
+    copy_tree(SRC_ROOT / "release_assets" / "e5-attribution",
+              dest / "data" / "e5-attribution", label="data/e5-attribution")
     print("      g1 fault-dose batch (appendix I.4)")
     copy_tree(SRC_ROOT / "release_assets" / "g1-fault-dose",
               dest / "data" / "g1-fault-dose",
@@ -446,6 +452,7 @@ def main() -> int:
         for name in ("verify_paper_table.py", "verify_p1_grid.py", "verify_p2_dose.py",
                      "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
+                     "verify_e5pilot.py",
                      "verify_legacy_arm.py",
                      "compare_code.py",
                      "scan_for_secrets.py",
@@ -461,6 +468,7 @@ def main() -> int:
                      "P2_DOSE_VERIFICATION.txt", "SIXARM_VERIFICATION.txt",
                      "REPLANNING_VERIFICATION.txt", "I4_FAULT_VERIFICATION.txt",
                      "COMPLEX_TIER_VERIFICATION.txt", "MODEL_INVARIANCE_VERIFICATION.txt",
+                     "E5PILOT_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "LEGACY_ARM_VERIFICATION.txt",
                      "CODE_COMPARISON.txt",
@@ -542,4 +550,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
