@@ -1,62 +1,111 @@
 """Verify the replanning-frequency sweep (appendix H tab:frequency, figA2).
 
 Appendix H: LLM+RL with a frozen MAPPO executor, goal-mode strong, 3 seeds/condition,
-k in {10, 5, 2}; k=10 V=0.467, k=5 V=0.733, k=2 V=0.733. The k=10 directory also holds
-RL-arm episodes, so the arm must be filtered or the mean is wrong (0.680 instead of
-0.467) -- that is exactly the kind of silent error this check exists to catch.
+k in {10, 5, 2}; k=10 V=0.467, k=5 V=0.733, k=2 V=0.733, and the pure-RL baseline row
+0.978 with a delta-vs-pure-RL column.
+
+Two traps this check exists to catch:
+
+  * The k=10-level directories also hold RL-arm episodes, so the arm must be filtered or
+    the mean is wrong (0.680 instead of 0.467).
+  * The pure-RL baseline is split across TWO locations: one episode under `E7-baseline/`
+    and two under `E7-frequency-stage1/episodes/<seed>-rl/`. Reading only the first gives
+    0.933 and makes the printed 0.978 look unsourced. All three are required.
 """
 from __future__ import annotations
 
 import json
+import re
 import statistics as st
 from collections import defaultdict
 from pathlib import Path
 
-ROOT = Path(r"C:\Code\source-code\release\OpenMDBench-Release")
-STAGE = ROOT / "data" / "campaigns" / "paper-e5-e7-priority" / "E7-frequency-stage1"
-BASE = ROOT / "data" / "campaigns" / "paper-e5-e7-priority" / "E7-baseline"
-PAPER = {10: 0.467, 5: 0.733, 2: 0.733}
+ROOT = Path(__file__).resolve().parent.parent
+CAMP = ROOT / "data" / "campaigns" / "paper-e5-e7-priority"
+STAGE = CAMP / "E7-frequency-stage1"
+BASE = CAMP / "E7-baseline"
+PAPER = {2: 0.733, 5: 0.733, 10: 0.467}
+PAPER_BASE = 0.978
+PAPER_DELTA = {2: -0.244, 5: -0.244, 10: -0.511}
 
 print("=" * 92)
 print("appendix H replanning-frequency sweep  vs  E7-frequency-stage1")
 print("=" * 92)
 
-by_k: dict[int, list[tuple[float, str, str]]] = defaultdict(list)
+
+def seed_of(p: Path, cfg: dict, rec: dict) -> int | None:
+    """The seed is not always in the record: E7-case.json omits it, the directory has it."""
+    for src in (rec.get("seed"), cfg.get("seed")):
+        if isinstance(src, int):
+            return src
+    m = re.search(r"(?:seed-)?(\d{10})", str(p))
+    return int(m.group(1)) if m else None
+
+
+# ---- every episode, keyed by (arm, interval, seed)
+recs: list[tuple[str, int | None, int | None, float, str]] = []
 for p in sorted(STAGE.rglob("episode.json")):
     e = json.loads(p.read_text(encoding="utf-8"))
     cfg = e.get("config", {})
     v = e.get("V")
     if isinstance(v, (int, float)):
-        by_k[cfg.get("plan_interval")].append(
-            (float(v), cfg.get("arm"), p.parent.name))
+        recs.append((cfg.get("arm"), cfg.get("plan_interval"), seed_of(p, cfg, e),
+                     float(v), p.parent.name))
+for p in sorted(BASE.rglob("episode.json")):
+    e = json.loads(p.read_text(encoding="utf-8"))
+    cfg = e.get("config", {})
+    v = e.get("V")
+    if isinstance(v, (int, float)):
+        recs.append((cfg.get("arm"), cfg.get("plan_interval"), seed_of(p, cfg, e),
+                     float(v), p.parent.name))
+print(f"  episodes read (both locations): {len(recs)}")
 
-print(f"  {'k':>3}{'arm':<10}{'n':>4}{'mean':>9}{'paper':>9}{'diff':>9}")
 bad = 0
+
+print(f"\n  --- reported arm (llm-rl), the three sweep rows ---")
 for k in (10, 5, 2):
-    rows = by_k.get(k, [])
-    for arm in sorted({r[1] for r in rows if r[1]}):
-        sel = [r[0] for r in rows if r[1] == arm]
-        m = st.mean(sel) if sel else float("nan")
-        pv = PAPER[k]
-        ok = abs(m - pv) <= 0.001
-        if arm == "llm-rl" and not ok:
+    sel = [v for arm, iv, _s, v, _n in recs if arm == "llm-rl" and iv == k]
+    if not sel:
+        print(f"    k={k:<3} NO DATA")
+        bad += 1
+        continue
+    m = st.mean(sel)
+    ok = abs(m - PAPER[k]) <= 0.001
+    bad += not ok
+    print(f"    k={k:<3} n={len(sel)}  V={m:.4f}   paper {PAPER[k]:.3f}   "
+          f"{'OK' if ok else 'DIFFERS'}")
+
+print(f"\n  --- pure-RL baseline (all locations) ---")
+base = [(sd, v, nm) for arm, iv, sd, v, nm in recs if arm == "rl"]
+for sd, v, nm in sorted(base, key=lambda x: (x[0] is None, x[0])):
+    print(f"    seed={sd}  V={v:.4f}   ({nm})")
+if not base:
+    print("    NO DATA")
+    bad += 1
+else:
+    bm = st.mean([v for _sd, v, _nm in base])
+    ok = abs(bm - PAPER_BASE) <= 0.001
+    bad += not ok
+    print(f"    n={len(base)}  mean={bm:.6f} -> {bm:.3f}   paper {PAPER_BASE:.3f}   "
+          f"{'OK' if ok else 'DIFFERS'}")
+    if len(base) < 3:
+        print(f"    NOTE: only {len(base)} baseline episode(s); the caption implies one "
+              f"per seed (3).")
+
+    print(f"\n  --- delta vs pure-RL (paired by seed) ---")
+    rl_by_seed = {sd: v for _a, _i, sd, v, _n in recs if _a == "rl"}
+    for k in (10, 5, 2):
+        diffs = [v - rl_by_seed[sd] for arm, iv, sd, v, _n in recs
+                 if arm == "llm-rl" and iv == k and sd in rl_by_seed]
+        if not diffs:
+            print(f"    k={k:<3} no pairable seeds")
             bad += 1
-        tag = "MATCH" if ok else ""
-        print(f"  {k:>3}{arm:<10}{len(sel):>4}{m:>9.3f}{pv:>9.3f}{m - pv:>+9.3f}  {tag}")
+            continue
+        m = st.mean(diffs)
+        ok = abs(m - PAPER_DELTA[k]) <= 0.001
+        bad += not ok
+        print(f"    k={k:<3} n={len(diffs)}  dV={m:+.4f}   paper {PAPER_DELTA[k]:+.3f}   "
+              f"{'OK' if ok else 'DIFFERS'}")
 
-# llm-rl is the reported arm
-print("\n  --- reported arm only (llm-rl) ---")
-for k in (10, 5, 2):
-    sel = [r[0] for r in by_k.get(k, []) if r[1] == "llm-rl"]
-    m = st.mean(sel) if sel else float("nan")
-    print(f"    k={k:<3} n={len(sel)}  V={m:.3f}   paper {PAPER[k]:.3f}   "
-          f"{'OK' if abs(m - PAPER[k]) <= 0.001 else 'DIFFERS'}")
-
-# pure-RL baseline for the delta column
-print("\n  --- pure-RL baseline ---")
-for d in (BASE,):
-    for p in sorted(d.rglob("episode.json")):
-        e = json.loads(p.read_text(encoding="utf-8"))
-        print(f"    {p.parent.name[:44]:<46} arm={e.get('config', {}).get('arm')} "
-              f"V={e.get('V')}")
-print(f"\n  llm-rl mismatches: {bad}/3")
+print(f"\n  rows mismatching the paper: {bad}/7")
+print("  (3 sweep rows + 1 baseline + 3 delta cells)")
