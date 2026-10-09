@@ -659,6 +659,7 @@ def main() -> int:
                      "verify_sixarm.py", "verify_replanning.py", "verify_i4_fault.py",
                      "verify_p3a.py",
                      "verify_complex_tier.py", "verify_model_invariance.py", "verify_legacy_arm.py",
+                     "verify_legacy_subset.py",
                      "verify_e6_four_models.py", "verify_g1_deltas.py",
                      "verify_e5pilot.py", "verify_e2_2x2.py", "verify_e6b_minimax.py", "verify_modality.py", "verify_intervention.py",
                      "verify_legacy_arm.py",
