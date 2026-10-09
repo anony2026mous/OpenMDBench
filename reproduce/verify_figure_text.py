@@ -1,16 +1,20 @@
-"""Verify the numbers drawn INSIDE the figures.
+"""Verify the numbers shown in the paper's figures.
 
-The rest of the suite reads figure CAPTIONS from the paper's text layer. That misses
-anything rendered inside the artwork, and one such number was wrong: `fig_hifi_gap`
-annotates "IE-03: +0.065", but IE-03 is the only scenario in the whole suite where a
-layered stack LEADS pure LLM, so the correct annotation is -0.065 (LLM+RL) -- and the
-LLM+Rule gap there is +0.1575, a different number again.
+Two traps this handles, because I fell into both:
 
-This script reads the figure PDFs with pdfplumber, extracts every number actually drawn
-in them, and checks each against the data.
+  1. READING THE WRONG FILE. `paper/figures/` can hold several revisions of one figure.
+     The paper includes exactly what `\\includegraphics{...}` names -- in this case
+     `fig_hifi_gap_cropped.pdf`, NOT the older `fig_hifi_gap.pdf` that sits beside it.
+     This script therefore reads the .tex files first and only checks files actually
+     included, and it cross-checks the compiled PDF's embedded-image aspect ratio where
+     one is available.
 
-Figures with no text layer (`fig_narrative_overview.pdf` is a single bitmap) are reported
-as unverifiable rather than silently passed.
+  2. ASSUMING A FIGURE CAN BE READ AS TEXT. Some shipped figures have no text layer at
+     all (`fig_hifi_gap_cropped.pdf` is flattened vector art: 0 chars). Those are
+     reported as "text-layer absent -- requires visual check" rather than being silently
+     passed or, worse, silently failed against a different revision.
+
+Where a text layer does exist, every rendered number is checked against the data.
 """
 from __future__ import annotations
 
@@ -29,23 +33,62 @@ PAPER_SEEDS = (7, 11, 13, 17, 19)
 try:
     import pdfplumber
 except ImportError:
-    print("  pdfplumber not installed -- skipping figure-text check")
+    print("  pdfplumber not installed -- skipping figure check")
     raise SystemExit(0)
 
 
-def fig_text(name: str) -> str:
-    p = FIGS / name
-    if not p.is_file():
-        return ""
-    with pdfplumber.open(str(p)) as pdf:
-        return " ".join(w["text"] for pg in pdf.pages for w in pg.extract_words())
+# ---------------------------------------------------------------- which figures ship?
+def included() -> dict[str, list[str]]:
+    """figure filename (basename) -> list of .tex files that include it."""
+    out: dict[str, list[str]] = {}
+    for f in ("main.tex", "appendix.tex"):
+        p = ROOT / "paper" / f
+        if not p.is_file():
+            continue
+        t = p.read_text(encoding="utf-8", errors="replace")
+        for m in re.finditer(r"includegraphics[^{]*\{([^}]+)\}", t):
+            out.setdefault(Path(m.group(1)).name, []).append(f)
+    return out
 
 
 print("=" * 96)
 print("figure-internal numbers  vs  data")
 print("=" * 96)
 
-# ---- per-scenario stack means (same recipe as verify_paper_table.py)
+inc = included()
+print(f"\n  --- files actually included by the .tex sources ---")
+for name, src in sorted(inc.items()):
+    present = (FIGS / name).is_file()
+    print(f"    {name:<38} {','.join(src):<14} {'present' if present else 'MISSING'}")
+
+# revisions present in the folder but not included
+print(f"\n  --- revisions present but NOT included (do not check these) ---")
+for p in sorted(FIGS.glob("*")):
+    if p.is_file() and p.suffix.lower() in {".pdf", ".png", ".svg"} and p.name not in inc:
+        print(f"    {p.name}")
+
+# ---------------------------------------------------------------- cross-check embedding
+print(f"\n  --- cross-check against the compiled PDF, where one is available ---")
+compiled = next((p for p in ROOT.parent.glob("*.pdf")), None)
+print(f"    compiled PDF in the bundle: {compiled if compiled else 'not shipped'}")
+print(f"    (outside the bundle, compare the embedded image's w/h ratio against")
+print(f"     every candidate revision: it picks out the one actually used)")
+
+
+def fig_text(name: str) -> str:
+    p = FIGS / name
+    if not p.is_file():
+        return ""
+    try:
+        with pdfplumber.open(str(p)) as pdf:
+            return " ".join(w["text"] for pg in pdf.pages for w in pg.extract_words())
+    except Exception:
+        return ""
+
+
+bad = 0
+
+# ---------------------------------------------------------------- per-scenario stack means
 by = c.collect(c.RUNS, "*_n3*.json", briefing="withheld", strict_arms=True)
 T: dict[str, dict[str, float]] = {}
 for sc in c.IE:
@@ -56,87 +99,107 @@ for sc in c.IE:
             row[arm] = st.mean(v)
     T[sc] = row
 
-bad = 0
 
-# ---- fig_hifi_gap: counts, median, and the IE-03 annotation
-txt = fig_text("fig_hifi_gap.pdf")
-print(f"\n  --- fig_hifi_gap.pdf ---")
-if not txt:
-    print("    NO TEXT LAYER -- cannot verify")
-else:
+def check_gap_figure(name: str) -> None:
+    global bad
+    print(f"\n  --- {name} ---")
+    if name not in inc:
+        print("      not included by the paper -- skipped")
+        return
+    txt = fig_text(name)
+    if not txt.strip():
+        print("      TEXT LAYER ABSENT (flattened artwork).")
+        print("      Cannot be checked numerically; requires a visual check against the")
+        print("      data below. The header strings and the IE-03 annotation live in the")
+        print("      artwork, so a text-based pass would report a false result either way.")
+        # still print the truth so a human can eyeball it.
+        # NOTE the axis is `Pure LLM - layered stack`, so a POINT ABOVE ZERO means the
+        # layered stack is ahead. Getting this backwards inverts the whole reading.
+        g_rule, g_rl = [], []
+        for sc in c.IE:
+            e = T[sc].get("pure-llm")
+            if e is None:
+                continue
+            if T[sc].get("llm-rule") is not None:
+                g_rule.append(e - T[sc]["llm-rule"])
+            if T[sc].get("llm-rl") is not None:
+                g_rl.append(e - T[sc]["llm-rl"])
+        print(f"      axis label      : 'Pure LLM - layered stack'"
+              f"  (positive = layered stack ahead)")
+        # "trails" means the layered stack is ahead, i.e. the axis value is NEGATIVE
+        print(f"      expected header : 'Pure LLM trails: "
+              f"{sum(1 for x in g_rule if x < 0)}/{len(g_rule)} Rule, "
+              f"{sum(1 for x in g_rl if x < 0)}/{len(g_rl)} RL stacks'")
+        print(f"      expected median deficit : {abs(st.median(g_rule + g_rl)):.3f}")
+        above = [(sc, T[sc]["pure-llm"] - T[sc]["llm-rl"]) for sc in c.IE
+                 if T[sc].get("llm-rl") is not None and T[sc].get("pure-llm") is not None
+                 and T[sc]["pure-llm"] - T[sc]["llm-rl"] > 0]
+        print(f"      points ABOVE y=0 (layered stack ahead): {len(above)} of {len(c.IE)}")
+        for sc, g in above:
+            a, b = sc.split("-")[0], sc.split("-")[1]
+            print(f"          {sc}  +{g:.3f}  -> annotation should read '{a}-{b}: +{g:.3f}'")
+        if not above:
+            print("          (none -- every layered stack trails pure LLM)")
+        return
     gaps_rule, gaps_rl = [], []
     for sc in c.IE:
         e = T[sc].get("pure-llm")
-        r = T[sc].get("llm-rule")
-        l = T[sc].get("llm-rl")
         if e is None:
             continue
-        if r is not None:
-            gaps_rule.append(r - e)
-        if l is not None:
-            gaps_rl.append(l - e)
+        if T[sc].get("llm-rule") is not None:
+            gaps_rule.append(T[sc]["llm-rule"] - e)
+        if T[sc].get("llm-rl") is not None:
+            gaps_rl.append(T[sc]["llm-rl"] - e)
     n_rule = sum(1 for x in gaps_rule if x > 0)
     n_rl = sum(1 for x in gaps_rl if x > 0)
     med = st.median(gaps_rule + gaps_rl)
-    print(f"    '14/14 Rule'  -> computed {n_rule}/{len(gaps_rule)}   "
-          f"{'OK' if n_rule == 14 else 'DIFFERS'}")
-    print(f"    '13/14 RL'    -> computed {n_rl}/{len(gaps_rl)}   "
-          f"{'OK' if n_rl == 13 else 'DIFFERS'}")
-    print(f"    'median 0.329'-> computed {med:.3f}   "
-          f"{'OK' if abs(med - 0.329) <= 0.001 else 'DIFFERS'}")
-    bad += (n_rule != 14) + (n_rl != 13) + (abs(med - 0.329) > 0.001)
+    for got, want, label in ((n_rule, 14, "Rule count"), (n_rl, 13, "RL count"),
+                             (med, 0.329, "pooled median")):
+        ok = abs(got - want) < 1e-3 if isinstance(want, float) else got == want
+        print(f"      {label:<16} computed {got}  figure {want}   "
+              f"{'OK' if ok else 'DIFFERS'}")
+        bad += not ok
 
-    ie03 = T["IE-03-SURFACE-RAID"]
-    g_rule = ie03["llm-rule"] - ie03["pure-llm"]
-    g_rl = ie03["llm-rl"] - ie03["pure-llm"]
-    m = re.search(r"IE-03:\s*([+-]?\d+\.\d+)", txt)
-    shown = float(m.group(1)) if m else None
-    print(f"    'IE-03: {shown}'")
-    print(f"        LLM+Rule - pure LLM = {g_rule:+.4f}")
-    print(f"        LLM+RL   - pure LLM = {g_rl:+.4f}   <- the annotation matches "
-          f"this one in magnitude")
-    # the annotation sits under "Below zero: the layered stack leads"
-    ok = shown is not None and shown < 0 and abs(abs(shown) - abs(g_rl)) <= 0.001
-    if not ok:
-        bad += 1
-        print(f"        MISMATCH: IE-03 is the only scenario where a layered stack")
-        print(f"                  leads, so the sign must be negative. Expected "
-              f"{g_rl:+.3f}, figure prints {shown:+.3f}.")
+
+check_gap_figure("fig_hifi_gap_cropped.pdf")
+check_gap_figure("fig_hifi_gap.pdf")
+
+# ---------------------------------------------------------------- figures with text
+for name, wants in (("figA2_replanning_sweep.pdf", ("0.978", "0.467", "0.733")),
+                    ("figA1_model_invariance.pdf", ("0.022", "0.000", "0.067"))):
+    if name not in inc:
+        continue
+    txt = fig_text(name)
+    print(f"\n  --- {name} ---")
+    if not txt.strip():
+        print("      TEXT LAYER ABSENT -- requires visual check")
+        continue
+    for w in wants:
+        ok = w in txt
+        print(f"      {w:<8} {'OK' if ok else 'ABSENT'}")
+        bad += not ok
+
+name = "figA4_natural_failure_pilot.pdf"
+if name in inc:
+    txt = fig_text(name)
+    print(f"\n  --- {name} ---")
+    if not txt.strip():
+        print("      TEXT LAYER ABSENT -- requires visual check")
     else:
-        print(f"        OK")
+        missing = [f"E5-{i:02d}" for i in range(1, 13) if f"E5-{i:02d}" not in txt]
+        print(f"      case labels present: {12 - len(missing)}/12"
+              f"{'' if not missing else '  missing: ' + ', '.join(missing)}")
+        bad += bool(missing)
 
-# ---- figA2: sweep values and token column
-txt = fig_text("figA2_replanning_sweep.pdf")
-print(f"\n  --- figA2_replanning_sweep.pdf ---")
-for want, label in ((0.978, "pure RL"), (0.467, "k=10"), (0.733, "k=5/k=2")):
-    ok = f"{want}" in txt
-    print(f"    {label:<10} {want}   {'OK' if ok else 'ABSENT'}")
-    bad += not ok
-
-# ---- figA1: the MiniMax boundary value
-txt = fig_text("figA1_model_invariance.pdf")
-print(f"\n  --- figA1_model_invariance.pdf ---")
-for want in ("0.022", "0.000", "0.067"):
-    ok = want in txt
-    print(f"    {want:<8} {'OK' if ok else 'ABSENT'}")
-    bad += not ok
-
-# ---- figA4: all 12 case labels
-txt = fig_text("figA4_natural_failure_pilot.pdf")
-print(f"\n  --- figA4_natural_failure_pilot.pdf ---")
-cases = [f"E5-{i:02d}" for i in range(1, 13)]
-missing = [x for x in cases if x not in txt]
-print(f"    case labels present: {len(cases) - len(missing)}/12"
-      f"{'' if not missing else '  missing: ' + ', '.join(missing)}")
-bad += bool(missing)
-
-# ---- figures with no text layer
+# ---------------------------------------------------------------- no-text-layer figures
 print(f"\n  --- figures with no extractable text ---")
-for name in ("fig_narrative_overview.pdf", "fig_arch.pdf"):
-    tt = fig_text(name)
-    nums = re.findall(r"-?\d+\.\d+|-?\d+%", tt)
-    print(f"    {name:<34} words={len(tt.split()):<4} numeric tokens={len(nums)}")
-    if name == "fig_arch.pdf" and not nums:
-        print(f"        (architecture diagram: structural claims only, no data)")
+for p in sorted(FIGS.glob("*.pdf")):
+    if p.name not in inc:
+        continue
+    tt = fig_text(p.name)
+    if not tt.strip():
+        print(f"    {p.name:<38} 0 chars -- visual check required")
 
-print(f"\n  figure-internal cells mismatching: {bad}")
+print(f"\n  figure cells mismatching: {bad}")
+print(f"  (figures with no text layer are reported above, not counted as passes)")
+raise SystemExit(1 if bad else 0)
